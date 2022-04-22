@@ -55,14 +55,14 @@ class IncidencesViewModel extends BaseViewModel
     _incidences.clear();
     if (_incidences.isEmpty) {
       _incidences.clear();
-      (await _incidencesUseCase.execute(
+      (await _incidencesUseCase.incidencesArea(
               IncidencesUseCaseInput(areaId: '', limit: 25, offset: 0)))
           .fold((l) {}, (areas) {
         _incidences.addAll(areas);
         inputIncidences.add(_incidences);
       });
     } else {
-      (await _incidencesUseCase.execute(IncidencesUseCaseInput(
+      (await _incidencesUseCase.incidencesArea(IncidencesUseCaseInput(
               areaId: '', limit: 25, offset: _incidences.length - 1)))
           .fold((l) {}, (areas) {
         _incidences.addAll(areas);
@@ -76,14 +76,14 @@ class IncidencesViewModel extends BaseViewModel
   incidencesAreaActive() async {
     if (_incidences.isEmpty) {
       _incidences.clear();
-      (await _incidencesUseCase.execute(IncidencesUseCaseInput(
+      (await _incidencesUseCase.incidencesAreaActive(IncidencesUseCaseInput(
               active: true, areaId: '', limit: 25, offset: 0)))
           .fold((l) {}, (areas) {
         _incidences.addAll(areas);
         inputIncidences.add(_incidences);
       });
     } else {
-      (await _incidencesUseCase.execute(IncidencesUseCaseInput(
+      (await _incidencesUseCase.incidencesAreaActive(IncidencesUseCaseInput(
               active: true,
               areaId: '',
               limit: 25,
@@ -100,7 +100,7 @@ class IncidencesViewModel extends BaseViewModel
   incidencesAreaActiveTypeReport(String typeReport) async {
     if (_incidences.isEmpty) {
       _incidences.clear();
-      (await _incidencesUseCase.execute(IncidencesUseCaseInput(
+      (await _incidencesUseCase.incidencesAreaActiveTypeReport(IncidencesUseCaseInput(
               active: true,
               typeReport: typeReport,
               areaId: '',
@@ -111,7 +111,7 @@ class IncidencesViewModel extends BaseViewModel
         inputIncidences.add(_incidences);
       });
     } else {
-      (await _incidencesUseCase.execute(IncidencesUseCaseInput(
+      (await _incidencesUseCase.incidencesAreaActiveTypeReport(IncidencesUseCaseInput(
               active: true,
               typeReport: typeReport,
               areaId: '',
