@@ -10,14 +10,14 @@ String incidenceToString(Incidence data) => json.encode(incidenceToJson(data));
 Incidence incidenceFromJson(Map<String, dynamic> json) => Incidence(
       name: json["name"] ?? '',
       description: json["description"] ?? '',
-      dateReport: json["date_report"] != null
-          ? DateTime.parse(json["date_report"])
+      dateCreate: json["date_create"] != null
+          ? DateTime.parse(json["date_create"])
           : DateTime.now(),
       image: json["image"] ?? '',
-      typeReport: json["type_report"] ?? '',
-      areaId: json["area_id"] ?? '',
-      employeId: json["employe_id"] ?? '',
-      supervisorId: json["supervisor_id"] ?? '',
+      priority: json["priority"] ?? '',
+      area: json["area"] ?? '',
+      employe: json["employe"] ?? '',
+      supervisor: json["supervisor"] ?? '',
       solution: json["solution"] ?? '',
       dateSolution: json["date_solution"] != 'null'
           ? DateTime.parse(json["date_solution"])
@@ -36,12 +36,12 @@ Incidence incidenceFromJson(Map<String, dynamic> json) => Incidence(
 Map<String, dynamic> incidenceToJson(Incidence incidence) => {
       "name": incidence.name,
       "description": incidence.description,
-      "date_report": incidence.dateReport.toIso8601String(),
+      "date_create": incidence.dateCreate.toIso8601String(),
       "image": incidence.image,
-      "type_report": incidence.typeReport,
-      "area_id": incidence.areaId,
-      "employe_id": incidence.employeId,
-      "supervisor_id": incidence.supervisorId,
+      "priority": incidence.priority,
+      "area": incidence.area,
+      "employe": incidence.employe,
+      "supervisor": incidence.supervisor,
       "solution": incidence.solution,
       "date_solution": incidence.dateSolution?.toIso8601String(),
       "active":incidence.active,

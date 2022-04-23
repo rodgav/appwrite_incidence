@@ -3,6 +3,7 @@ import 'package:appwrite_incidence/data/network/failure.dart';
 import 'package:appwrite_incidence/data/request/request.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_model.dart';
+import 'package:appwrite_incidence/domain/model/name_model.dart';
 import 'package:appwrite_incidence/domain/model/user_model.dart';
 import 'package:dartz/dartz.dart';
 
@@ -25,11 +26,11 @@ abstract class Repository {
   Future<Either<Failure, List<Incidence>>> incidencesArea(
       String areaId, int limit, int offset);
 
-  Future<Either<Failure, List<Incidence>>> incidencesAreaActive(
-      String areaId, bool active, int limit, int offset);
+  Future<Either<Failure, List<Incidence>>> incidencesAreaPriority(
+      String areaId, String priority, int limit, int offset);
 
-  Future<Either<Failure, List<Incidence>>> incidencesAreaActiveTypeReport(
-      String areaId, bool active, String typeReport, int limit, int offset);
+  Future<Either<Failure, List<Incidence>>> incidencesAreaPriorityActive(
+      String areaId, bool active, String priority, int limit, int offset);
 
   Future<Either<Failure, List<Incidence>>> incidencesSearch(
       String search, int limit, int offset);
@@ -45,4 +46,8 @@ abstract class Repository {
 
   Future<Either<Failure, List<Users>>> usersSearch(
       String typeUser, String search, int limit, int offset);
+
+  Future<Either<Failure, List<Name>>> prioritys(int limit, int offset);
+
+  Future<Either<Failure, List<Name>>> typeUsers(int limit, int offset);
 }

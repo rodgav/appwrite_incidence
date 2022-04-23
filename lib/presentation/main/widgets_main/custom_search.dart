@@ -16,7 +16,7 @@ class CustomSearch extends SearchDelegate {
     return [
       IconButton(
         tooltip: 'Limpiar',
-        icon: const Icon(Icons.clear),
+        icon: const Icon(Icons.close),
         onPressed: () {
           query = '';
         },
@@ -28,7 +28,7 @@ class CustomSearch extends SearchDelegate {
   Widget? buildLeading(BuildContext context) {
     return IconButton(
       tooltip: 'Cerrar',
-      icon: const Icon(Icons.close),
+      icon: const Icon(Icons.arrow_back_ios_rounded),
       onPressed: () {
         close(context, null);
       },
@@ -257,8 +257,6 @@ class CustomSearch extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Column(
-      children: const [Text('Suggestions')],
-    );
+    return const SizedBox();
   }
 }

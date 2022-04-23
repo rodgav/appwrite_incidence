@@ -1,3 +1,4 @@
+import 'package:appwrite_incidence/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/resources/assets_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/color_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/font_manager.dart';
@@ -21,12 +22,11 @@ class StateRenderer extends StatelessWidget {
 
   const StateRenderer(
       {Key? key,
-      required this.stateRendererType,
-      String? message,
+      required this.stateRendererType, required this. message,
       String? title,
       required this.backActionFunction,
       required this.retryActionFunction})
-      : message = message ?? AppStrings.loading,
+      :
         title = title ?? AppStrings.empty,
         super(key: key);
 
@@ -36,6 +36,7 @@ class StateRenderer extends StatelessWidget {
   }
 
   Widget _getStateWidget(BuildContext context) {
+    final s = S.of(context);
     switch (stateRendererType) {
       case StateRendererType.fullScreenLoadingState:
         return _getItemsInColumn(
@@ -48,8 +49,8 @@ class StateRenderer extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _getBackButton(AppStrings.close, context),
-              _getRetryButton(AppStrings.retryAgain, context),
+              _getBackButton(s.close, context),
+              _getRetryButton(s.retryAgain, context),
             ],
           )
         ]);

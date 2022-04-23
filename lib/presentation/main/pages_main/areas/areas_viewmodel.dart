@@ -16,6 +16,21 @@ class AreasViewModel extends BaseViewModel
   final List<Area> _areas = [];
 
   @override
+  void start() {
+    areas();
+    super.start();
+  }
+
+  @override
+  void dispose() async {
+    await _areasStrCtrl.drain();
+    _areasStrCtrl.close();
+    await _isLoading.drain();
+    _isLoading.close();
+    super.dispose();
+  }
+
+  @override
   Sink get inputAreas => _areasStrCtrl.sink;
 
   @override
@@ -39,7 +54,8 @@ class AreasViewModel extends BaseViewModel
         inputAreas.add(_areas);
       });
     } else {
-      (await _areasUseCase.execute(AreasUseCaseInput(25, _areas.length - 1)))
+      (await _areasUseCase.execute(AreasUseCaseInput(
+              25, _areas.length > 1 ? _areas.length - 1 : _areas.length)))
           .fold((l) {}, (areas) {
         _areas.addAll(areas);
         inputAreas.add(_areas);

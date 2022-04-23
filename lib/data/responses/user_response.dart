@@ -12,7 +12,7 @@ String usersToString(Users data) => json.encode(usersToJson(data));
 
 Users usersFromJson(Map<String, dynamic> json) => Users(
       name: json["name"],
-      areaId: json["area_id"],
+      area: json["area"],
       active: json["active"],
       typeUser: json["type_user"],
       read: List<String>.from(json["\u0024read"].map((x) => x)),
@@ -23,7 +23,7 @@ Users usersFromJson(Map<String, dynamic> json) => Users(
 
 Map<String, dynamic> usersToJson(Users users) => {
       "name": users.name,
-      "area_id": users.areaId,
+      "area": users.area,
       "active": users.active,
       "type_user": users.typeUser,
       "\u0024read": List<dynamic>.from(users.read.map((x) => x)),

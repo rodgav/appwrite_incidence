@@ -22,7 +22,8 @@ ThemeData getApplicationTheme() {
           background: ColorManager.white,
           error: ColorManager.error,
           //onPrimary: ColorManager.primaryOpacity70,
-          onPrimary: ColorManager.white,//color text elevated
+          onPrimary: ColorManager.white,
+          //color text elevated
           onSecondary: ColorManager.white,
           onSurface: ColorManager.black,
           onBackground: ColorManager.black,
@@ -89,5 +90,9 @@ ThemeData getApplicationTheme() {
           focusedErrorBorder: OutlineInputBorder(
               borderSide:
                   BorderSide(color: ColorManager.primary, width: AppSize.s1_5),
+              borderRadius: BorderRadius.circular(AppSize.s8)),
+          disabledBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: ColorManager.grey, width: AppSize.s1_5),
               borderRadius: BorderRadius.circular(AppSize.s8))));
 }

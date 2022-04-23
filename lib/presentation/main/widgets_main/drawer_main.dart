@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 
 class DrawerWidget extends StatelessWidget {
   final int index;
+  final bool small;
   final Function(int index) changePage;
 
-  const DrawerWidget(this.index,{required this.changePage, Key? key}) : super(key: key);
+  const DrawerWidget(this.index,{required this.changePage,this.small=false, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      elevation: kIsWeb ? 0 : null,
+      elevation: small ? null : 0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -18,7 +19,7 @@ class DrawerWidget extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  !kIsWeb
+                  small
                       ? const DrawerHeader(child: FlutterLogo())
                       : const SizedBox(),
                   ListTile(selected: index==0,

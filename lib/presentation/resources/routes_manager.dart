@@ -1,9 +1,9 @@
 import 'package:appwrite_incidence/app/app_preferences.dart';
 import 'package:appwrite_incidence/app/dependency_injection.dart';
+import 'package:appwrite_incidence/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/forgot_password/forgot_password.dart';
 import 'package:appwrite_incidence/presentation/login/login.dart';
 import 'package:appwrite_incidence/presentation/main/main.dart';
-import 'package:appwrite_incidence/presentation/resources/strings_manager.dart';
 import 'package:appwrite_incidence/presentation/splash/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -60,11 +60,12 @@ class RouteGenerator {
       });
 
   static unDefinedRoute(BuildContext context) {
+    final s = S.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppStrings.noRouteFound),
+        title: Text(s.noRouteFound),
       ),
-      body: const Center(child: Text(AppStrings.noRouteFound)),
+      body: Center(child: Text(s.noRouteFound)),
     );
   }
 }

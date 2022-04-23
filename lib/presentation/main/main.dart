@@ -5,8 +5,8 @@ import 'package:appwrite_incidence/presentation/main/pages_main/users/users_page
 import 'package:appwrite_incidence/presentation/main/responsive.dart';
 import 'package:appwrite_incidence/presentation/main/widgets_main/custom_search.dart';
 import 'package:appwrite_incidence/presentation/main/widgets_main/drawer_main.dart';
+import 'package:appwrite_incidence/presentation/resources/strings_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'main_viewmodel.dart';
@@ -26,18 +26,31 @@ class _MainViewState extends State<MainView> {
   List<Widget> pages = [
     const IncidencesPage(),
     const AreasPage(),
-    const UsersPage('supervisors'),
-    const UsersPage('employees')
+    const UsersPage(AppStrings.supervisor),
+    const UsersPage(AppStrings.employe)
   ];
+
+  _bind() {
+    _viewModel.start();
+  }
+
+  @override
+  void initState() {
+    _bind();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _viewModel.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final s = S.of(context);
     return Scaffold(
-        drawer: kIsWeb
-            ? null
-            : DrawerWidget(_currentIndex, changePage: _changePage),
         body: StreamBuilder<FlowState>(
             stream: _viewModel.outputState,
             builder: (context, snapshot) =>
@@ -55,9 +68,9 @@ class _MainViewState extends State<MainView> {
       child: ResponsiveWid(
           largeScreen: Column(
             children: [
-              const SizedBox(height: 10),
-              _searchBar(size, large: true),
-              const SizedBox(height: 5),
+              const SizedBox(height: AppSize.s10),
+              _searchBar(size, s, large: true),
+              const SizedBox(height: AppSize.s5),
               const Divider(),
               Expanded(
                 child: Row(
@@ -69,19 +82,21 @@ class _MainViewState extends State<MainView> {
               ),
             ],
           ),
-          smallScreen: Column(
-            children: [
-              const SizedBox(height: 10),
-              _searchBar(size),
-              const SizedBox(height: 5),
-              const Divider(),
-              Expanded(child: pages[_currentIndex])
-            ],
+          smallScreen: Scaffold(drawer:  DrawerWidget(_currentIndex, changePage: _changePage,small: true),
+            body: Column(
+              children: [
+                const SizedBox(height: AppSize.s10),
+                _searchBar(size, s),
+                const SizedBox(height: AppSize.s5),
+                const Divider(),
+                Expanded(child: pages[_currentIndex])
+              ],
+            ),
           )),
     );
   }
 
-  Widget _searchBar(Size size, {bool large = false}) {
+  Widget _searchBar(Size size, S s, {bool large = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSize.s10),
       child: Row(
@@ -92,7 +107,7 @@ class _MainViewState extends State<MainView> {
             children: [
               large
                   ? const SizedBox(
-                      width: 310,
+                      width: AppSize.s310,
                       child: FlutterLogo(),
                     )
                   : IconButton(
@@ -103,24 +118,24 @@ class _MainViewState extends State<MainView> {
               GestureDetector(
                 child: Container(
                   width: large ? size.width * 0.4 : size.width * 0.7,
-                  height: 40,
+                  height: AppSize.s40,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       boxShadow: const [
                         BoxShadow(
-                            offset: Offset(2, 2),
-                            blurRadius: 8,
+                            offset: Offset(AppSize.s2, AppSize.s2),
+                            blurRadius: AppSize.s8,
                             color: Colors.grey)
                       ],
-                      borderRadius: BorderRadius.circular(20)),
+                      borderRadius: BorderRadius.circular(AppSize.s20)),
                   padding: const EdgeInsets.symmetric(horizontal: AppSize.s20),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       const Icon(Icons.search),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: AppSize.s10),
                       Text(
-                          'Search ${_currentIndex == 0 ? 'incidences' : _currentIndex == 1 ? 'areas' : _currentIndex == 2 ? 'supervisors' : 'employees'}'),
+                          '${s.search} ${_currentIndex == 0 ? s.incidences : _currentIndex == 1 ? s.areas : _currentIndex == 2 ? s.supervisors : s.employees}'),
                     ],
                   ),
                 ),

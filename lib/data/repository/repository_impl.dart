@@ -7,9 +7,11 @@ import 'package:appwrite_incidence/data/network/network_info.dart';
 import 'package:appwrite_incidence/data/request/request.dart';
 import 'package:appwrite_incidence/data/responses/area_response.dart';
 import 'package:appwrite_incidence/data/responses/incidence_response.dart';
+import 'package:appwrite_incidence/data/responses/name_response.dart';
 import 'package:appwrite_incidence/data/responses/user_response.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_model.dart';
+import 'package:appwrite_incidence/domain/model/name_model.dart';
 import 'package:appwrite_incidence/domain/model/user_model.dart';
 import 'package:appwrite_incidence/domain/repository/repository.dart';
 import 'package:dartz/dartz.dart';
@@ -171,12 +173,12 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Incidence>>> incidencesAreaActive(
-      String areaId, bool active, int limit, int offset) async {
+  Future<Either<Failure, List<Incidence>>> incidencesAreaPriority(
+      String areaId, String priority, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
-        final response = await _remoteDataSource.incidencesAreaActive(
-            areaId, active, limit, offset);
+        final response = await _remoteDataSource.incidencesAreaPriority(
+            areaId, priority, limit, offset);
         final a =
             response.documents.map((e) => incidenceFromJson(e.data)).toList();
         return Right(a);
@@ -192,16 +194,16 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Incidence>>> incidencesAreaActiveTypeReport(
+  Future<Either<Failure, List<Incidence>>> incidencesAreaPriorityActive(
       String areaId,
       bool active,
-      String typeReport,
+      String priority,
       int limit,
       int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
-        final response = await _remoteDataSource.incidencesAreaActiveTypeReport(
-            areaId, active, typeReport, limit, offset);
+        final response = await _remoteDataSource.incidencesAreaPriorityActive(
+            areaId, active, priority, limit, offset);
         final a =
             response.documents.map((e) => incidenceFromJson(e.data)).toList();
         return Right(a);
@@ -313,6 +315,54 @@ class RepositoryImpl extends Repository {
       }
     } else {
       return Left(Failure(-7, 'Please check your internet connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Name>>> prioritys(int limit, int offset) async {
+    try {
+      final response = await _localDataSource.getPrioritys();
+      return Right(response);
+    } catch (cacheError) {
+      if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
+        try {
+          final response = await _remoteDataSource.prioritys(limit, offset);
+          final a =
+              response.documents.map((e) => nameFromJson(e.data)).toList();
+          return Right(a);
+        } on AppwriteException catch (e) {
+          return Left(Failure(e.code ?? 0,
+              e.message ?? 'Some thing went wrong, try again later'));
+        } catch (error) {
+          return Left(Failure(0, error.toString()));
+        }
+      } else {
+        return Left(Failure(-7, 'Please check your internet connection'));
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Name>>> typeUsers(int limit, int offset) async {
+    try {
+      final response = await _localDataSource.getTypeUsers();
+      return Right(response);
+    } catch (cacheError) {
+      if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
+        try {
+          final response = await _remoteDataSource.areas(limit, offset);
+          final a =
+              response.documents.map((e) => nameFromJson(e.data)).toList();
+          return Right(a);
+        } on AppwriteException catch (e) {
+          return Left(Failure(e.code ?? 0,
+              e.message ?? 'Some thing went wrong, try again later'));
+        } catch (error) {
+          return Left(Failure(0, error.toString()));
+        }
+      } else {
+        return Left(Failure(-7, 'Please check your internet connection'));
+      }
     }
   }
 }

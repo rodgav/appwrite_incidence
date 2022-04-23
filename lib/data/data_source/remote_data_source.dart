@@ -19,24 +19,28 @@ abstract class RemoteDataSource {
 
   Future<DocumentList> incidencesArea(String areaId, int limit, int offset);
 
-  Future<DocumentList> incidencesAreaActive(
-      String areaId, bool active, int limit, int offset);
+  Future<DocumentList> incidencesAreaPriority(String areaId, String priority,
+      int limit, int offset);
 
-  Future<DocumentList> incidencesAreaActiveTypeReport(
-      String areaId, bool active, String typeReport, int limit, int offset);
+  Future<DocumentList> incidencesAreaPriorityActive(String areaId,
+      bool active, String priority, int limit, int offset);
 
   Future<DocumentList> incidencesSearch(String search, int limit, int offset);
 
   Future<DocumentList> users(String typeUser, int limit, int offset);
 
-  Future<DocumentList> usersArea(
-      String typeUser, String areaId, int limit, int offset);
+  Future<DocumentList> usersArea(String typeUser, String areaId, int limit,
+      int offset);
 
-  Future<DocumentList> usersAreaActive(
-      String typeUser, String areaId, bool active, int limit, int offset);
+  Future<DocumentList> usersAreaActive(String typeUser, String areaId,
+      bool active, int limit, int offset);
 
-  Future<DocumentList> usersSearch(
-      String typeUser, String search, int limit, int offset);
+  Future<DocumentList> usersSearch(String typeUser, String search, int limit,
+      int offset);
+
+  Future<DocumentList> prioritys(int limit, int offset);
+
+  Future<DocumentList> typeUsers(int limit, int offset);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -76,15 +80,15 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       _appServiceClient.incidencesArea(areaId, limit, offset);
 
   @override
-  Future<DocumentList> incidencesAreaActive(
-          String areaId, bool active, int limit, int offset) =>
-      _appServiceClient.incidencesAreaActive(areaId, active, limit, offset);
+  Future<DocumentList> incidencesAreaPriority(String areaId, String priority,
+      int limit, int offset) =>
+      _appServiceClient.incidencesAreaPriority(areaId, priority, limit, offset);
 
   @override
-  Future<DocumentList> incidencesAreaActiveTypeReport(String areaId,
-          bool active, String typeReport, int limit, int offset) =>
-      _appServiceClient.incidencesAreaActiveTypeReport(
-          areaId, active, typeReport, limit, offset);
+  Future<DocumentList> incidencesAreaPriorityActive(String areaId,
+      bool active, String priority, int limit, int offset) =>
+      _appServiceClient.incidencesAreaPriorityActive(
+          areaId, active, priority, limit, offset);
 
   @override
   Future<DocumentList> incidencesSearch(String search, int limit, int offset) =>
@@ -95,18 +99,26 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       _appServiceClient.users(typeUser, limit, offset);
 
   @override
-  Future<DocumentList> usersArea(
-          String typeUser, String areaId, int limit, int offset) =>
+  Future<DocumentList> usersArea(String typeUser, String areaId, int limit,
+      int offset) =>
       _appServiceClient.usersArea(typeUser, areaId, limit, offset);
 
   @override
-  Future<DocumentList> usersAreaActive(
-          String typeUser, String areaId, bool active, int limit, int offset) =>
+  Future<DocumentList> usersAreaActive(String typeUser, String areaId,
+      bool active, int limit, int offset) =>
       _appServiceClient.usersAreaActive(
           typeUser, areaId, active, limit, offset);
 
   @override
-  Future<DocumentList> usersSearch(
-          String typeUser, String search, int limit, int offset) =>
+  Future<DocumentList> usersSearch(String typeUser, String search, int limit,
+      int offset) =>
       _appServiceClient.usersSearch(typeUser, search, limit, offset);
+
+  @override
+  Future<DocumentList> prioritys(int limit, int offset) =>
+      _appServiceClient.prioritys(limit, offset);
+
+  @override
+  Future<DocumentList> typeUsers(int limit, int offset) =>
+      _appServiceClient.typeUsers(limit, offset);
 }

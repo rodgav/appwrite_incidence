@@ -79,6 +79,366 @@ class S {
       args: [],
     );
   }
+
+  /// `Ruta no encontrada`
+  String get noRouteFound {
+    return Intl.message(
+      'Ruta no encontrada',
+      name: 'noRouteFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Éxito`
+  String get success {
+    return Intl.message(
+      'Éxito',
+      name: 'success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Correo enviado`
+  String get sendEmail {
+    return Intl.message(
+      'Correo enviado',
+      name: 'sendEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cerrar`
+  String get close {
+    return Intl.message(
+      'Cerrar',
+      name: 'close',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Aceptar`
+  String get accept {
+    return Intl.message(
+      'Aceptar',
+      name: 'accept',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cargando...`
+  String get loading {
+    return Intl.message(
+      'Cargando...',
+      name: 'loading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reintentar`
+  String get retryAgain {
+    return Intl.message(
+      'Reintentar',
+      name: 'retryAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Área`
+  String get area {
+    return Intl.message(
+      'Área',
+      name: 'area',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Prioridad`
+  String get priority {
+    return Intl.message(
+      'Prioridad',
+      name: 'priority',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Activo`
+  String get active {
+    return Intl.message(
+      'Activo',
+      name: 'active',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Buscar`
+  String get search {
+    return Intl.message(
+      'Buscar',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incidencias`
+  String get incidences {
+    return Intl.message(
+      'Incidencias',
+      name: 'incidences',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Areas`
+  String get areas {
+    return Intl.message(
+      'Areas',
+      name: 'areas',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supervisores`
+  String get supervisors {
+    return Intl.message(
+      'Supervisores',
+      name: 'supervisors',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Empleados`
+  String get employees {
+    return Intl.message(
+      'Empleados',
+      name: 'employees',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supervisor`
+  String get supervisor {
+    return Intl.message(
+      'Supervisor',
+      name: 'supervisor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Empleado`
+  String get employe {
+    return Intl.message(
+      'Empleado',
+      name: 'employe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No hay datos`
+  String get noData {
+    return Intl.message(
+      'No hay datos',
+      name: 'noData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Añadir Área`
+  String get addArea {
+    return Intl.message(
+      'Añadir Área',
+      name: 'addArea',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Añadir Incidente`
+  String get addIncidence {
+    return Intl.message(
+      'Añadir Incidente',
+      name: 'addIncidence',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Añadir`
+  String get add {
+    return Intl.message(
+      'Añadir',
+      name: 'add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nombre de incidencia`
+  String get nameIncidence {
+    return Intl.message(
+      'Nombre de incidencia',
+      name: 'nameIncidence',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Descripción de inicidencia`
+  String get descriptionIncidence {
+    return Intl.message(
+      'Descripción de inicidencia',
+      name: 'descriptionIncidence',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fecha de creación`
+  String get dateCreate {
+    return Intl.message(
+      'Fecha de creación',
+      name: 'dateCreate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Solución`
+  String get solution {
+    return Intl.message(
+      'Solución',
+      name: 'solution',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fecha de solución`
+  String get dateSolution {
+    return Intl.message(
+      'Fecha de solución',
+      name: 'dateSolution',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Guardar`
+  String get save {
+    return Intl.message(
+      'Guardar',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nombre error`
+  String get nameError {
+    return Intl.message(
+      'Nombre error',
+      name: 'nameError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Descripción error`
+  String get descrError {
+    return Intl.message(
+      'Descripción error',
+      name: 'descrError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Empleado error`
+  String get employeError {
+    return Intl.message(
+      'Empleado error',
+      name: 'employeError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supervisor error`
+  String get supervisorError {
+    return Intl.message(
+      'Supervisor error',
+      name: 'supervisorError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Solución error`
+  String get solutionError {
+    return Intl.message(
+      'Solución error',
+      name: 'solutionError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Área error`
+  String get areaError {
+    return Intl.message(
+      'Área error',
+      name: 'areaError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Prioridad error`
+  String get priorityError {
+    return Intl.message(
+      'Prioridad error',
+      name: 'priorityError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Editar`
+  String get edit {
+    return Intl.message(
+      'Editar',
+      name: 'edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incidencia`
+  String get incidence {
+    return Intl.message(
+      'Incidencia',
+      name: 'incidence',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

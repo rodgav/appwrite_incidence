@@ -1,7 +1,7 @@
+import 'package:appwrite_incidence/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/resources/assets_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/color_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/font_manager.dart';
-import 'package:appwrite_incidence/presentation/resources/strings_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/styles_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +65,7 @@ class DialogRenderImpl implements DialogRender {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         dialogRendererType == DialogRendererType.errorDialog
-                            ? _getButton(button1 ?? AppStrings.close, () {
+                            ? _getButton(button1 ?? S.of(context).close, () {
                                 Navigator.of(context).pop();
                               })
                             : const SizedBox(),

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:appwrite_incidence/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:appwrite_incidence/app/dependency_injection.dart';
 import 'package:appwrite_incidence/domain/usecase/forgot_password_usecase.dart';
@@ -7,7 +8,6 @@ import 'package:appwrite_incidence/presentation/base/base_viewmodel.dart';
 import 'package:appwrite_incidence/presentation/common/dialog_render/dialog_render.dart';
 import 'package:appwrite_incidence/presentation/common/state_render/state_render.dart';
 import 'package:appwrite_incidence/presentation/common/state_render/state_render_impl.dart';
-import 'package:appwrite_incidence/presentation/resources/strings_manager.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ForgotPasswordViewModel extends BaseViewModel
@@ -31,8 +31,9 @@ class ForgotPasswordViewModel extends BaseViewModel
 
   @override
   forgotPassword(BuildContext context) async {
+    final s = S.of(context);
     inputState.add(LoadingState(
-        stateRendererType: StateRendererType.fullScreenLoadingState));
+        stateRendererType: StateRendererType.fullScreenLoadingState,message:s.loading));
     (await _forgotPasswordUseCase.execute(username)).fold(
         (l) => inputState
             .add(ErrorState(StateRendererType.fullScreenErrorState, l.message)),
@@ -41,10 +42,10 @@ class ForgotPasswordViewModel extends BaseViewModel
       dialog.showPopUp(
           context,
           DialogRendererType.successDialog,
-          AppStrings.success,
-          AppStrings.sendEmail,
-          AppStrings.close,
-          AppStrings.accept, () {
+          s.success,
+          s.sendEmail,
+          s.close,
+          s.accept, () {
         Navigator.of(context).pop();
       });
     });

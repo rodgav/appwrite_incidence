@@ -22,8 +22,46 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accept": MessageLookupByLibrary.simpleMessage("Accept"),
+        "active": MessageLookupByLibrary.simpleMessage("Active"),
+        "add": MessageLookupByLibrary.simpleMessage("Add"),
+        "addArea": MessageLookupByLibrary.simpleMessage("Add Area"),
+        "addIncidence": MessageLookupByLibrary.simpleMessage("Add Incidence"),
+        "area": MessageLookupByLibrary.simpleMessage("Area"),
+        "areaError": MessageLookupByLibrary.simpleMessage("Area error"),
+        "areas": MessageLookupByLibrary.simpleMessage("Areas"),
+        "close": MessageLookupByLibrary.simpleMessage("Close"),
+        "dateCreate": MessageLookupByLibrary.simpleMessage("Date create"),
+        "dateSolution": MessageLookupByLibrary.simpleMessage("Date solution"),
+        "descrError": MessageLookupByLibrary.simpleMessage("Description error"),
+        "descriptionIncidence":
+            MessageLookupByLibrary.simpleMessage("Description incidence"),
+        "edit": MessageLookupByLibrary.simpleMessage("Edit"),
+        "employe": MessageLookupByLibrary.simpleMessage("Employe"),
+        "employeError": MessageLookupByLibrary.simpleMessage("Employe error"),
+        "employees": MessageLookupByLibrary.simpleMessage("Employees"),
+        "incidence": MessageLookupByLibrary.simpleMessage("Incidence"),
+        "incidences": MessageLookupByLibrary.simpleMessage("Incidences"),
         "inputEmail": MessageLookupByLibrary.simpleMessage("Email"),
         "inputPassword": MessageLookupByLibrary.simpleMessage("Password"),
-        "login": MessageLookupByLibrary.simpleMessage("Login")
+        "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
+        "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "nameError": MessageLookupByLibrary.simpleMessage("Name error"),
+        "nameIncidence": MessageLookupByLibrary.simpleMessage("Name incidence"),
+        "noData": MessageLookupByLibrary.simpleMessage("No data"),
+        "noRouteFound": MessageLookupByLibrary.simpleMessage("Route not found"),
+        "priority": MessageLookupByLibrary.simpleMessage("Priority"),
+        "priorityError": MessageLookupByLibrary.simpleMessage("Priority error"),
+        "retryAgain": MessageLookupByLibrary.simpleMessage("Retry again"),
+        "save": MessageLookupByLibrary.simpleMessage("Save"),
+        "search": MessageLookupByLibrary.simpleMessage("Search"),
+        "sendEmail": MessageLookupByLibrary.simpleMessage("Send email"),
+        "solution": MessageLookupByLibrary.simpleMessage("Solution"),
+        "solutionError": MessageLookupByLibrary.simpleMessage("Solution error"),
+        "success": MessageLookupByLibrary.simpleMessage("Success"),
+        "supervisor": MessageLookupByLibrary.simpleMessage("Supervisor"),
+        "supervisorError":
+            MessageLookupByLibrary.simpleMessage("Supervisor error"),
+        "supervisors": MessageLookupByLibrary.simpleMessage("Supervisors")
       };
 }

@@ -36,32 +36,29 @@ class AppServiceClient {
       _database.listDocuments(
           collectionId: Constant.incidencesId, limit: limit, offset: offset);
 
-  Future<DocumentList> incidencesArea(String areaId, int limit, int offset) =>
+  Future<DocumentList> incidencesArea(String area, int limit, int offset) =>
       _database.listDocuments(
           collectionId: Constant.incidencesId,
-          queries: [Query.equal('area_id', areaId)],
+          queries: [Query.equal('area', area)],
           limit: limit,
           offset: offset);
 
-  Future<DocumentList> incidencesAreaActive(
-          String areaId, bool active, int limit, int offset) =>
+  Future<DocumentList> incidencesAreaPriority(
+          String area, String priority, int limit, int offset) =>
+      _database.listDocuments(
+          collectionId: Constant.incidencesId,
+          queries: [Query.equal('area', area), Query.equal('priority', priority)],
+          limit: limit,
+          offset: offset);
+
+  Future<DocumentList> incidencesAreaPriorityActive(
+          String area, bool active, String priority, int limit, int offset) =>
       _database.listDocuments(
           collectionId: Constant.incidencesId,
           queries: [
-            Query.equal('area_id', areaId),
+            Query.equal('area', area),
+            Query.equal('priority', priority),
             Query.equal('active', active)
-          ],
-          limit: limit,
-          offset: offset);
-
-  Future<DocumentList> incidencesAreaActiveTypeReport(String areaId,
-          bool active, String typeReport, int limit, int offset) =>
-      _database.listDocuments(
-          collectionId: Constant.incidencesId,
-          queries: [
-            Query.equal('area_id', areaId),
-            Query.equal('active', active),
-            Query.equal('type_report', typeReport)
           ],
           limit: limit,
           offset: offset);
@@ -81,23 +78,23 @@ class AppServiceClient {
           offset: offset);
 
   Future<DocumentList> usersArea(
-          String typeUser, String areaId, int limit, int offset) =>
+          String typeUser, String area, int limit, int offset) =>
       _database.listDocuments(
           collectionId: Constant.usersId,
           queries: [
             Query.equal('type_user', typeUser),
-            Query.equal('area_id', areaId)
+            Query.equal('area', area)
           ],
           limit: limit,
           offset: offset);
 
   Future<DocumentList> usersAreaActive(
-          String typeUser, String areaId, bool active, int limit, int offset) =>
+          String typeUser, String area, bool active, int limit, int offset) =>
       _database.listDocuments(
           collectionId: Constant.usersId,
           queries: [
             Query.equal('type_user', typeUser),
-            Query.equal('area_id', areaId),
+            Query.equal('area', area),
             Query.equal('active', active)
           ],
           limit: limit,
@@ -113,4 +110,12 @@ class AppServiceClient {
           ],
           limit: limit,
           offset: offset);
+
+  Future<DocumentList> prioritys(int limit, int offset) =>
+      _database.listDocuments(
+          collectionId: Constant.prioritysId, limit: limit, offset: offset);
+
+  Future<DocumentList> typeUsers(int limit, int offset) =>
+      _database.listDocuments(
+          collectionId: Constant.typeUsersId, limit: limit, offset: offset);
 }
