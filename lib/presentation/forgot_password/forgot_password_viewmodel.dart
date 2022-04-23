@@ -33,21 +33,15 @@ class ForgotPasswordViewModel extends BaseViewModel
   forgotPassword(BuildContext context) async {
     final s = S.of(context);
     inputState.add(LoadingState(
-        stateRendererType: StateRendererType.fullScreenLoadingState,message:s.loading));
+        stateRendererType: StateRendererType.fullScreenLoadingState,
+        message: s.loading));
     (await _forgotPasswordUseCase.execute(username)).fold(
         (l) => inputState
             .add(ErrorState(StateRendererType.fullScreenErrorState, l.message)),
         (r) {
       inputState.add(ContentState());
-      dialog.showPopUp(
-          context,
-          DialogRendererType.successDialog,
-          s.success,
-          s.sendEmail,
-          s.close,
-          s.accept, () {
-        Navigator.of(context).pop();
-      });
+      dialog.showPopUp(context, DialogRendererType.successDialog, s.success,
+          s.sendEmail, s.accept, null, null);
     });
   }
 

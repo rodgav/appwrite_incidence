@@ -5,6 +5,7 @@ import 'package:appwrite_incidence/domain/model/user_sel.dart';
 import 'package:appwrite_incidence/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/common/state_render/state_render_impl.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/users/users_viewmodel.dart';
+import 'package:appwrite_incidence/presentation/main/pages_main/users/widgets_users/user.dart';
 import 'package:appwrite_incidence/presentation/resources/strings_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
@@ -43,17 +44,27 @@ class _UsersPageState extends State<UsersPage> {
     final size = MediaQuery.of(context).size;
     final s = S.of(context);
     return Scaffold(
-        body: StreamBuilder<FlowState>(
-            stream: _viewModel.outputState,
-            builder: (context, snapshot) =>
-                snapshot.data
-                    ?.getScreenWidget(context, _getContentWidget(size, s), () {
-                  _viewModel.inputState.add(ContentState());
-                }, () {
-                  //_viewModel.login(context);
-                }) ??
-                _getContentWidget(size, s)), floatingActionButton: FloatingActionButton(
-        tooltip: '${s.add} ${widget.typeUser==AppStrings.employe? s.employe:s.supervisor }', child: const Icon(Icons.add), onPressed: () {}),);
+      body: StreamBuilder<FlowState>(
+          stream: _viewModel.outputState,
+          builder: (context, snapshot) =>
+              snapshot.data
+                  ?.getScreenWidget(context, _getContentWidget(size, s), () {
+                _viewModel.inputState.add(ContentState());
+              }, () {
+                //_viewModel.login(context);
+              }) ??
+              _getContentWidget(size, s)),
+      floatingActionButton: FloatingActionButton(
+          tooltip:
+              '${s.add} ${widget.typeUser == AppStrings.employe ? s.employe : s.supervisor}',
+          child: const Icon(Icons.add),
+          onPressed: () {
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (_) => UserDialog(viewModel: _viewModel));
+          }),
+    );
   }
 
   Widget _getContentWidget(Size size, S s) {

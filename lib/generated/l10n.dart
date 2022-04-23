@@ -439,6 +439,106 @@ class S {
       args: [],
     );
   }
+
+  /// `Error`
+  String get error {
+    return Intl.message(
+      'Error',
+      name: 'error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No tiene los permisos necesarios para esta acción`
+  String get notPermission {
+    return Intl.message(
+      'No tiene los permisos necesarios para esta acción',
+      name: 'notPermission',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirmar`
+  String get confirm {
+    return Intl.message(
+      'Confirmar',
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Usuario`
+  String get user {
+    return Intl.message(
+      'Usuario',
+      name: 'user',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nombre de usuario`
+  String get nameUser {
+    return Intl.message(
+      'Nombre de usuario',
+      name: 'nameUser',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Correo electrónico`
+  String get email {
+    return Intl.message(
+      'Correo electrónico',
+      name: 'email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Correo electrónico error`
+  String get emailError {
+    return Intl.message(
+      'Correo electrónico error',
+      name: 'emailError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contraseña`
+  String get password {
+    return Intl.message(
+      'Contraseña',
+      name: 'password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contraseña error`
+  String get passwordError {
+    return Intl.message(
+      'Contraseña error',
+      name: 'passwordError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tipo de usuario`
+  String get typeUser {
+    return Intl.message(
+      'Tipo de usuario',
+      name: 'typeUser',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -1,18 +1,25 @@
 import 'package:appwrite_incidence/app/app_preferences.dart';
+import 'package:appwrite_incidence/data/data_source/local_data_source.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_sel.dart';
 import 'package:appwrite_incidence/domain/model/name_model.dart';
 import 'package:appwrite_incidence/domain/usecase/incidences_usecase.dart';
+import 'package:appwrite_incidence/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/base/base_viewmodel.dart';
+import 'package:appwrite_incidence/presentation/common/dialog_render/dialog_render.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
 class IncidencesViewModel extends BaseViewModel
     with IncidencesViewModelInputs, IncidencesViewModelOutputs {
   final IncidencesUseCase _incidencesUseCase;
-  final AppPreferences _appPreferences;
+  final DialogRender _dialogRender;
+  final String username;
 
-  IncidencesViewModel(this._incidencesUseCase, this._appPreferences);
+  IncidencesViewModel(this._incidencesUseCase, this._dialogRender,
+      AppPreferences _appPreferences)
+      : username = _appPreferences.getName();
 
   final _incidencesStrCtrl = BehaviorSubject<List<Incidence>>();
   final _areasStrCtrl = BehaviorSubject<List<Area>>();
@@ -43,7 +50,8 @@ class IncidencesViewModel extends BaseViewModel
     await _isLoading.drain();
     _isLoading.close();
     await _incidenceSelStrCtrl.drain();
-    _incidenceSelStrCtrl.close(); await _incidenceSelIncidenceStrCtrl.drain();
+    _incidenceSelStrCtrl.close();
+    await _incidenceSelIncidenceStrCtrl.drain();
     _incidenceSelIncidenceStrCtrl.close();
     super.dispose();
   }
@@ -92,6 +100,7 @@ class IncidencesViewModel extends BaseViewModel
   @override
   Stream<IncidenceSel> get outputIncidenceSel =>
       _incidenceSelStrCtrl.stream.map((incidenceSel) => incidenceSel);
+
   @override
   Stream<IncidenceSel> get outputIncidenceSelIncidence =>
       _incidenceSelIncidenceStrCtrl.stream.map((incidenceSel) => incidenceSel);
@@ -115,7 +124,7 @@ class IncidencesViewModel extends BaseViewModel
       });
       changeIsLoading(false);
     }
-   prioritys();
+    prioritys();
   }
 
   @override
@@ -238,10 +247,30 @@ class IncidencesViewModel extends BaseViewModel
       }
     }
   }
+
   @override
   changeIncidenceSelIncidence(IncidenceSel incidenceSel) async {
     inputIncidenceSelIncidence.add(incidenceSel);
   }
+
+  @override
+  createIncidence(Incidence incidence, BuildContext context) async {
+    final s = S.of(context);
+    (await _incidencesUseCase.incidenceCreate(incidence)).fold(
+        (l) => _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
+                (s.error).toUpperCase(), l.message, null, null,null),
+        (r) => Navigator.of(context).pop());
+  }
+
+  @override
+  updateIncidence(Incidence incidence, BuildContext context) async {
+    final s = S.of(context);
+    (await _incidencesUseCase.incidenceUpdate(incidence)).fold(
+        (l) => _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
+            (s.error).toUpperCase(), l.message, null, null, null),
+        (r) => Navigator.of(context).pop());
+  }
+
   _actives() {
     inputActives.add([true, false]);
   }
@@ -259,6 +288,7 @@ abstract class IncidencesViewModelInputs {
   Sink get inputActives;
 
   Sink get inputIncidenceSel;
+
   Sink get inputIncidenceSelIncidence;
 
   incidences();
@@ -276,7 +306,12 @@ abstract class IncidencesViewModelInputs {
   prioritys();
 
   changeIncidenceSel(IncidenceSel incidenceSel);
+
   changeIncidenceSelIncidence(IncidenceSel incidenceSel);
+
+  createIncidence(Incidence incidence, BuildContext context);
+
+  updateIncidence(Incidence incidence, BuildContext context);
 }
 
 abstract class IncidencesViewModelOutputs {
@@ -291,5 +326,6 @@ abstract class IncidencesViewModelOutputs {
   Stream<List<bool>?> get outputActives;
 
   Stream<IncidenceSel> get outputIncidenceSel;
+
   Stream<IncidenceSel> get outputIncidenceSelIncidence;
 }

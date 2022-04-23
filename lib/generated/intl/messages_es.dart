@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "areaError": MessageLookupByLibrary.simpleMessage("Área error"),
         "areas": MessageLookupByLibrary.simpleMessage("Areas"),
         "close": MessageLookupByLibrary.simpleMessage("Cerrar"),
+        "confirm": MessageLookupByLibrary.simpleMessage("Confirmar"),
         "dateCreate": MessageLookupByLibrary.simpleMessage("Fecha de creación"),
         "dateSolution":
             MessageLookupByLibrary.simpleMessage("Fecha de solución"),
@@ -39,9 +40,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "descriptionIncidence":
             MessageLookupByLibrary.simpleMessage("Descripción de inicidencia"),
         "edit": MessageLookupByLibrary.simpleMessage("Editar"),
+        "email": MessageLookupByLibrary.simpleMessage("Correo electrónico"),
+        "emailError":
+            MessageLookupByLibrary.simpleMessage("Correo electrónico error"),
         "employe": MessageLookupByLibrary.simpleMessage("Empleado"),
         "employeError": MessageLookupByLibrary.simpleMessage("Empleado error"),
         "employees": MessageLookupByLibrary.simpleMessage("Empleados"),
+        "error": MessageLookupByLibrary.simpleMessage("Error"),
         "incidence": MessageLookupByLibrary.simpleMessage("Incidencia"),
         "incidences": MessageLookupByLibrary.simpleMessage("Incidencias"),
         "inputEmail": MessageLookupByLibrary.simpleMessage("Correo"),
@@ -51,9 +56,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "nameError": MessageLookupByLibrary.simpleMessage("Nombre error"),
         "nameIncidence":
             MessageLookupByLibrary.simpleMessage("Nombre de incidencia"),
+        "nameUser": MessageLookupByLibrary.simpleMessage("Nombre de usuario"),
         "noData": MessageLookupByLibrary.simpleMessage("No hay datos"),
         "noRouteFound":
             MessageLookupByLibrary.simpleMessage("Ruta no encontrada"),
+        "notPermission": MessageLookupByLibrary.simpleMessage(
+            "No tiene los permisos necesarios para esta acción"),
+        "password": MessageLookupByLibrary.simpleMessage("Contraseña"),
+        "passwordError":
+            MessageLookupByLibrary.simpleMessage("Contraseña error"),
         "priority": MessageLookupByLibrary.simpleMessage("Prioridad"),
         "priorityError":
             MessageLookupByLibrary.simpleMessage("Prioridad error"),
@@ -67,6 +78,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "supervisor": MessageLookupByLibrary.simpleMessage("Supervisor"),
         "supervisorError":
             MessageLookupByLibrary.simpleMessage("Supervisor error"),
-        "supervisors": MessageLookupByLibrary.simpleMessage("Supervisores")
+        "supervisors": MessageLookupByLibrary.simpleMessage("Supervisores"),
+        "typeUser": MessageLookupByLibrary.simpleMessage("Tipo de usuario"),
+        "user": MessageLookupByLibrary.simpleMessage("Usuario")
       };
 }

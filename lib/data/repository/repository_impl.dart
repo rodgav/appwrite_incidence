@@ -27,18 +27,24 @@ class RepositoryImpl extends Repository {
 
   @override
   Future<Either<Failure, User>> account() async {
-    if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
-      try {
-        final response = await _remoteDataSource.account();
-        return Right(response);
-      } on AppwriteException catch (e) {
-        return Left(Failure(e.code ?? 0,
-            e.message ?? 'Some thing went wrong, try again later'));
-      } catch (error) {
-        return Left(Failure(0, error.toString()));
+    try {
+      final response = _localDataSource.getUser();
+      return Right(response);
+    } catch (cacheError) {
+      if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
+        try {
+          final response = await _remoteDataSource.account();
+          await _localDataSource.saveUser(response);
+          return Right(response);
+        } on AppwriteException catch (e) {
+          return Left(Failure(e.code ?? 0,
+              e.message ?? 'Some thing went wrong, try again later'));
+        } catch (error) {
+          return Left(Failure(0, error.toString()));
+        }
+      } else {
+        return Left(Failure(-7, 'Please check your internet connection'));
       }
-    } else {
-      return Left(Failure(-7, 'Please check your internet connection'));
     }
   }
 
@@ -119,6 +125,42 @@ class RepositoryImpl extends Repository {
         final response =
             await _remoteDataSource.areasSearch(search, limit, offset);
         final a = response.documents.map((e) => areaFromJson(e.data)).toList();
+        return Right(a);
+      } on AppwriteException catch (e) {
+        return Left(Failure(e.code ?? 0,
+            e.message ?? 'Some thing went wrong, try again later'));
+      } catch (error) {
+        return Left(Failure(0, error.toString()));
+      }
+    } else {
+      return Left(Failure(-7, 'Please check your internet connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Area>> areaCreate(Name name) async {
+    if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
+      try {
+        final response = await _remoteDataSource.areaCreate(name);
+        final a = areaFromJson(response.data);
+        return Right(a);
+      } on AppwriteException catch (e) {
+        return Left(Failure(e.code ?? 0,
+            e.message ?? 'Some thing went wrong, try again later'));
+      } catch (error) {
+        return Left(Failure(0, error.toString()));
+      }
+    } else {
+      return Left(Failure(-7, 'Please check your internet connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Area>> areaUpdate(Name name) async {
+    if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
+      try {
+        final response = await _remoteDataSource.areaUpdate(name);
+        final a = areaFromJson(response.data);
         return Right(a);
       } on AppwriteException catch (e) {
         return Left(Failure(e.code ?? 0,
@@ -240,6 +282,44 @@ class RepositoryImpl extends Repository {
   }
 
   @override
+  Future<Either<Failure, Incidence>> incidenceCreate(
+      Incidence incidence) async {
+    if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
+      try {
+        final response = await _remoteDataSource.incidenceCreate(incidence);
+        final a = incidenceFromJson(response.data);
+        return Right(a);
+      } on AppwriteException catch (e) {
+        return Left(Failure(e.code ?? 0,
+            e.message ?? 'Some thing went wrong, try again later'));
+      } catch (error) {
+        return Left(Failure(0, error.toString()));
+      }
+    } else {
+      return Left(Failure(-7, 'Please check your internet connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Incidence>> incidenceUpdate(
+      Incidence incidence) async {
+    if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
+      try {
+        final response = await _remoteDataSource.incidenceUpdate(incidence);
+        final a = incidenceFromJson(response.data);
+        return Right(a);
+      } on AppwriteException catch (e) {
+        return Left(Failure(e.code ?? 0,
+            e.message ?? 'Some thing went wrong, try again later'));
+      } catch (error) {
+        return Left(Failure(0, error.toString()));
+      }
+    } else {
+      return Left(Failure(-7, 'Please check your internet connection'));
+    }
+  }
+
+  @override
   Future<Either<Failure, List<Users>>> users(
       String typeUser, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
@@ -319,6 +399,44 @@ class RepositoryImpl extends Repository {
   }
 
   @override
+  Future<Either<Failure, Users>> userCreate(LoginRequest loginRequest,
+      String area, String active, String typeUser) async {
+    if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
+      try {
+        final response = await _remoteDataSource.userCreate(
+            loginRequest, area, active, typeUser);
+        final a = usersFromJson(response.data);
+        return Right(a);
+      } on AppwriteException catch (e) {
+        return Left(Failure(e.code ?? 0,
+            e.message ?? 'Some thing went wrong, try again later'));
+      } catch (error) {
+        return Left(Failure(0, error.toString()));
+      }
+    } else {
+      return Left(Failure(-7, 'Please check your internet connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Users>> userUpdate(Users users) async {
+    if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
+      try {
+        final response = await _remoteDataSource.userUpdate(users);
+        final a = usersFromJson(response.data);
+        return Right(a);
+      } on AppwriteException catch (e) {
+        return Left(Failure(e.code ?? 0,
+            e.message ?? 'Some thing went wrong, try again later'));
+      } catch (error) {
+        return Left(Failure(0, error.toString()));
+      }
+    } else {
+      return Left(Failure(-7, 'Please check your internet connection'));
+    }
+  }
+
+  @override
   Future<Either<Failure, List<Name>>> prioritys(int limit, int offset) async {
     try {
       final response = await _localDataSource.getPrioritys();
@@ -329,6 +447,7 @@ class RepositoryImpl extends Repository {
           final response = await _remoteDataSource.prioritys(limit, offset);
           final a =
               response.documents.map((e) => nameFromJson(e.data)).toList();
+          await _localDataSource.savePrioritysToCache(a);
           return Right(a);
         } on AppwriteException catch (e) {
           return Left(Failure(e.code ?? 0,
@@ -350,9 +469,10 @@ class RepositoryImpl extends Repository {
     } catch (cacheError) {
       if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
         try {
-          final response = await _remoteDataSource.areas(limit, offset);
+          final response = await _remoteDataSource.typeUsers(limit, offset);
           final a =
               response.documents.map((e) => nameFromJson(e.data)).toList();
+          await _localDataSource.saveTypeUsersToCache(a);
           return Right(a);
         } on AppwriteException catch (e) {
           return Left(Failure(e.code ?? 0,

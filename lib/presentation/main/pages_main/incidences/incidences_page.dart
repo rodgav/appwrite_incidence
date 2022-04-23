@@ -55,9 +55,11 @@ class _IncidencesPageState extends State<IncidencesPage> {
           tooltip: s.addIncidence,
           child: const Icon(Icons.add),
           onPressed: () {
-            showDialog(barrierDismissible: false,
+            showDialog(
+                barrierDismissible: false,
                 context: context,
-                builder: (_) => IncidenceDialog(viewModel: _viewModel));
+                builder: (_) => IncidenceDialog(
+                    viewModel: _viewModel, username: _viewModel.username));
           }),
     );
   }
@@ -185,36 +187,39 @@ class _IncidencesPageState extends State<IncidencesPage> {
                           }),
                     ),
                     const SizedBox(width: AppSize.s10),
-                   incidenceSel?.area !=null&&incidenceSel?.area !=''? SizedBox(
-                      width: AppSize.s140,
-                      child: StreamBuilder<List<Name>>(
-                          stream: _viewModel.outputPrioritys,
-                          builder: (_, snapshot) {
-                            final prioritys = snapshot.data;
-                            return prioritys != null && prioritys.isNotEmpty
-                                ? DropdownButtonFormField<String?>(
-                                    decoration: InputDecoration(
-                                        label: Text(s.priority)),
-                                    hint: Text(s.priority),
-                                    items: prioritys
-                                        .map((e) => DropdownMenuItem(
-                                              child: Text(e.name),
-                                              value: e.name,
-                                            ))
-                                        .toList(),
-                                    value: incidenceSel?.priority == ''
-                                        ? null
-                                        : incidenceSel?.priority,
-                                    onChanged: (value) {
-                                      _viewModel.changeIncidenceSel(
-                                          IncidenceSel(
-                                              area: incidenceSel?.area,
-                                              priority: value,
-                                              active: null));
-                                    })
-                                : const SizedBox();
-                          }),
-                    ):const SizedBox(),
+                    incidenceSel?.area != null && incidenceSel?.area != ''
+                        ? SizedBox(
+                            width: AppSize.s140,
+                            child: StreamBuilder<List<Name>>(
+                                stream: _viewModel.outputPrioritys,
+                                builder: (_, snapshot) {
+                                  final prioritys = snapshot.data;
+                                  return prioritys != null &&
+                                          prioritys.isNotEmpty
+                                      ? DropdownButtonFormField<String?>(
+                                          decoration: InputDecoration(
+                                              label: Text(s.priority)),
+                                          hint: Text(s.priority),
+                                          items: prioritys
+                                              .map((e) => DropdownMenuItem(
+                                                    child: Text(e.name),
+                                                    value: e.name,
+                                                  ))
+                                              .toList(),
+                                          value: incidenceSel?.priority == ''
+                                              ? null
+                                              : incidenceSel?.priority,
+                                          onChanged: (value) {
+                                            _viewModel.changeIncidenceSel(
+                                                IncidenceSel(
+                                                    area: incidenceSel?.area,
+                                                    priority: value,
+                                                    active: null));
+                                          })
+                                      : const SizedBox();
+                                }),
+                          )
+                        : const SizedBox(),
                     const SizedBox(width: AppSize.s10),
                     SizedBox(
                       width: AppSize.s140,

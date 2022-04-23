@@ -1,4 +1,6 @@
 import 'package:appwrite_incidence/app/app_preferences.dart';
+import 'package:appwrite_incidence/generated/l10n.dart';
+import 'package:appwrite_incidence/presentation/common/dialog_render/dialog_render.dart';
 import 'package:appwrite_incidence/presentation/resources/routes_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -15,8 +17,9 @@ class LoginViewModel extends BaseViewModel
     with LoginViewModelInput, LoginViewModelOutput {
   final LoginUseCase _loginUsecase;
   final AppPreferences _appPreferences;
+  final DialogRender _dialogRender;
 
-  LoginViewModel(this._loginUsecase, this._appPreferences);
+  LoginViewModel(this._loginUsecase, this._appPreferences, this._dialogRender);
 
   final _emailStreCtrl = BehaviorSubject<String>();
   final _passwordStreCtrl = BehaviorSubject<String>();
@@ -35,6 +38,7 @@ class LoginViewModel extends BaseViewModel
 
   @override
   login(BuildContext context) async {
+    final s = S.of(context);
     inputState.add(LoadingState(
         stateRendererType: StateRendererType.fullScreenLoadingState,
         message: AppStrings.empty));
@@ -43,10 +47,19 @@ class LoginViewModel extends BaseViewModel
         .fold((f) {
       inputState
           .add(ErrorState(StateRendererType.fullScreenErrorState, f.message));
-    }, (r) async{
-      //inputState.add(ContentState());
-      await _appPreferences.setSessionIds(r.$id, r.userId);
-      GoRouter.of(context).go(Routes.mainRoute);
+    }, (r) async {
+      (await _loginUsecase.account()).fold(
+          (f) => inputState.add(
+              ErrorState(StateRendererType.fullScreenErrorState, f.message)),
+          (user) async {
+        if (user.prefs.data.isEmpty) {
+          await _appPreferences.setSessionIds(r.$id, r.userId, user.name);
+          GoRouter.of(context).go(Routes.mainRoute);
+        } else {
+          _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
+              (s.error).toUpperCase(), s.notPermission, null, null, null);
+        }
+      });
     });
   }
 

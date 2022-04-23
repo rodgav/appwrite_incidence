@@ -11,8 +11,9 @@ import 'package:flutter/material.dart';
 class IncidenceDialog extends StatefulWidget {
   final Incidence? incidence;
   final IncidencesViewModel viewModel;
+  final String username;
 
-  const IncidenceDialog({this.incidence, required this.viewModel, Key? key})
+  const IncidenceDialog({this.incidence, required this.viewModel,required this.username, Key? key})
       : super(key: key);
 
   @override
@@ -45,12 +46,24 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
           area: incidence.area,
           priority: incidence.priority,
           active: incidence.active));
+    } else {
+      _dateCreateTxtEditCtrl.text = (DateTime.now()).toString();
+      _dateSolutionTxtEditCtrl.text = (DateTime.now()).toString();
+      _employeTxtEditCtrl.text = widget.username;
+      _supervisorTxtEditCtrl.text = widget.username;
     }
     super.initState();
   }
 
   @override
   void dispose() {
+    _nameTxtEditCtrl.dispose();
+    _descrTxtEditCtrl.dispose();
+    _dateCreateTxtEditCtrl.dispose();
+    _employeTxtEditCtrl.dispose();
+    _supervisorTxtEditCtrl.dispose();
+    _solutionTxtEditCtrl.dispose();
+    _dateSolutionTxtEditCtrl.dispose();
     super.dispose();
   }
 
@@ -73,7 +86,8 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const SizedBox(height: AppSize.s10),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                           '${widget.incidence != null ? s.edit : s.add} ${s.incidence}'),
@@ -140,19 +154,7 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                   const SizedBox(height: AppSize.s10),
                   _incidenceSelWid(s),
                   const SizedBox(height: AppSize.s10),
-                  SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              if(widget.incidence!=null){
-                                //save
-                              }else{
-                                //edit
-                              }
-                            }
-                          },
-                          child: Text(s.save)))
+                  _button(s),
                 ],
               ),
             ),
@@ -253,5 +255,47 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
 
   _changeIncidenceSel(IncidenceSel incidenceSel) {
     widget.viewModel.changeIncidenceSelIncidence(incidenceSel);
+  }
+
+  Widget _button(S s) {
+    return StreamBuilder<IncidenceSel>(
+        stream: widget.viewModel.outputIncidenceSelIncidence,
+        builder: (_, snapshot) {
+          final incidenceSel = snapshot.data;
+          return SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      final incidence = Incidence(
+                          name: _nameTxtEditCtrl.text.trim(),
+                          description: _descrTxtEditCtrl.text.trim(),
+                          dateCreate:
+                              DateTime.parse(_dateCreateTxtEditCtrl.text),
+                          image: 'image',
+                          priority: incidenceSel?.priority ?? '',
+                          area: incidenceSel?.area ?? '',
+                          employe: _employeTxtEditCtrl.text.trim(),
+                          supervisor: _supervisorTxtEditCtrl.text.trim(),
+                          solution: _solutionTxtEditCtrl.text.trim(),
+                          dateSolution: _dateSolutionTxtEditCtrl.text != 'null'
+                              ? DateTime.parse(_dateSolutionTxtEditCtrl.text)
+                              : DateTime.now(),
+                          active: incidenceSel?.active ?? false,
+                          read: [],
+                          write: [],
+                          id: '',
+                          collection: '');
+                      if (widget.incidence != null) {
+                        //update
+                        widget.viewModel.updateIncidence(incidence, context);
+                      } else {
+                        //save
+                        widget.viewModel.createIncidence(incidence, context);
+                      }
+                    }
+                  },
+                  child: Text(s.save)));
+        });
   }
 }

@@ -26,8 +26,8 @@ Map<String, dynamic> usersToJson(Users users) => {
       "area": users.area,
       "active": users.active,
       "type_user": users.typeUser,
-      "\u0024read": List<dynamic>.from(users.read.map((x) => x)),
-      "\u0024write": List<dynamic>.from(users.write.map((x) => x)),
-      "\u0024id": users.id,
-      "\u0024collection": users.collection,
+      //"\u0024read": List<dynamic>.from(users.read.map((x) => x)),
+      //"\u0024write": List<dynamic>.from(users.write.map((x) => x)),
+      //"\u0024id": users.id,
+      //"\u0024collection": users.collection,
     };

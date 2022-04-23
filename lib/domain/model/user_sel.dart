@@ -1,6 +1,8 @@
 class UserSel {
-  String area;
+  String area, typeUser;
   bool? active;
 
-  UserSel({String? area, this.active}) : area = area ?? '';
+  UserSel({String? area, String? typeUser, this.active})
+      : area = area ?? '',
+        typeUser = typeUser ?? '';
 }

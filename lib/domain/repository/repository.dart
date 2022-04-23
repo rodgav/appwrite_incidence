@@ -21,6 +21,10 @@ abstract class Repository {
   Future<Either<Failure, List<Area>>> areasSearch(
       String search, int limit, int offset);
 
+  Future<Either<Failure, Area>> areaCreate(Name name);
+
+  Future<Either<Failure, Area>> areaUpdate(Name name);
+
   Future<Either<Failure, List<Incidence>>> incidences(int limit, int offset);
 
   Future<Either<Failure, List<Incidence>>> incidencesArea(
@@ -35,6 +39,11 @@ abstract class Repository {
   Future<Either<Failure, List<Incidence>>> incidencesSearch(
       String search, int limit, int offset);
 
+  Future<Either<Failure, Incidence>> incidenceCreate(
+      Incidence incidence);
+
+  Future<Either<Failure, Incidence>> incidenceUpdate(Incidence incidence);
+
   Future<Either<Failure, List<Users>>> users(
       String typeUser, int limit, int offset);
 
@@ -46,6 +55,11 @@ abstract class Repository {
 
   Future<Either<Failure, List<Users>>> usersSearch(
       String typeUser, String search, int limit, int offset);
+
+  Future<Either<Failure, Users>> userCreate(
+      LoginRequest loginRequest, String area, String active, String typeUser);
+
+  Future<Either<Failure, Users>> userUpdate(Users users);
 
   Future<Either<Failure, List<Name>>> prioritys(int limit, int offset);
 

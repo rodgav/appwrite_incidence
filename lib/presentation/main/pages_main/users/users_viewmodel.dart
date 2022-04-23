@@ -1,5 +1,6 @@
 import 'package:appwrite_incidence/app/app_preferences.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
+import 'package:appwrite_incidence/domain/model/name_model.dart';
 import 'package:appwrite_incidence/domain/model/user_model.dart';
 import 'package:appwrite_incidence/domain/model/user_sel.dart';
 import 'package:appwrite_incidence/domain/usecase/users_usecase.dart';
@@ -18,8 +19,9 @@ class UsersViewModel extends BaseViewModel
   final _activesStrCtrl = BehaviorSubject<List<bool>?>();
   final _isLoading = BehaviorSubject<bool>();
   final _userSelStrCtrl = BehaviorSubject<UserSel>();
+  final _userSelUserStrCtrl = BehaviorSubject<UserSel>();
+  final _typeUsersStrCtrl = BehaviorSubject<List<Name>>();
   final List<Users> _users = [];
-
 
   @override
   void dispose() async {
@@ -33,6 +35,10 @@ class UsersViewModel extends BaseViewModel
     _isLoading.close();
     await _userSelStrCtrl.drain();
     _userSelStrCtrl.close();
+    await _userSelUserStrCtrl.drain();
+    _userSelUserStrCtrl.close();
+    await _typeUsersStrCtrl.drain();
+    _typeUsersStrCtrl.close();
     super.dispose();
   }
 
@@ -50,6 +56,12 @@ class UsersViewModel extends BaseViewModel
 
   @override
   Sink get inputUserSel => _userSelStrCtrl.sink;
+
+  @override
+  Sink get inputUserSelUser => _userSelUserStrCtrl.sink;
+
+  @override
+  Sink get inputTypeUsers => _typeUsersStrCtrl.sink;
 
   @override
   Stream<List<Users>> get outputUsers =>
@@ -70,6 +82,14 @@ class UsersViewModel extends BaseViewModel
   @override
   Stream<UserSel> get outputUserSel =>
       _userSelStrCtrl.stream.map((userSel) => userSel);
+
+  @override
+  Stream<UserSel> get outputUserSelUser =>
+      _userSelUserStrCtrl.stream.map((userSel) => userSel);
+
+  @override
+  Stream<List<Name>> get outputTypeUsers =>
+      _typeUsersStrCtrl.stream.map((typeUsers) => typeUsers);
 
   @override
   users(String typeUser) async {
@@ -158,6 +178,7 @@ class UsersViewModel extends BaseViewModel
     (await _usersUseCase.areas(null)).fold((l) {}, (areas) {
       inputAreas.add(areas);
     });
+    typeUsers();
   }
 
   @override
@@ -171,6 +192,18 @@ class UsersViewModel extends BaseViewModel
         await usersAreaActive(typeUser, userSel.area, userSel.active!);
       }
     }
+  }
+
+  @override
+  changeUserSelUser(UserSel userSel) async {
+    inputUserSelUser.add(userSel);
+  }
+
+  @override
+  typeUsers() async {
+    (await _usersUseCase.typeUsers(null)).fold((l) {}, (typeUsers) {
+      inputTypeUsers.add(typeUsers);
+    });
   }
 
   _actives() {
@@ -189,6 +222,10 @@ abstract class UsersViewModelInputs {
 
   Sink get inputUserSel;
 
+  Sink get inputUserSelUser;
+
+  Sink get inputTypeUsers;
+
   users(String typeUser);
 
   usersArea(String typeUser, String area);
@@ -196,8 +233,14 @@ abstract class UsersViewModelInputs {
   usersAreaActive(String typeUser, String area, bool active);
 
   changeIsLoading(bool isLoading);
+
   areas();
-  changeUserSel(UserSel userSel,String typeUser);
+
+  changeUserSel(UserSel userSel, String typeUser);
+
+  changeUserSelUser(UserSel userSel);
+
+  typeUsers();
 }
 
 abstract class UsersViewModelOutputs {
@@ -210,4 +253,8 @@ abstract class UsersViewModelOutputs {
   Stream<bool> get outputIsLoading;
 
   Stream<UserSel> get outputUserSel;
+
+  Stream<UserSel> get outputUserSelUser;
+
+  Stream<List<Name>> get outputTypeUsers;
 }

@@ -26,7 +26,7 @@ class Incidence {
   String employe;
   String supervisor;
   String solution;
-  DateTime? dateSolution;
+  DateTime dateSolution;
   bool active;
   List<String> read;
   List<String> write;

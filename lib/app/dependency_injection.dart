@@ -41,8 +41,8 @@ Future<void> initModule() async {
   instance.registerLazySingleton<AppWriteClientFactory>(
       () => AppWriteClientFactory());
   final client = await instance<AppWriteClientFactory>().getClient();
-  instance
-      .registerLazySingleton<AppServiceClient>(() => AppServiceClient(client));
+  instance.registerLazySingleton<AppServiceClient>(
+      () => AppServiceClient(client, instance()));
   instance.registerLazySingleton<RemoteDataSource>(
       () => RemoteDataSourceImpl(instance()));
   instance.registerLazySingleton<Repository>(
@@ -56,7 +56,7 @@ void initLoginModule() {
     instance
         .registerLazySingleton<LoginUseCase>(() => LoginUseCase(instance()));
     instance.registerLazySingleton<LoginViewModel>(
-        () => LoginViewModel(instance(), instance()));
+        () => LoginViewModel(instance(), instance(),instance()));
   }
 }
 
@@ -73,7 +73,7 @@ void initMainModule() {
   if (!GetIt.I.isRegistered<MainUseCase>()) {
     instance.registerLazySingleton<MainUseCase>(() => MainUseCase(instance()));
     instance.registerLazySingleton<MainViewModel>(
-        () => MainViewModel(instance(), instance()));
+        () => MainViewModel(instance(), instance(),instance()));
   }
 }
 
@@ -82,7 +82,7 @@ void initIncidencesModule() {
     instance.registerLazySingleton<IncidencesUseCase>(
         () => IncidencesUseCase(instance()));
     instance.registerLazySingleton<IncidencesViewModel>(
-        () => IncidencesViewModel(instance(), instance()));
+        () => IncidencesViewModel(instance(), instance(),instance()));
   }
 }
 
@@ -100,6 +100,6 @@ void initUsersModule() {
     instance
         .registerLazySingleton<UsersUseCase>(() => UsersUseCase(instance()));
     instance.registerLazySingleton<UsersViewModel>(
-            () => UsersViewModel(instance(), instance()));
+        () => UsersViewModel(instance(), instance()));
   }
 }

@@ -6,7 +6,7 @@ import 'package:appwrite_incidence/presentation/resources/styles_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
 
-enum DialogRendererType { successDialog, errorDialog }
+enum DialogRendererType { successDialog, errorDialog, confirmationDialog }
 
 abstract class DialogRender {
   void showPopUp(
@@ -15,8 +15,8 @@ abstract class DialogRender {
       String title,
       String message,
       String? button1,
-      String button2,
-      Function? retryFunction);
+      String? button2,
+      Function? confirmFunction);
 
   void closePopUp(BuildContext context);
 }
@@ -29,8 +29,8 @@ class DialogRenderImpl implements DialogRender {
       String title,
       String message,
       String? button1,
-      String button2,
-      Function? retryFunction) {
+      String? button2,
+      Function? confirmFunction) {
     showDialog(
         context: context,
         builder: (context) => Dialog(
@@ -64,12 +64,13 @@ class DialogRenderImpl implements DialogRender {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        dialogRendererType == DialogRendererType.errorDialog
-                            ? _getButton(button1 ?? S.of(context).close, () {
-                                Navigator.of(context).pop();
-                              })
+                        _getButton(button1 ?? S.of(context).close, () {
+                          Navigator.of(context).pop();
+                        }),
+                        dialogRendererType ==
+                                DialogRendererType.confirmationDialog
+                            ? _getButton(button2??S.of(context).confirm, confirmFunction)
                             : const SizedBox(),
-                        _getButton(button2, retryFunction),
                       ],
                     )
                   ],
@@ -88,8 +89,8 @@ class DialogRenderImpl implements DialogRender {
         height: AppSize.s100,
         width: AppSize.s100,
         child:
-        //LottieBuilder.asset(animationName)
-        FlutterLogo());
+            //LottieBuilder.asset(animationName)
+            FlutterLogo());
   }
 
   Widget _getMessage(String message) {

@@ -19,8 +19,8 @@ Name nameFromJson(Map<String, dynamic> json) => Name(
 
 Map<String, dynamic> nameToJson(Name name) => {
       "name": name.name,
-      "\u0024read": List<dynamic>.from(name.read.map((x) => x)),
-      "\u0024write": List<dynamic>.from(name.write.map((x) => x)),
-      "\u0024id": name.id,
-      "\u0024collection": name.collection,
+      //"\u0024read": List<dynamic>.from(name.read.map((x) => x)),
+      //"\u0024write": List<dynamic>.from(name.write.map((x) => x)),
+      //"\u0024id": name.id,
+      //"\u0024collection": name.collection,
     };

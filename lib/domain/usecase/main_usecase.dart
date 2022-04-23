@@ -1,3 +1,4 @@
+import 'package:appwrite/models.dart';
 import 'package:appwrite_incidence/data/network/failure.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_model.dart';
@@ -11,7 +12,8 @@ class MainUseCase
         BaseUseCase<MainUseCaseInput, List<Incidence>>,
         MainUseCaseAreas<MainUseCaseInput, List<Area>>,
         MainUseCaseUsers<MainUseCaseInput, List<Users>>,
-        MainUseCaseDeleteSession<MainDeleteSessionUseCaseInput, dynamic> {
+        MainUseCaseDeleteSession<MainDeleteSessionUseCaseInput, dynamic>,
+        MainUseCaseAccount<void, User> {
   final Repository _repository;
 
   MainUseCase(this._repository);
@@ -33,6 +35,9 @@ class MainUseCase
   Future<Either<Failure, dynamic>> deleteSession(
           MainDeleteSessionUseCaseInput input) =>
       _repository.deleteSession(input.sessionId);
+
+  @override
+  Future<Either<Failure, User>> account() => _repository.account();
 }
 
 class MainUseCaseInput {
@@ -58,4 +63,8 @@ abstract class MainUseCaseUsers<In, Out> {
 
 abstract class MainUseCaseDeleteSession<In, Out> {
   Future<Either<Failure, Out>> deleteSession(In input);
+}
+
+abstract class MainUseCaseAccount<In, Out> {
+  Future<Either<Failure, Out>> account();
 }

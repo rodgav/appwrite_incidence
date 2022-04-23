@@ -31,15 +31,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "areaError": MessageLookupByLibrary.simpleMessage("Area error"),
         "areas": MessageLookupByLibrary.simpleMessage("Areas"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
+        "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "dateCreate": MessageLookupByLibrary.simpleMessage("Date create"),
         "dateSolution": MessageLookupByLibrary.simpleMessage("Date solution"),
         "descrError": MessageLookupByLibrary.simpleMessage("Description error"),
         "descriptionIncidence":
             MessageLookupByLibrary.simpleMessage("Description incidence"),
         "edit": MessageLookupByLibrary.simpleMessage("Edit"),
+        "email": MessageLookupByLibrary.simpleMessage("Email"),
+        "emailError": MessageLookupByLibrary.simpleMessage("Email error"),
         "employe": MessageLookupByLibrary.simpleMessage("Employe"),
         "employeError": MessageLookupByLibrary.simpleMessage("Employe error"),
         "employees": MessageLookupByLibrary.simpleMessage("Employees"),
+        "error": MessageLookupByLibrary.simpleMessage("Error"),
         "incidence": MessageLookupByLibrary.simpleMessage("Incidence"),
         "incidences": MessageLookupByLibrary.simpleMessage("Incidences"),
         "inputEmail": MessageLookupByLibrary.simpleMessage("Email"),
@@ -48,8 +52,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "nameError": MessageLookupByLibrary.simpleMessage("Name error"),
         "nameIncidence": MessageLookupByLibrary.simpleMessage("Name incidence"),
+        "nameUser": MessageLookupByLibrary.simpleMessage("Name user"),
         "noData": MessageLookupByLibrary.simpleMessage("No data"),
         "noRouteFound": MessageLookupByLibrary.simpleMessage("Route not found"),
+        "notPermission":
+            MessageLookupByLibrary.simpleMessage("Not Permissions"),
+        "password": MessageLookupByLibrary.simpleMessage("Password"),
+        "passwordError": MessageLookupByLibrary.simpleMessage("Password error"),
         "priority": MessageLookupByLibrary.simpleMessage("Priority"),
         "priorityError": MessageLookupByLibrary.simpleMessage("Priority error"),
         "retryAgain": MessageLookupByLibrary.simpleMessage("Retry again"),
@@ -62,6 +71,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "supervisor": MessageLookupByLibrary.simpleMessage("Supervisor"),
         "supervisorError":
             MessageLookupByLibrary.simpleMessage("Supervisor error"),
-        "supervisors": MessageLookupByLibrary.simpleMessage("Supervisors")
+        "supervisors": MessageLookupByLibrary.simpleMessage("Supervisors"),
+        "typeUser": MessageLookupByLibrary.simpleMessage("Type user"),
+        "user": MessageLookupByLibrary.simpleMessage("User")
       };
 }

@@ -1,4 +1,6 @@
+import 'package:appwrite/models.dart';
 import 'package:appwrite_incidence/app/app_preferences.dart';
+import 'package:appwrite_incidence/data/data_source/local_data_source.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_model.dart';
 import 'package:appwrite_incidence/domain/model/user_model.dart';
@@ -16,17 +18,25 @@ class MainViewModel extends BaseViewModel
     with MainViewModelInputs, MainViewModelOutputs {
   final MainUseCase _mainUseCase;
   final AppPreferences _appPreferences;
+  final LocalDataSource _localDataSource;
 
-  MainViewModel(this._mainUseCase, this._appPreferences);
+  MainViewModel(this._mainUseCase, this._appPreferences,this._localDataSource);
 
   final _incidencesSearchStrCtrl = BehaviorSubject<List<Incidence>>();
   final _areasSearchStrCtrl = BehaviorSubject<List<Area>>();
   final _usersSearchStrCtrl = BehaviorSubject<List<Users>>();
   final _isLoading = BehaviorSubject<bool>();
+  final _userStrCtrl = BehaviorSubject<User>();
   final List<Incidence> _incidencesSearch = [];
   final List<Area> _areasSearch = [];
   final List<Users> _usersSearch = [];
   String _query = '';
+
+  @override
+  void start() {
+    account();
+    super.start();
+  }
 
   @override
   void dispose() async {
@@ -38,6 +48,8 @@ class MainViewModel extends BaseViewModel
     _usersSearchStrCtrl.close();
     await _isLoading.drain();
     _isLoading.close();
+    await _userStrCtrl.drain();
+    _userStrCtrl.close();
     super.dispose();
   }
 
@@ -54,6 +66,9 @@ class MainViewModel extends BaseViewModel
   Sink get inputIsLoading => _isLoading.sink;
 
   @override
+  Sink get inputUser => _userStrCtrl.sink;
+
+  @override
   Stream<List<Incidence>> get outputIncidencesSearch =>
       _incidencesSearchStrCtrl.stream.map((incidences) => incidences);
 
@@ -68,6 +83,9 @@ class MainViewModel extends BaseViewModel
   @override
   Stream<bool> get outputIsLoading =>
       _isLoading.stream.map((isLoading) => isLoading);
+
+  @override
+  Stream<User> get outputUser => _userStrCtrl.stream.map((user) => user);
 
   @override
   incidencesSearch(String search) async {
@@ -155,7 +173,15 @@ class MainViewModel extends BaseViewModel
     }, (r) async {
       inputState.add(ContentState());
       await _appPreferences.logout();
+      _localDataSource.clearCache();
       GoRouter.of(context).go(Routes.splashRoute);
+    });
+  }
+
+  @override
+  account() async {
+    (await _mainUseCase.account()).fold((f) => null, (user) async {
+      inputUser.add(user);
     });
   }
 }
@@ -169,6 +195,8 @@ abstract class MainViewModelInputs {
 
   Sink get inputIsLoading;
 
+  Sink get inputUser;
+
   incidencesSearch(String search);
 
   areasSearch(String search);
@@ -178,6 +206,8 @@ abstract class MainViewModelInputs {
   changeIsLoading(bool isLoading);
 
   deleteSession(BuildContext context);
+
+  account();
 }
 
 abstract class MainViewModelOutputs {
@@ -188,4 +218,6 @@ abstract class MainViewModelOutputs {
   Stream<List<Users>> get outputUsersSearch;
 
   Stream<bool> get outputIsLoading;
+
+  Stream<User> get outputUser;
 }

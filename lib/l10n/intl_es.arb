@@ -37,5 +37,16 @@
   "solutionError": "Solución error",
   "areaError": "Área error",
   "priorityError": "Prioridad error",
-  "edit": "Editar","incidence": "Incidencia"
+  "edit": "Editar",
+  "incidence": "Incidencia",
+  "error": "Error",
+  "notPermission": "No tiene los permisos necesarios para esta acción",
+  "confirm": "Confirmar",
+  "user": "Usuario",
+  "nameUser": "Nombre de usuario",
+  "email": "Correo electrónico",
+  "emailError": "Correo electrónico error",
+  "password": "Contraseña",
+  "passwordError": "Contraseña error",
+  "typeUser": "Tipo de usuario"
 }

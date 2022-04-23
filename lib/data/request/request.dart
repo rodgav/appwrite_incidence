@@ -1,6 +1,5 @@
 class LoginRequest {
-  String email;
-  String password;
+  String email, password, name;
 
-  LoginRequest(this.email, this.password);
+  LoginRequest(this.email, this.password, {String? name}) : name = name ?? '';
 }

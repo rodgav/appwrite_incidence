@@ -14,6 +14,8 @@ class IncidencesUseCase
         IncidencesUseCaseAreaActive<IncidencesUseCaseInput, List<Incidence>>,
         IncidencesUseCaseAreaActiveTypeReport<IncidencesUseCaseInput,
             List<Incidence>>,
+        IncidencesUseCaseCreate<Incidence, Incidence>,
+        IncidencesUseCaseUpdate<Incidence, Incidence>,
         IncidencesUseCasePrioritys<void, List<Name>>,
         IncidencesUseCaseAreas<void, List<Area>> {
   final Repository _repository;
@@ -48,6 +50,14 @@ class IncidencesUseCase
   }
 
   @override
+  Future<Either<Failure, Incidence>> incidenceCreate(Incidence input) =>
+      _repository.incidenceCreate(input);
+
+  @override
+  Future<Either<Failure, Incidence>> incidenceUpdate(Incidence input) =>
+      incidenceUpdate(input);
+
+  @override
   Future<Either<Failure, List<Name>>> prioritys(void input) =>
       _repository.prioritys(25, 0);
 
@@ -79,6 +89,14 @@ abstract class IncidencesUseCaseAreaActive<In, Out> {
 
 abstract class IncidencesUseCaseAreaActiveTypeReport<In, Out> {
   Future<Either<Failure, Out>> incidencesAreaPriorityActive(In input);
+}
+
+abstract class IncidencesUseCaseCreate<In, Out> {
+  Future<Either<Failure, Out>> incidenceCreate(In input);
+}
+
+abstract class IncidencesUseCaseUpdate<In, Out> {
+  Future<Either<Failure, Out>> incidenceUpdate(In input);
 }
 
 abstract class IncidencesUseCasePrioritys<In, Out> {

@@ -25,7 +25,7 @@ class _SplashViewState extends State<SplashView> {
   }
 
   void _goNext() async {
-    if (await _appPreferences.getUserId() != '') {
+    if (_appPreferences.getUserId() != '') {
       //GoRouter.of(context).go(Routes.mainRoute);
       context.go(Routes.mainRoute);
     } else {

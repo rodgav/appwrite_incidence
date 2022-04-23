@@ -7,6 +7,7 @@ import 'encrypt_helper.dart';
 const String languageKey = 'languageKey';
 const String sessionKey = 'sessionKey';
 const String userKey = 'userKey';
+const String nameKey = 'nameKey';
 
 class AppPreferences {
   final SharedPreferences _sharedPreferences;
@@ -22,7 +23,6 @@ class AppPreferences {
       return LanguageType.spanish.getValue();
     }
   }
-
 
   void setAppLanguage() {
     String curentLanguage = getAppLanguage();
@@ -44,14 +44,17 @@ class AppPreferences {
     }
   }
 
-  Future<void> setSessionIds(String sessionId, String userId) async {
+  Future<void> setSessionIds(
+      String sessionId, String userId, String name) async {
     await _sharedPreferences.setString(
         userKey, _encryptHelper.encrypt(userId) ?? '');
     await _sharedPreferences.setString(
         sessionKey, _encryptHelper.encrypt(sessionId) ?? '');
+    await _sharedPreferences.setString(
+        nameKey, _encryptHelper.encrypt(name) ?? '');
   }
 
-  Future<String> getUserId() async {
+  String getUserId() {
     final userIdEncry = _sharedPreferences.getString(userKey) ?? '';
     final userIdDecry = _encryptHelper.decrypt(userIdEncry) ?? '';
     if (userIdDecry != '') {
@@ -65,6 +68,15 @@ class AppPreferences {
     final sessionIdDecry = _encryptHelper.decrypt(sessionIdEncry) ?? '';
     if (sessionIdDecry != '') {
       return sessionIdDecry;
+    }
+    return '';
+  }
+
+  String getName() {
+    final nameEncry = _sharedPreferences.getString(nameKey) ?? '';
+    final nameDecry = _encryptHelper.decrypt(nameEncry) ?? '';
+    if (nameDecry != '') {
+      return nameDecry;
     }
     return '';
   }

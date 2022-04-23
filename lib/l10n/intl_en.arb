@@ -38,5 +38,15 @@
   "areaError": "Area error",
   "priorityError": "Priority error",
   "edit": "Edit",
-  "incidence": "Incidence"
+  "incidence": "Incidence",
+  "error": "Error",
+  "notPermission": "Not Permissions",
+  "confirm": "Confirm",
+  "user": "User",
+  "nameUser": "Name user",
+  "email": "Email",
+  "emailError": "Email error",
+  "password": "Password",
+  "passwordError": "Password error",
+  "typeUser": "Type user"
 }

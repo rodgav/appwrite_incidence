@@ -21,8 +21,8 @@ Map<String, dynamic> areaToJson(Area area) =>
     {
       "name": area.name,
       "description": area.description,
-      "\u0024read": List<dynamic>.from(area.read.map((x) => x)),
-      "\u0024write": List<dynamic>.from(area.write.map((x) => x)),
-      "\u0024id": area.id,
-      "\u0024collection": area.collection,
+      //"\u0024read": List<dynamic>.from(area.read.map((x) => x)),
+      //"\u0024write": List<dynamic>.from(area.write.map((x) => x)),
+      //"\u0024id": area.id,
+      //"\u0024collection": area.collection,
     };

@@ -1,7 +1,9 @@
+import 'package:appwrite/models.dart';
 import 'package:appwrite_incidence/domain/model/name_model.dart';
 
 const cachePrioritysKey = 'cachePrioritysKey';
 const cacheTypeUsersKey = 'cacheTypeUsersKey';
+const cacheUserKey = 'cacheUserKey';
 const cacheInterval = 180 * 10000;
 
 abstract class LocalDataSource {
@@ -16,6 +18,9 @@ abstract class LocalDataSource {
   Future<void> saveTypeUsersToCache(List<Name> names);
 
   Future<List<Name>> getTypeUsers();
+
+  Future<void> saveUser(User user);
+  User getUser();
 }
 
 class LocalDataSourceImpl implements LocalDataSource {
@@ -42,7 +47,7 @@ class LocalDataSourceImpl implements LocalDataSource {
     if (cachedItem != null && cachedItem.isValid(cacheInterval)) {
       return cachedItem.data;
     } else {
-      throw 'error cache';
+      throw 'error cache prioritys';
     }
   }
 
@@ -57,7 +62,22 @@ class LocalDataSourceImpl implements LocalDataSource {
     if (cachedItem != null && cachedItem.isValid(cacheInterval)) {
       return cachedItem.data;
     } else {
-      throw 'error cache';
+      throw 'error cache type Users';
+    }
+  }
+
+  @override
+  Future<void> saveUser(User user) async{
+    cacheMap[cacheUserKey] = CachedItem(user);
+  }
+
+  @override
+  User getUser() {
+    CachedItem? cachedItem = cacheMap[cacheUserKey];
+    if(cachedItem!=null){
+      return cachedItem.data;
+    }else{
+      throw 'error cache user';
     }
   }
 }

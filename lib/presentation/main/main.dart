@@ -1,8 +1,9 @@
+import 'package:appwrite/models.dart';
 import 'package:appwrite_incidence/app/dependency_injection.dart';
 import 'package:appwrite_incidence/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/common/state_render/state_render_impl.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/users/users_page.dart';
-import 'package:appwrite_incidence/presentation/main/responsive.dart';
+import 'package:appwrite_incidence/presentation/global_widgets/responsive.dart';
 import 'package:appwrite_incidence/presentation/main/widgets_main/custom_search.dart';
 import 'package:appwrite_incidence/presentation/main/widgets_main/drawer_main.dart';
 import 'package:appwrite_incidence/presentation/resources/strings_manager.dart';
@@ -82,7 +83,9 @@ class _MainViewState extends State<MainView> {
               ),
             ],
           ),
-          smallScreen: Scaffold(drawer:  DrawerWidget(_currentIndex, changePage: _changePage,small: true),
+          smallScreen: Scaffold(
+            drawer: DrawerWidget(_currentIndex,
+                changePage: _changePage, small: true),
             body: Column(
               children: [
                 const SizedBox(height: AppSize.s10),
@@ -147,7 +150,14 @@ class _MainViewState extends State<MainView> {
               ),
             ],
           ),
-          IconButton(icon: const Icon(Icons.person), onPressed: () {}),
+          StreamBuilder<User>(
+              stream: _viewModel.outputUser,
+              builder: (_, snapshot) {
+                return IconButton(
+                    tooltip: snapshot.data?.name ?? s.user,
+                    icon: const Icon(Icons.person),
+                    onPressed: () {});
+              }),
         ],
       ),
     );
