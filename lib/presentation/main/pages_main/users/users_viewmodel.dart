@@ -1,27 +1,35 @@
-import 'package:appwrite_incidence/app/app_preferences.dart';
+import 'package:appwrite_incidence/data/request/request.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/name_model.dart';
 import 'package:appwrite_incidence/domain/model/user_model.dart';
 import 'package:appwrite_incidence/domain/model/user_sel.dart';
 import 'package:appwrite_incidence/domain/usecase/users_usecase.dart';
+import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/base/base_viewmodel.dart';
+import 'package:appwrite_incidence/presentation/common/dialog_render/dialog_render.dart';
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 class UsersViewModel extends BaseViewModel
     with UsersViewModelInputs, UsersViewModelOutputs {
   final UsersUseCase _usersUseCase;
-  final AppPreferences _appPreferences;
+  final DialogRender _dialogRender;
 
-  UsersViewModel(this._usersUseCase, this._appPreferences);
+  UsersViewModel(this._usersUseCase, this._dialogRender);
 
-  final _usersStrCtrl = BehaviorSubject<List<Users>>();
+  final _usersStrCtrl = BehaviorSubject<List<UsersModel>>();
   final _areasStrCtrl = BehaviorSubject<List<Area>>();
   final _activesStrCtrl = BehaviorSubject<List<bool>?>();
   final _isLoading = BehaviorSubject<bool>();
   final _userSelStrCtrl = BehaviorSubject<UserSel>();
   final _userSelUserStrCtrl = BehaviorSubject<UserSel>();
   final _typeUsersStrCtrl = BehaviorSubject<List<Name>>();
-  final List<Users> _users = [];
+  final List<UsersModel> _users = [];
+
+  @override
+  void start() {
+    inputUserSel.add(UserSel());
+  }
 
   @override
   void dispose() async {
@@ -64,7 +72,7 @@ class UsersViewModel extends BaseViewModel
   Sink get inputTypeUsers => _typeUsersStrCtrl.sink;
 
   @override
-  Stream<List<Users>> get outputUsers =>
+  Stream<List<UsersModel>> get outputUsers =>
       _usersStrCtrl.stream.map((users) => users);
 
   @override
@@ -92,7 +100,8 @@ class UsersViewModel extends BaseViewModel
       _typeUsersStrCtrl.stream.map((typeUsers) => typeUsers);
 
   @override
-  users(String typeUser) async {
+  users(String typeUser,bool firstQuery) async {
+    firstQuery?_users.clear():null;
     if (_users.isEmpty) {
       _users.clear();
       (await _usersUseCase.execute(
@@ -103,7 +112,9 @@ class UsersViewModel extends BaseViewModel
       });
     } else {
       (await _usersUseCase.execute(UsersUseCaseInput(
-              typeUser: typeUser, limit: 25, offset: _users.length - 1)))
+              typeUser: typeUser,
+              limit: 25,
+              offset: _users.length > 1 ? _users.length - 1 : _users.length)))
           .fold((l) {}, (users) {
         _users.addAll(users);
         inputUsers.add(_users);
@@ -129,7 +140,7 @@ class UsersViewModel extends BaseViewModel
               typeUser: typeUser,
               area: area,
               limit: 25,
-              offset: _users.length - 1)))
+              offset: _users.length > 1 ? _users.length - 1 : _users.length)))
           .fold((l) {}, (users) {
         _users.addAll(users);
         inputUsers.add(_users);
@@ -159,7 +170,7 @@ class UsersViewModel extends BaseViewModel
               area: area,
               active: active,
               limit: 25,
-              offset: _users.length - 1)))
+              offset: _users.length > 1 ? _users.length - 1 : _users.length)))
           .fold((l) {}, (users) {
         _users.addAll(users);
         inputUsers.add(_users);
@@ -206,6 +217,40 @@ class UsersViewModel extends BaseViewModel
     });
   }
 
+  @override
+  createUser(LoginRequest loginRequest, bool active, String typeUser,
+      String area, BuildContext context) async {
+    final s = S.of(context);
+    (await _usersUseCase.userCreate(
+            UsersCreateUseCaseInput(loginRequest, active, typeUser, area)))
+        .fold(
+            (l) => _dialogRender.showPopUp(
+                context,
+                DialogRendererType.errorDialog,
+                (s.error).toUpperCase(),
+                l.message,
+                null,
+                null,
+                null), (r) {
+      inputUserSel.add(UserSel());
+      Navigator.of(context).pop();
+      users(typeUser,false);
+    });
+  }
+
+  @override
+  updateUser(UsersModel users1, BuildContext context) async {
+    final s = S.of(context);
+    (await _usersUseCase.userUpdate(users1)).fold(
+        (l) => _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
+            (s.error).toUpperCase(), l.message, null, null, null),
+        (r) {
+          inputUserSel.add(UserSel());
+          Navigator.of(context).pop();
+          users(users1.typeUser,false);
+        });
+  }
+
   _actives() {
     inputActives.add([true, false]);
   }
@@ -226,7 +271,7 @@ abstract class UsersViewModelInputs {
 
   Sink get inputTypeUsers;
 
-  users(String typeUser);
+  users(String typeUser,bool firstQuery);
 
   usersArea(String typeUser, String area);
 
@@ -241,10 +286,15 @@ abstract class UsersViewModelInputs {
   changeUserSelUser(UserSel userSel);
 
   typeUsers();
+
+  createUser(LoginRequest loginRequest, bool active, String typeUser,
+      String area, BuildContext context);
+
+  updateUser(UsersModel users1, BuildContext context);
 }
 
 abstract class UsersViewModelOutputs {
-  Stream<List<Users>> get outputUsers;
+  Stream<List<UsersModel>> get outputUsers;
 
   Stream<List<Area>> get outputAreas;
 

@@ -24,14 +24,13 @@ class AppPreferences {
     }
   }
 
-  void setAppLanguage() {
-    String curentLanguage = getAppLanguage();
-    if (curentLanguage == LanguageType.spanish.getValue()) {
-      _sharedPreferences.setString(
-          languageKey, LanguageType.english.getValue());
-    } else {
+  void setAppLanguage(String currentLanguage) {
+    if (currentLanguage == LanguageType.spanish.getValue()) {
       _sharedPreferences.setString(
           languageKey, LanguageType.spanish.getValue());
+    } else {
+      _sharedPreferences.setString(
+          languageKey, LanguageType.english.getValue());
     }
   }
 

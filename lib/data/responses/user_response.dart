@@ -6,11 +6,11 @@ import 'dart:convert';
 
 import 'package:appwrite_incidence/domain/model/user_model.dart';
 
-Users usersFromString(String str) => usersFromJson(json.decode(str));
+UsersModel usersFromString(String str) => usersFromJson(json.decode(str));
 
-String usersToString(Users data) => json.encode(usersToJson(data));
+String usersToString(UsersModel data) => json.encode(usersToJson(data));
 
-Users usersFromJson(Map<String, dynamic> json) => Users(
+UsersModel usersFromJson(Map<String, dynamic> json) => UsersModel(
       name: json["name"],
       area: json["area"],
       active: json["active"],
@@ -21,7 +21,7 @@ Users usersFromJson(Map<String, dynamic> json) => Users(
       collection: json["\u0024collection"],
     );
 
-Map<String, dynamic> usersToJson(Users users) => {
+Map<String, dynamic> usersToJson(UsersModel users) => {
       "name": users.name,
       "area": users.area,
       "active": users.active,

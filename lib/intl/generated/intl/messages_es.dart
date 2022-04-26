@@ -31,12 +31,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "area": MessageLookupByLibrary.simpleMessage("Área"),
         "areaError": MessageLookupByLibrary.simpleMessage("Área error"),
         "areas": MessageLookupByLibrary.simpleMessage("Areas"),
+        "changeLanguage":
+            MessageLookupByLibrary.simpleMessage("Cambiar el lenguaje"),
         "close": MessageLookupByLibrary.simpleMessage("Cerrar"),
         "confirm": MessageLookupByLibrary.simpleMessage("Confirmar"),
         "dateCreate": MessageLookupByLibrary.simpleMessage("Fecha de creación"),
         "dateSolution":
             MessageLookupByLibrary.simpleMessage("Fecha de solución"),
         "descrError": MessageLookupByLibrary.simpleMessage("Descripción error"),
+        "descriptionArea":
+            MessageLookupByLibrary.simpleMessage("Descrición área"),
         "descriptionIncidence":
             MessageLookupByLibrary.simpleMessage("Descripción de inicidencia"),
         "edit": MessageLookupByLibrary.simpleMessage("Editar"),
@@ -53,6 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "inputPassword": MessageLookupByLibrary.simpleMessage("Contraseña"),
         "loading": MessageLookupByLibrary.simpleMessage("Cargando..."),
         "login": MessageLookupByLibrary.simpleMessage("Ingresar"),
+        "nameArea": MessageLookupByLibrary.simpleMessage("Nombre área"),
         "nameError": MessageLookupByLibrary.simpleMessage("Nombre error"),
         "nameIncidence":
             MessageLookupByLibrary.simpleMessage("Nombre de incidencia"),

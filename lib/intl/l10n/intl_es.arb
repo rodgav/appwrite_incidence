@@ -48,5 +48,8 @@
   "emailError": "Correo electrónico error",
   "password": "Contraseña",
   "passwordError": "Contraseña error",
-  "typeUser": "Tipo de usuario"
+  "typeUser": "Tipo de usuario",
+  "changeLanguage": "Cambiar el lenguaje",
+  "nameArea": "Nombre área",
+  "descriptionArea": "Descrición área"
 }

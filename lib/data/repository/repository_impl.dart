@@ -1,3 +1,4 @@
+import 'package:appwrite_incidence/domain/model/user_model.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:appwrite_incidence/data/data_source/local_data_source.dart';
@@ -12,7 +13,6 @@ import 'package:appwrite_incidence/data/responses/user_response.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_model.dart';
 import 'package:appwrite_incidence/domain/model/name_model.dart';
-import 'package:appwrite_incidence/domain/model/user_model.dart';
 import 'package:appwrite_incidence/domain/repository/repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
@@ -138,10 +138,10 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, Area>> areaCreate(Name name) async {
+  Future<Either<Failure, Area>> areaCreate(Area area) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
-        final response = await _remoteDataSource.areaCreate(name);
+        final response = await _remoteDataSource.areaCreate(area);
         final a = areaFromJson(response.data);
         return Right(a);
       } on AppwriteException catch (e) {
@@ -156,10 +156,10 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, Area>> areaUpdate(Name name) async {
+  Future<Either<Failure, Area>> areaUpdate(Area area) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
-        final response = await _remoteDataSource.areaUpdate(name);
+        final response = await _remoteDataSource.areaUpdate(area);
         final a = areaFromJson(response.data);
         return Right(a);
       } on AppwriteException catch (e) {
@@ -320,7 +320,7 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Users>>> users(
+  Future<Either<Failure, List<UsersModel>>> users(
       String typeUser, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
@@ -339,7 +339,7 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Users>>> usersArea(
+  Future<Either<Failure, List<UsersModel>>> usersArea(
       String typeUser, String areaId, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
@@ -359,7 +359,7 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Users>>> usersAreaActive(String typeUser,
+  Future<Either<Failure, List<UsersModel>>> usersAreaActive(String typeUser,
       String areaId, bool active, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
@@ -379,7 +379,7 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Users>>> usersSearch(
+  Future<Either<Failure, List<UsersModel>>> usersSearch(
       String typeUser, String search, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
@@ -399,8 +399,8 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, Users>> userCreate(LoginRequest loginRequest,
-      String area, String active, String typeUser) async {
+  Future<Either<Failure, UsersModel>> userCreate(LoginRequest loginRequest,
+      String area, bool active, String typeUser) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
         final response = await _remoteDataSource.userCreate(
@@ -419,7 +419,7 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, Users>> userUpdate(Users users) async {
+  Future<Either<Failure, UsersModel>> userUpdate(UsersModel users) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
         final response = await _remoteDataSource.userUpdate(users);

@@ -1,14 +1,17 @@
 import 'package:appwrite/models.dart';
+import 'package:appwrite_incidence/app/app_preferences.dart';
 import 'package:appwrite_incidence/app/dependency_injection.dart';
-import 'package:appwrite_incidence/generated/l10n.dart';
+import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/common/state_render/state_render_impl.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/users/users_page.dart';
 import 'package:appwrite_incidence/presentation/global_widgets/responsive.dart';
 import 'package:appwrite_incidence/presentation/main/widgets_main/custom_search.dart';
 import 'package:appwrite_incidence/presentation/main/widgets_main/drawer_main.dart';
+import 'package:appwrite_incidence/presentation/resources/language_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/strings_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 import 'main_viewmodel.dart';
 import 'pages_main/areas/areas_page.dart';
@@ -23,6 +26,7 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   final _viewModel = instance<MainViewModel>();
+  final _appPreferences = instance<AppPreferences>();
   int _currentIndex = 0;
   List<Widget> pages = [
     const IncidencesPage(),
@@ -156,7 +160,25 @@ class _MainViewState extends State<MainView> {
                 return IconButton(
                     tooltip: snapshot.data?.name ?? s.user,
                     icon: const Icon(Icons.person),
-                    onPressed: () {});
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                                title:Text(s.changeLanguage),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: LanguageType.values
+                                      .map((e) => TextButton(
+                                          onPressed: () {
+                                            _appPreferences
+                                                .setAppLanguage(e.getValue());
+                                            Phoenix.rebirth(context);
+                                          },
+                                          child: Text(e.name)))
+                                      .toList(),
+                                ),
+                              ));
+                    });
               }),
         ],
       ),

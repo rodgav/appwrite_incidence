@@ -1,6 +1,6 @@
 import 'package:appwrite_incidence/app/app_preferences.dart';
 import 'package:appwrite_incidence/app/dependency_injection.dart';
-import 'package:appwrite_incidence/generated/l10n.dart';
+import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/forgot_password/forgot_password.dart';
 import 'package:appwrite_incidence/presentation/login/login.dart';
 import 'package:appwrite_incidence/presentation/main/main.dart';

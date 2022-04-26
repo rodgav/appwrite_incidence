@@ -1,5 +1,5 @@
-class Users {
-  Users({
+class UsersModel {
+  UsersModel({
     required this.name,
     required this.area,
     required this.active,

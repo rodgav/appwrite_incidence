@@ -11,9 +11,10 @@ class MainUseCase
     implements
         BaseUseCase<MainUseCaseInput, List<Incidence>>,
         MainUseCaseAreas<MainUseCaseInput, List<Area>>,
-        MainUseCaseUsers<MainUseCaseInput, List<Users>>,
+        MainUseCaseUsers<MainUseCaseInput, List<UsersModel>>,
         MainUseCaseDeleteSession<MainDeleteSessionUseCaseInput, dynamic>,
-        MainUseCaseAccount<void, User> {
+        MainUseCaseAccount<void, User>
+{
   final Repository _repository;
 
   MainUseCase(this._repository);
@@ -27,7 +28,7 @@ class MainUseCase
       _repository.areasSearch(input.search, input.limit, input.offset);
 
   @override
-  Future<Either<Failure, List<Users>>> users(MainUseCaseInput input) =>
+  Future<Either<Failure, List<UsersModel>>> users(MainUseCaseInput input) =>
       _repository.usersSearch(
           input.typeUser, input.search, input.limit, input.offset);
 

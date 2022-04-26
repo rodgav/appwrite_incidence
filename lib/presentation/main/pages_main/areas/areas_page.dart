@@ -1,8 +1,9 @@
 import 'package:appwrite_incidence/app/dependency_injection.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
-import 'package:appwrite_incidence/generated/l10n.dart';
+import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/common/state_render/state_render_impl.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/areas/areas_viewmodel.dart';
+import 'package:appwrite_incidence/presentation/main/pages_main/areas/widgets_areas/area.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
 
@@ -48,7 +49,14 @@ class _AreasPageState extends State<AreasPage> {
               }) ??
               _getContentWidget(size, s)),
       floatingActionButton: FloatingActionButton(
-          tooltip: s.addArea, child: const Icon(Icons.add), onPressed: () {}),
+          tooltip: s.addArea,
+          child: const Icon(Icons.add),
+          onPressed: () {
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (_) => AreaDialog(viewModel: _viewModel));
+          }),
     );
   }
 
@@ -65,8 +73,8 @@ class _AreasPageState extends State<AreasPage> {
           StreamBuilder<List<Area>>(
               stream: _viewModel.outputAreas,
               builder: (_, snapshot) {
-                final users = snapshot.data;
-                return users != null && users.isNotEmpty
+                final areas = snapshot.data;
+                return areas != null && areas.isNotEmpty
                     ? Expanded(
                         child: LayoutBuilder(builder: (context, constaints) {
                         final count = constaints.maxWidth ~/ AppSize.s200;
@@ -82,10 +90,10 @@ class _AreasPageState extends State<AreasPage> {
                                   crossAxisSpacing: AppSize.s10,
                                   mainAxisSpacing: AppSize.s10),
                           itemBuilder: (_, index) {
-                            final user = users[index];
-                            return Container(color: Colors.grey);
+                            final area = areas[index];
+                            return Center(child: Text(area.name),);
                           },
-                          itemCount: users.length,
+                          itemCount: areas.length,
                         );
                       }))
                     : Center(

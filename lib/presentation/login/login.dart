@@ -1,5 +1,5 @@
 import 'package:appwrite_incidence/app/dependency_injection.dart';
-import 'package:appwrite_incidence/generated/l10n.dart';
+import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/common/state_render/state_render_impl.dart';
 import 'package:appwrite_incidence/presentation/global_widgets/text_form_widget.dart';
 import 'package:appwrite_incidence/presentation/resources/color_manager.dart';

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:appwrite_incidence/generated/l10n.dart';
+import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:appwrite_incidence/app/dependency_injection.dart';
 import 'package:appwrite_incidence/domain/usecase/forgot_password_usecase.dart';

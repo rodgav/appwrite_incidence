@@ -1,11 +1,10 @@
 import 'package:appwrite_incidence/app/app_preferences.dart';
-import 'package:appwrite_incidence/data/data_source/local_data_source.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_sel.dart';
 import 'package:appwrite_incidence/domain/model/name_model.dart';
 import 'package:appwrite_incidence/domain/usecase/incidences_usecase.dart';
-import 'package:appwrite_incidence/generated/l10n.dart';
+import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/base/base_viewmodel.dart';
 import 'package:appwrite_incidence/presentation/common/dialog_render/dialog_render.dart';
 import 'package:flutter/cupertino.dart';
@@ -117,8 +116,8 @@ class IncidencesViewModel extends BaseViewModel
       });
     } else {
       (await _incidencesUseCase.execute(IncidencesUseCaseInput(
-              limit: 25, offset: _incidences.length - 1)))
-          .fold((l) {}, (incidences) {
+              limit: 25, offset: _incidences.length > 1 ? _incidences.length - 1 : _incidences.length)))
+          .fold((l) {print('error ${l.code} ${l.message}');}, (incidences) {print('error $_incidences');
         _incidences.addAll(incidences);
         inputIncidences.add(_incidences);
       });
@@ -140,7 +139,7 @@ class IncidencesViewModel extends BaseViewModel
       });
     } else {
       (await _incidencesUseCase.incidencesArea(IncidencesUseCaseInput(
-              area: area, limit: 25, offset: _incidences.length - 1)))
+              area: area, limit: 25, offset: _incidences.length > 1 ? _incidences.length - 1 : _incidences.length)))
           .fold((l) {}, (incidences) {
         _incidences.addAll(incidences);
         inputIncidences.add(_incidences);
@@ -165,7 +164,7 @@ class IncidencesViewModel extends BaseViewModel
               priority: priority,
               area: area,
               limit: 25,
-              offset: _incidences.length - 1)))
+              offset: _incidences.length > 1 ? _incidences.length - 1 : _incidences.length)))
           .fold((l) {}, (incidences) {
         _incidences.addAll(incidences);
         inputIncidences.add(_incidences);
@@ -198,7 +197,7 @@ class IncidencesViewModel extends BaseViewModel
                   priority: priority,
                   area: area,
                   limit: 25,
-                  offset: _incidences.length - 1)))
+                  offset: _incidences.length > 1 ? _incidences.length - 1 : _incidences.length)))
           .fold((l) {}, (incidences) {
         _incidences.addAll(incidences);
         inputIncidences.add(_incidences);
@@ -216,8 +215,8 @@ class IncidencesViewModel extends BaseViewModel
   areas() async {
     (await _incidencesUseCase.areas(null)).fold((l) {}, (areas) {
       inputAreas.add(areas);
-      incidences();
-    });
+
+    });incidences();
   }
 
   @override
@@ -259,7 +258,11 @@ class IncidencesViewModel extends BaseViewModel
     (await _incidencesUseCase.incidenceCreate(incidence)).fold(
         (l) => _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
                 (s.error).toUpperCase(), l.message, null, null,null),
-        (r) => Navigator.of(context).pop());
+        (r) {
+          inputIncidenceSel.add(IncidenceSel());
+          Navigator.of(context).pop();
+          incidences();
+        });
   }
 
   @override
@@ -268,7 +271,11 @@ class IncidencesViewModel extends BaseViewModel
     (await _incidencesUseCase.incidenceUpdate(incidence)).fold(
         (l) => _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
             (s.error).toUpperCase(), l.message, null, null, null),
-        (r) => Navigator.of(context).pop());
+        (r) {
+          inputIncidenceSel.add(IncidenceSel());
+              Navigator.of(context).pop();
+              incidences();
+        });
   }
 
   _actives() {

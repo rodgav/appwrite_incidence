@@ -1,15 +1,17 @@
-import 'package:appwrite_incidence/app/app_preferences.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/usecase/areas_usecase.dart';
+import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/base/base_viewmodel.dart';
+import 'package:appwrite_incidence/presentation/common/dialog_render/dialog_render.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AreasViewModel extends BaseViewModel
     with AreasViewModelInputs, AreasViewModelOutputs {
   final AreasUseCase _areasUseCase;
-  final AppPreferences _appPreferences;
+  final DialogRender _dialogRender;
 
-  AreasViewModel(this._areasUseCase, this._appPreferences);
+  AreasViewModel(this._areasUseCase, this._dialogRender);
 
   final _areasStrCtrl = BehaviorSubject<List<Area>>();
   final _isLoading = BehaviorSubject<bool>();
@@ -68,6 +70,20 @@ class AreasViewModel extends BaseViewModel
   changeIsLoading(bool isLoading) {
     inputIsLoading.add(isLoading);
   }
+
+  @override
+  updateArea(Area area, BuildContext context) async {
+    final s = S.of(context);
+    (await _areasUseCase.areaUpdate(area)).fold(
+        (l) => _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
+            (s.error).toUpperCase(), l.message, null, null, null), (r) {
+      Navigator.of(context).pop();
+      areas();
+    });
+  }
+
+  @override
+  createArea(Area area, BuildContext context) async {}
 }
 
 abstract class AreasViewModelInputs {
@@ -78,6 +94,10 @@ abstract class AreasViewModelInputs {
   areas();
 
   changeIsLoading(bool isLoading);
+
+  updateArea(Area area, BuildContext context);
+
+  createArea(Area area, BuildContext context);
 }
 
 abstract class AreasViewModelOutputs {

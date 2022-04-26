@@ -1,4 +1,4 @@
-import 'package:appwrite_incidence/generated/l10n.dart';
+import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/resources/routes_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/theme_manager.dart';
 import 'package:flutter/material.dart';

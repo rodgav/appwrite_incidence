@@ -24,12 +24,12 @@ class MainViewModel extends BaseViewModel
 
   final _incidencesSearchStrCtrl = BehaviorSubject<List<Incidence>>();
   final _areasSearchStrCtrl = BehaviorSubject<List<Area>>();
-  final _usersSearchStrCtrl = BehaviorSubject<List<Users>>();
+  final _usersSearchStrCtrl = BehaviorSubject<List<UsersModel>>();
   final _isLoading = BehaviorSubject<bool>();
   final _userStrCtrl = BehaviorSubject<User>();
   final List<Incidence> _incidencesSearch = [];
   final List<Area> _areasSearch = [];
-  final List<Users> _usersSearch = [];
+  final List<UsersModel> _usersSearch = [];
   String _query = '';
 
   @override
@@ -77,7 +77,7 @@ class MainViewModel extends BaseViewModel
       _areasSearchStrCtrl.stream.map((areas) => areas);
 
   @override
-  Stream<List<Users>> get outputUsersSearch =>
+  Stream<List<UsersModel>> get outputUsersSearch =>
       _usersSearchStrCtrl.stream.map((users) => users);
 
   @override
@@ -215,7 +215,7 @@ abstract class MainViewModelOutputs {
 
   Stream<List<Area>> get outputAreasSearch;
 
-  Stream<List<Users>> get outputUsersSearch;
+  Stream<List<UsersModel>> get outputUsersSearch;
 
   Stream<bool> get outputIsLoading;
 

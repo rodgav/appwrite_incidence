@@ -1,5 +1,5 @@
 import 'package:appwrite_incidence/app/app_preferences.dart';
-import 'package:appwrite_incidence/generated/l10n.dart';
+import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/common/dialog_render/dialog_render.dart';
 import 'package:appwrite_incidence/presentation/resources/routes_manager.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +58,7 @@ class LoginViewModel extends BaseViewModel
         } else {
           _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
               (s.error).toUpperCase(), s.notPermission, null, null, null);
+          inputState.add(ContentState());
         }
       });
     });

@@ -158,7 +158,7 @@ class CustomSearch extends SearchDelegate {
             return true;
           },
           child: Column(children: [
-            StreamBuilder<List<Users>>(
+            StreamBuilder<List<UsersModel>>(
                 stream: viewModel.outputUsersSearch,
                 builder: (_, snapshot) {
                   final users = snapshot.data;
@@ -207,7 +207,7 @@ class CustomSearch extends SearchDelegate {
             return true;
           },
           child: Column(children: [
-            StreamBuilder<List<Users>>(
+            StreamBuilder<List<UsersModel>>(
                 stream: viewModel.outputUsersSearch,
                 builder: (_, snapshot) {
                   final users = snapshot.data;

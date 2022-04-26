@@ -1,4 +1,4 @@
-import 'package:appwrite_incidence/generated/l10n.dart';
+import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/resources/assets_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/color_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/font_manager.dart';
@@ -38,7 +38,9 @@ class DialogRenderImpl implements DialogRender {
                   borderRadius: BorderRadius.circular(AppSize.s14)),
               elevation: AppSize.s1_5,
               backgroundColor: Colors.transparent,
-              child: Container(
+              child: SizedBox(
+                width: AppSize.s250,
+                child: Container(
                 decoration: BoxDecoration(
                     color: ColorManager.white,
                     shape: BoxShape.rectangle,
@@ -75,7 +77,7 @@ class DialogRenderImpl implements DialogRender {
                     )
                   ],
                 ),
-              ),
+              ))
             ));
   }
 

@@ -2,7 +2,7 @@ import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_sel.dart';
 import 'package:appwrite_incidence/domain/model/name_model.dart';
-import 'package:appwrite_incidence/generated/l10n.dart';
+import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/incidences/incidences_viewmodel.dart';
 import 'package:appwrite_incidence/presentation/resources/color_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
@@ -284,7 +284,7 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                           active: incidenceSel?.active ?? false,
                           read: [],
                           write: [],
-                          id: '',
+                          id: widget.incidence?.id??'',
                           collection: '');
                       if (widget.incidence != null) {
                         //update

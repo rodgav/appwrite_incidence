@@ -3,7 +3,7 @@ import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_sel.dart';
 import 'package:appwrite_incidence/domain/model/name_model.dart';
-import 'package:appwrite_incidence/generated/l10n.dart';
+import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/common/state_render/state_render_impl.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/incidences/incidences_viewmodel.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/incidences/widgets_incidence/incidence.dart';
@@ -118,7 +118,7 @@ class _IncidencesPageState extends State<IncidencesPage> {
                                         mainAxisSpacing: AppSize.s10),
                                 itemBuilder: (_, index) {
                                   final incidence = incidences[index];
-                                  return Container(color: Colors.grey);
+                                  return Center(child: Text(incidence.name),);
                                 },
                                 itemCount: incidences.length,
                               );

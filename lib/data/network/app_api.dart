@@ -3,11 +3,11 @@ import 'package:appwrite/models.dart';
 import 'package:appwrite_incidence/app/app_preferences.dart';
 import 'package:appwrite_incidence/app/constants.dart';
 import 'package:appwrite_incidence/data/request/request.dart';
+import 'package:appwrite_incidence/data/responses/area_response.dart';
 import 'package:appwrite_incidence/data/responses/incidence_response.dart';
-import 'package:appwrite_incidence/data/responses/name_response.dart';
 import 'package:appwrite_incidence/data/responses/user_response.dart';
+import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_model.dart';
-import 'package:appwrite_incidence/domain/model/name_model.dart';
 import 'package:appwrite_incidence/domain/model/user_model.dart';
 
 class AppServiceClient {
@@ -39,17 +39,17 @@ class AppServiceClient {
           limit: limit,
           offset: offset);
 
-  Future<Document> areaCreate(Name name) => _database.createDocument(
+  Future<Document> areaCreate(Area area) => _database.createDocument(
       collectionId: Constant.areasId,
       documentId: 'unique()',
-      data: nameToJson(name),
-      read: ['user:member'],
-      write: ['user:member']);
+      data: areaToJson(area),
+      read: ['role:member'],
+      write: ['role:member']);
 
-  Future<Document> areaUpdate(Name name) => _database.updateDocument(
+  Future<Document> areaUpdate(Area area) => _database.updateDocument(
       collectionId: Constant.areasId,
-      documentId: name.id,
-      data: nameToJson(name));
+      documentId: area.id,
+      data: areaToJson(area));
 
   Future<DocumentList> incidences(int limit, int offset) =>
       _database.listDocuments(
@@ -97,12 +97,8 @@ class AppServiceClient {
           collectionId: Constant.incidencesId,
           documentId: 'unique()',
           data: incidenceToJson(incidence),
-          read: [
-            'user:member'
-          ],
-          write: [
-            'user:member'
-          ]);
+          read: ['role:member'],
+          write: ['role:member']);
 
   Future<Document> incidenceUpdate(Incidence incidence) =>
       _database.updateDocument(
@@ -152,13 +148,12 @@ class AppServiceClient {
           offset: offset);
 
   Future<Document> userCreate(LoginRequest loginRequest, String area,
-      String active, String typeUser) async {
+      bool active, String typeUser) async {
     final user = await _account.create(
         userId: 'unique()',
         email: loginRequest.email,
         password: loginRequest.password,
         name: loginRequest.name);
-    await _account.updatePrefs(prefs: {'role': typeUser});
     return _database.createDocument(
         collectionId: Constant.usersId,
         documentId: user.$id,
@@ -169,14 +164,14 @@ class AppServiceClient {
           'type_user': typeUser
         },
         read: [
-          'user:member'
+          'role:member'
         ],
         write: [
-          'user:member'
+          'role:member'
         ]);
   }
 
-  Future<Document> userUpdate(Users users) => _database.updateDocument(
+  Future<Document> userUpdate(UsersModel users) => _database.updateDocument(
       collectionId: Constant.usersId,
       documentId: users.id,
       data: usersToJson(users));

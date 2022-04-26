@@ -91,7 +91,7 @@ void initAreasModule() {
     instance
         .registerLazySingleton<AreasUseCase>(() => AreasUseCase(instance()));
     instance.registerLazySingleton<AreasViewModel>(
-        () => AreasViewModel(instance(), instance()));
+        () => AreasViewModel(instance(),instance()));
   }
 }
 

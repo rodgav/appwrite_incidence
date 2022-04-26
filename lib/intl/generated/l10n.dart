@@ -539,6 +539,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Cambiar el lenguaje`
+  String get changeLanguage {
+    return Intl.message(
+      'Cambiar el lenguaje',
+      name: 'changeLanguage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nombre área`
+  String get nameArea {
+    return Intl.message(
+      'Nombre área',
+      name: 'nameArea',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Descrición área`
+  String get descriptionArea {
+    return Intl.message(
+      'Descrición área',
+      name: 'descriptionArea',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -2,7 +2,7 @@ import 'package:appwrite_incidence/app/dependency_injection.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/user_model.dart';
 import 'package:appwrite_incidence/domain/model/user_sel.dart';
-import 'package:appwrite_incidence/generated/l10n.dart';
+import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/common/state_render/state_render_impl.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/users/users_viewmodel.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/users/widgets_users/user.dart';
@@ -22,17 +22,6 @@ class UsersPage extends StatefulWidget {
 class _UsersPageState extends State<UsersPage> {
   final _viewModel = instance<UsersViewModel>();
 
-  _bind() {
-    _viewModel.start();
-    _viewModel.users(widget.typeUser);
-  }
-
-  @override
-  void initState() {
-    _bind();
-    super.initState();
-  }
-
   @override
   void dispose() {
     _viewModel.dispose();
@@ -43,6 +32,10 @@ class _UsersPageState extends State<UsersPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final s = S.of(context);
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _viewModel.start();
+      _viewModel.users(widget.typeUser,true);
+    });
     return Scaffold(
       body: StreamBuilder<FlowState>(
           stream: _viewModel.outputState,
@@ -90,7 +83,7 @@ class _UsersPageState extends State<UsersPage> {
             child: Column(
               children: [
                 _filter(s),
-                StreamBuilder<List<Users>>(
+                StreamBuilder<List<UsersModel>>(
                     stream: _viewModel.outputUsers,
                     builder: (_, snapshot) {
                       final users = snapshot.data;
@@ -112,7 +105,9 @@ class _UsersPageState extends State<UsersPage> {
                                         mainAxisSpacing: AppSize.s10),
                                 itemBuilder: (_, index) {
                                   final user = users[index];
-                                  return Container(color: Colors.grey);
+                                  return Center(
+                                    child: Text(user.name),
+                                  );
                                 },
                                 itemCount: users.length,
                               );

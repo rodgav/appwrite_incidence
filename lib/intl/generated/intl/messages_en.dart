@@ -30,11 +30,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "area": MessageLookupByLibrary.simpleMessage("Area"),
         "areaError": MessageLookupByLibrary.simpleMessage("Area error"),
         "areas": MessageLookupByLibrary.simpleMessage("Areas"),
+        "changeLanguage":
+            MessageLookupByLibrary.simpleMessage("Change language"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "dateCreate": MessageLookupByLibrary.simpleMessage("Date create"),
         "dateSolution": MessageLookupByLibrary.simpleMessage("Date solution"),
         "descrError": MessageLookupByLibrary.simpleMessage("Description error"),
+        "descriptionArea":
+            MessageLookupByLibrary.simpleMessage("Description area"),
         "descriptionIncidence":
             MessageLookupByLibrary.simpleMessage("Description incidence"),
         "edit": MessageLookupByLibrary.simpleMessage("Edit"),
@@ -50,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "inputPassword": MessageLookupByLibrary.simpleMessage("Password"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "nameArea": MessageLookupByLibrary.simpleMessage("Name area"),
         "nameError": MessageLookupByLibrary.simpleMessage("Name error"),
         "nameIncidence": MessageLookupByLibrary.simpleMessage("Name incidence"),
         "nameUser": MessageLookupByLibrary.simpleMessage("Name user"),

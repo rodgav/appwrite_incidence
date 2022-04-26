@@ -21,9 +21,9 @@ abstract class Repository {
   Future<Either<Failure, List<Area>>> areasSearch(
       String search, int limit, int offset);
 
-  Future<Either<Failure, Area>> areaCreate(Name name);
+  Future<Either<Failure, Area>> areaCreate(Area area);
 
-  Future<Either<Failure, Area>> areaUpdate(Name name);
+  Future<Either<Failure, Area>> areaUpdate(Area area);
 
   Future<Either<Failure, List<Incidence>>> incidences(int limit, int offset);
 
@@ -44,22 +44,22 @@ abstract class Repository {
 
   Future<Either<Failure, Incidence>> incidenceUpdate(Incidence incidence);
 
-  Future<Either<Failure, List<Users>>> users(
+  Future<Either<Failure, List<UsersModel>>> users(
       String typeUser, int limit, int offset);
 
-  Future<Either<Failure, List<Users>>> usersArea(
+  Future<Either<Failure, List<UsersModel>>> usersArea(
       String typeUser, String areaId, int limit, int offset);
 
-  Future<Either<Failure, List<Users>>> usersAreaActive(
+  Future<Either<Failure, List<UsersModel>>> usersAreaActive(
       String typeUser, String areaId, bool active, int limit, int offset);
 
-  Future<Either<Failure, List<Users>>> usersSearch(
+  Future<Either<Failure, List<UsersModel>>> usersSearch(
       String typeUser, String search, int limit, int offset);
 
-  Future<Either<Failure, Users>> userCreate(
-      LoginRequest loginRequest, String area, String active, String typeUser);
+  Future<Either<Failure, UsersModel>> userCreate(
+      LoginRequest loginRequest, String area, bool active, String typeUser);
 
-  Future<Either<Failure, Users>> userUpdate(Users users);
+  Future<Either<Failure, UsersModel>> userUpdate(UsersModel users);
 
   Future<Either<Failure, List<Name>>> prioritys(int limit, int offset);
 

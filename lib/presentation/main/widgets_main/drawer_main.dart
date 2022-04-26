@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -10,6 +10,7 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Drawer(
       elevation: small ? null : 0,
       child: Column(
@@ -24,28 +25,28 @@ class DrawerWidget extends StatelessWidget {
                       : const SizedBox(),
                   ListTile(selected: index==0,
                     leading: const Icon(Icons.stream),
-                    title: const Text('Incidence'),
+                    title:  Text(s.incidences),
                     onTap: () {
                       changePage(0);
                     },
                   ),
                   ListTile(selected: index==1,
                     leading: const Icon(Icons.stream),
-                    title: const Text('Areas'),
+                    title:  Text(s.areas),
                     onTap: () {
                       changePage(1);
                     },
                   ),
                   ListTile(selected: index==2,
                     leading: const Icon(Icons.stream),
-                    title: const Text('Supervisors'),
+                    title:  Text(s.supervisors),
                     onTap: () {
                       changePage(2);
                     },
                   ),
                   ListTile(selected: index==3,
                     leading: const Icon(Icons.stream),
-                    title: const Text('Employees'),
+                    title: Text(s.employees),
                     onTap: () {
                       changePage(3);
                     },
@@ -56,7 +57,7 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.close),
-            title: const Text('Close'),
+            title: Text(s.close),
             onTap: () {
               changePage(4);
             },

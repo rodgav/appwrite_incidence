@@ -1,8 +1,8 @@
 import 'package:appwrite/models.dart';
 import 'package:appwrite_incidence/data/network/app_api.dart';
 import 'package:appwrite_incidence/data/request/request.dart';
+import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_model.dart';
-import 'package:appwrite_incidence/domain/model/name_model.dart';
 import 'package:appwrite_incidence/domain/model/user_model.dart';
 
 abstract class RemoteDataSource {
@@ -18,9 +18,9 @@ abstract class RemoteDataSource {
 
   Future<DocumentList> areasSearch(String search, int limit, int offset);
 
-  Future<Document> areaCreate(Name name);
+  Future<Document> areaCreate(Area area);
 
-  Future<Document> areaUpdate(Name name);
+  Future<Document> areaUpdate(Area area);
 
   Future<DocumentList> incidences(int limit, int offset);
 
@@ -50,9 +50,9 @@ abstract class RemoteDataSource {
       String typeUser, String search, int limit, int offset);
 
   Future<Document> userCreate(
-      LoginRequest loginRequest, String area, String active, String typeUser);
+      LoginRequest loginRequest, String area, bool active, String typeUser);
 
-  Future<Document> userUpdate(Users users);
+  Future<Document> userUpdate(UsersModel users);
 
   Future<DocumentList> prioritys(int limit, int offset);
 
@@ -88,11 +88,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       _appServiceClient.areasSearch(search, limit, offset);
 
   @override
-  Future<Document> areaCreate(Name name) =>
-      _appServiceClient.areaCreate(name);
+  Future<Document> areaCreate(Area area) =>
+      _appServiceClient.areaCreate(area);
 
   @override
-  Future<Document> areaUpdate(Name name) => _appServiceClient.areaUpdate(name);
+  Future<Document> areaUpdate(Area area) => _appServiceClient.areaUpdate(area);
 
   @override
   Future<DocumentList> incidences(int limit, int offset) =>
@@ -147,11 +147,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<Document> userCreate(LoginRequest loginRequest, String area,
-          String active, String typeUser) =>
+          bool active, String typeUser) =>
       _appServiceClient.userCreate(loginRequest, area, active, typeUser);
 
   @override
-  Future<Document> userUpdate(Users users) =>
+  Future<Document> userUpdate(UsersModel users) =>
       _appServiceClient.userUpdate(users);
 
   @override

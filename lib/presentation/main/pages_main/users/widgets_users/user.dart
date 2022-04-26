@@ -1,16 +1,16 @@
-import 'package:appwrite/models.dart';
+import 'package:appwrite_incidence/data/request/request.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/name_model.dart';
 import 'package:appwrite_incidence/domain/model/user_model.dart';
 import 'package:appwrite_incidence/domain/model/user_sel.dart';
-import 'package:appwrite_incidence/generated/l10n.dart';
+import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/users/users_viewmodel.dart';
 import 'package:appwrite_incidence/presentation/resources/color_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
 
 class UserDialog extends StatefulWidget {
-  final Users? users;
+  final UsersModel? users;
   final UsersViewModel viewModel;
 
   const UserDialog({this.users, required this.viewModel, Key? key})
@@ -82,24 +82,27 @@ class _UserDialogState extends State<UserDialog> {
                     decoration: InputDecoration(
                         labelText: s.nameUser, hintText: s.nameUser),
                     validator: (value) =>
-                    (value?.isNotEmpty ?? false) ? null : s.nameError,
+                        (value?.isNotEmpty ?? false) ? null : s.nameError,
+                    enabled: widget.users != null ? false : true,
                   ),
                   const SizedBox(height: AppSize.s10),
                   TextFormField(
                     controller: _emailTxtEditCtrl,
-                    decoration: InputDecoration(
-                        labelText: s.email,
-                        hintText: s.email),
+                    decoration:
+                        InputDecoration(labelText: s.email, hintText: s.email),
                     validator: (value) =>
-                    (value?.isNotEmpty ?? false) ? null : s.emailError,
+                        (value?.isNotEmpty ?? false) ? null : s.emailError,
+                    enabled: widget.users != null ? false : true,
                   ),
                   const SizedBox(height: AppSize.s10),
                   TextFormField(
-                    controller: _passwordTxtEditCtrl,obscureText: true,
+                    controller: _passwordTxtEditCtrl,
+                    obscureText: true,
                     decoration: InputDecoration(
                         labelText: s.password, hintText: s.password),
                     validator: (value) =>
-                    (value?.isNotEmpty ?? false) ? null : s.passwordError,
+                        (value?.isNotEmpty ?? false) ? null : s.passwordError,
+                    enabled: widget.users != null ? false : true,
                   ),
                   const SizedBox(height: AppSize.s10),
                   _userSelWid(s),
@@ -113,7 +116,8 @@ class _UserDialogState extends State<UserDialog> {
       ),
     );
   }
-  Widget _userSelWid(S s){
+
+  Widget _userSelWid(S s) {
     return StreamBuilder<UserSel>(
         stream: widget.viewModel.outputUserSelUser,
         builder: (_, snapshot) {
@@ -127,27 +131,25 @@ class _UserDialogState extends State<UserDialog> {
                     final areas = snapshot.data;
                     return areas != null && areas.isNotEmpty
                         ? DropdownButtonFormField<String?>(
-                      decoration: InputDecoration(label: Text(s.area)),
-                      hint: Text(s.area),
-                      items: areas
-                          .map((e) => DropdownMenuItem(
-                        child: Text(e.name),
-                        value: e.name,
-                      ))
-                          .toList(),
-                      value: userSel?.area != ''
-                          ? userSel?.area
-                          : null,
-                      onChanged: (value) {
-                        _changeUserSel(UserSel(
-                            area: value,
-                            typeUser: userSel?.typeUser,
-                            active: userSel?.active));
-                      },
-                      validator: (value) => (value?.isNotEmpty ?? false)
-                          ? null
-                          : s.areaError,
-                    )
+                            decoration: InputDecoration(label: Text(s.area)),
+                            hint: Text(s.area),
+                            items: areas
+                                .map((e) => DropdownMenuItem(
+                                      child: Text(e.name),
+                                      value: e.name,
+                                    ))
+                                .toList(),
+                            value: userSel?.area != '' ? userSel?.area : null,
+                            onChanged: (value) {
+                              _changeUserSel(UserSel(
+                                  area: value,
+                                  typeUser: userSel?.typeUser,
+                                  active: userSel?.active));
+                            },
+                            validator: (value) => (value?.isNotEmpty ?? false)
+                                ? null
+                                : s.areaError,
+                          )
                         : const SizedBox();
                   }),
               const SizedBox(height: AppSize.s10),
@@ -157,28 +159,30 @@ class _UserDialogState extends State<UserDialog> {
                     final prioritys = snapshot.data;
                     return prioritys != null && prioritys.isNotEmpty
                         ? DropdownButtonFormField<String?>(
-                      decoration:
-                      InputDecoration(label: Text(s.typeUser)),
-                      hint: Text(s.typeUser),
-                      items: prioritys
-                          .map((e) => DropdownMenuItem(
-                        child: Text(e.name),
-                        value: e.name,
-                      ))
-                          .toList(),
-                      value: userSel?.typeUser != ''
-                          ? userSel?.typeUser
-                          : null,
-                      onChanged: (value) {
-                        _changeUserSel(UserSel(
-                            area: userSel?.area,
-                            typeUser: value,
-                            active: userSel?.active));
-                      },
-                      validator: (value) => (value?.isNotEmpty ?? false)
-                          ? null
-                          : s.priorityError,
-                    )
+                            decoration:
+                                InputDecoration(label: Text(s.typeUser)),
+                            hint: Text(s.typeUser),
+                            items: prioritys
+                                .map((e) => DropdownMenuItem(
+                                      child: Text(e.name),
+                                      value: e.name,
+                                    ))
+                                .toList(),
+                            value: userSel?.typeUser != ''
+                                ? userSel?.typeUser
+                                : null,
+                            onChanged: widget.users != null
+                                ? null
+                                : (value) {
+                                    _changeUserSel(UserSel(
+                                        area: userSel?.area,
+                                        typeUser: value,
+                                        active: userSel?.active));
+                                  },
+                            validator: (value) => (value?.isNotEmpty ?? false)
+                                ? null
+                                : s.priorityError,
+                          )
                         : const SizedBox();
                   }),
               const SizedBox(height: AppSize.s10),
@@ -214,10 +218,28 @@ class _UserDialogState extends State<UserDialog> {
                     if (_formKey.currentState!.validate()) {
                       if (widget.users != null) {
                         //update
-                        //widget.viewModel.updateIncidence(incidence, context);
+                        final users = UsersModel(
+                            name: _nameTxtEditCtrl.text.trim(),
+                            area: incidenceSel?.area ?? '',
+                            active: incidenceSel?.active ?? false,
+                            typeUser: incidenceSel?.typeUser ?? 'employe',
+                            read: [],
+                            write: [],
+                            id: widget.users?.id ?? '',
+                            collection: '');
+                        widget.viewModel.updateUser(users, context);
                       } else {
                         //save
-                        //widget.viewModel.createIncidence(incidence, context);
+                        final loginRequest = LoginRequest(
+                            _emailTxtEditCtrl.text.trim(),
+                            _passwordTxtEditCtrl.text.trim(),
+                            name: _nameTxtEditCtrl.text.trim());
+                        widget.viewModel.createUser(
+                            loginRequest,
+                            incidenceSel?.active ?? false,
+                            incidenceSel?.typeUser ?? 'employe',
+                            incidenceSel?.area ?? '',
+                            context);
                       }
                     }
                   },
