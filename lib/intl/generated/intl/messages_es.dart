@@ -76,6 +76,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "retryAgain": MessageLookupByLibrary.simpleMessage("Reintentar"),
         "save": MessageLookupByLibrary.simpleMessage("Guardar"),
         "search": MessageLookupByLibrary.simpleMessage("Buscar"),
+        "selectImage":
+            MessageLookupByLibrary.simpleMessage("Seleccionar imagen"),
         "sendEmail": MessageLookupByLibrary.simpleMessage("Correo enviado"),
         "solution": MessageLookupByLibrary.simpleMessage("Solución"),
         "solutionError": MessageLookupByLibrary.simpleMessage("Solución error"),

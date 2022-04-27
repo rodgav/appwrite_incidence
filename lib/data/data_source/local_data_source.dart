@@ -11,15 +11,15 @@ abstract class LocalDataSource {
 
   void removeFromCache(String key);
 
-  Future<void> savePrioritysToCache(List<Name> names);
+  void savePrioritysToCache(List<Name> names);
 
-  Future<List<Name>> getPrioritys();
+  List<Name> getPrioritys();
 
-  Future<void> saveTypeUsersToCache(List<Name> names);
+  void saveTypeUsersToCache(List<Name> names);
 
-  Future<List<Name>> getTypeUsers();
+  List<Name> getTypeUsers();
 
-  Future<void> saveUser(User user);
+  void saveUser(User user);
   User getUser();
 }
 
@@ -42,7 +42,7 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<List<Name>> getPrioritys() {
+  List<Name> getPrioritys() {
     CachedItem? cachedItem = cacheMap[cachePrioritysKey];
     if (cachedItem != null && cachedItem.isValid(cacheInterval)) {
       return cachedItem.data;
@@ -52,22 +52,22 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<void> saveTypeUsersToCache(List<Name> names) async {
+  void saveTypeUsersToCache(List<Name> names) async {
     cacheMap[cacheTypeUsersKey] = CachedItem(names);
   }
 
   @override
-  Future<List<Name>> getTypeUsers() {
+  List<Name> getTypeUsers() {
     CachedItem? cachedItem = cacheMap[cacheTypeUsersKey];
     if (cachedItem != null && cachedItem.isValid(cacheInterval)) {
-      return cachedItem.data;
+      return cachedItem.data as List<Name>;
     } else {
       throw 'error cache type Users';
     }
   }
 
   @override
-  Future<void> saveUser(User user) async{
+  void saveUser(User user){
     cacheMap[cacheUserKey] = CachedItem(user);
   }
 

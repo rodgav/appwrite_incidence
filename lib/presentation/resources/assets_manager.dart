@@ -2,10 +2,12 @@ const String imagePath = 'assets/images';
 const String jsonPath = 'assets/jsons';
 
 class ImageAssets {
-  static const String empty = '$imagePath/hollow_cirlce_ic.svg';
-
+  static const String jpg = '$imagePath/jpg.png';
+  static const String employe = '$imagePath/employe.png';
+  static const String supervisor = '$imagePath/supervisor.png';
 }
 
 class JsonAssets {
-  static const String empty = '$jsonPath/hollow_cirlce_ic.svg';
+  //example
+  static const String empty = '$jsonPath/name.svg';
 }

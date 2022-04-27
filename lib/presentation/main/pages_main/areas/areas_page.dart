@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:appwrite_incidence/app/dependency_injection.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/common/state_render/state_render_impl.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/areas/areas_viewmodel.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/areas/widgets_areas/area.dart';
+import 'package:appwrite_incidence/presentation/resources/color_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
 
@@ -91,7 +94,32 @@ class _AreasPageState extends State<AreasPage> {
                                   mainAxisSpacing: AppSize.s10),
                           itemBuilder: (_, index) {
                             final area = areas[index];
-                            return Center(child: Text(area.name),);
+                            return GestureDetector(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Color.fromARGB(
+                                        Random().nextInt(256),
+                                        Random().nextInt(256),
+                                        Random().nextInt(256),
+                                        Random().nextInt(256)),
+                                    borderRadius:
+                                        BorderRadius.circular(AppSize.s8),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: ColorManager.grey,
+                                          offset: const Offset(
+                                              AppSize.s2, AppSize.s2),
+                                          blurRadius: AppSize.s8)
+                                    ]),
+                                child: Center(
+                                  child: Text(area.name),
+                                ),
+                              ),
+                              onTap: (){showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (_) => AreaDialog(area: area,viewModel: _viewModel));},
+                            );
                           },
                           itemCount: areas.length,
                         );

@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:appwrite/models.dart';
 import 'package:appwrite_incidence/data/network/failure.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_model.dart';
@@ -17,7 +20,9 @@ class IncidencesUseCase
         IncidencesUseCaseCreate<Incidence, Incidence>,
         IncidencesUseCaseUpdate<Incidence, Incidence>,
         IncidencesUseCasePrioritys<void, List<Name>>,
-        IncidencesUseCaseAreas<void, List<Area>> {
+        IncidencesUseCaseAreas<void, List<Area>>,
+        IncidencesUseCaseCreateFile<IncidenceUseCaseFile, File>,
+        IncidencesUseCaseDeleteFile<String, dynamic> {
   final Repository _repository;
 
   IncidencesUseCase(this._repository);
@@ -64,6 +69,14 @@ class IncidencesUseCase
   @override
   Future<Either<Failure, List<Area>>> areas(void input) =>
       _repository.areas(25, 0);
+
+  @override
+  Future<Either<Failure, File>> createFile(IncidenceUseCaseFile input) =>
+      _repository.createFile(input.uint8list);
+
+  @override
+  Future<Either<Failure, dynamic>> deleteFile(String input) =>
+      _repository.deleteFile(input);
 }
 
 class IncidencesUseCaseInput {
@@ -77,6 +90,12 @@ class IncidencesUseCaseInput {
       this.area = '',
       required this.limit,
       required this.offset});
+}
+
+class IncidenceUseCaseFile {
+  Uint8List uint8list;
+
+  IncidenceUseCaseFile(this.uint8list);
 }
 
 abstract class IncidencesUseCaseArea<In, Out> {
@@ -105,4 +124,12 @@ abstract class IncidencesUseCasePrioritys<In, Out> {
 
 abstract class IncidencesUseCaseAreas<In, Out> {
   Future<Either<Failure, Out>> areas(In input);
+}
+
+abstract class IncidencesUseCaseCreateFile<In, Out> {
+  Future<Either<Failure, Out>> createFile(In input);
+}
+
+abstract class IncidencesUseCaseDeleteFile<In, Out> {
+  Future<Either<Failure, Out>> deleteFile(In input);
 }

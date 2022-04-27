@@ -569,6 +569,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Seleccionar imagen`
+  String get selectImage {
+    return Intl.message(
+      'Seleccionar imagen',
+      name: 'selectImage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

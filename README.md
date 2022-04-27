@@ -15,6 +15,10 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+atributs of resources graphics
+<a href="https://www.flaticon.com/free-icons/jpg" title="jpg icons">Jpg icons created by smalllikeart - Flaticon</a>
+<a href="https://www.freepik.es/vectores/nino-adulto">Vector de niño y adulto creado por freepik - www.freepik.es</a>
+
 
 MIT License
 

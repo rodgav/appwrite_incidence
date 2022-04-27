@@ -6,6 +6,8 @@ import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/common/state_render/state_render_impl.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/users/users_viewmodel.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/users/widgets_users/user.dart';
+import 'package:appwrite_incidence/presentation/resources/assets_manager.dart';
+import 'package:appwrite_incidence/presentation/resources/color_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/strings_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +36,7 @@ class _UsersPageState extends State<UsersPage> {
     final s = S.of(context);
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _viewModel.start();
-      _viewModel.users(widget.typeUser,true);
+      _viewModel.users(widget.typeUser, true);
     });
     return Scaffold(
       body: StreamBuilder<FlowState>(
@@ -105,8 +107,68 @@ class _UsersPageState extends State<UsersPage> {
                                         mainAxisSpacing: AppSize.s10),
                                 itemBuilder: (_, index) {
                                   final user = users[index];
-                                  return Center(
-                                    child: Text(user.name),
+                                  return GestureDetector(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: ColorManager.white,
+                                          borderRadius:
+                                              BorderRadius.circular(AppSize.s8),
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: ColorManager.grey,
+                                                offset: const Offset(
+                                                    AppSize.s2, AppSize.s2),
+                                                blurRadius: AppSize.s8)
+                                          ]),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                              child:  Center(
+                                                child: Image.asset(
+                                                  widget.typeUser == 'supervisor'
+                                                      ? ImageAssets.supervisor
+                                                      : ImageAssets.employe),
+                                              ),
+                                          ),
+                                          const SizedBox(height: AppSize.s5),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(user.name,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText2),
+                                          ),
+                                          const SizedBox(height: AppSize.s5),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: AppSize.s8),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(user.area,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1),
+                                                Text(user.typeUser,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(height: AppSize.s8),
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: (){
+                                      showDialog(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (_) => UserDialog(users:user ,viewModel: _viewModel));
+                                    },
                                   );
                                 },
                                 itemCount: users.length,

@@ -1,3 +1,4 @@
+import 'package:appwrite_incidence/app/constants.dart';
 import 'package:appwrite_incidence/app/dependency_injection.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_model.dart';
@@ -7,6 +8,7 @@ import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/common/state_render/state_render_impl.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/incidences/incidences_viewmodel.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/incidences/widgets_incidence/incidence.dart';
+import 'package:appwrite_incidence/presentation/resources/color_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
 
@@ -118,7 +120,66 @@ class _IncidencesPageState extends State<IncidencesPage> {
                                         mainAxisSpacing: AppSize.s10),
                                 itemBuilder: (_, index) {
                                   final incidence = incidences[index];
-                                  return Center(child: Text(incidence.name),);
+                                  final imageUrl = '${Constant.baseUrl}/storage/buckets/'
+                                      '${Constant.buckedId}/files/${incidence.image}/view?'
+                                      'project=${Constant.projectId}';
+                                  return GestureDetector(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: ColorManager.white,
+                                          borderRadius:
+                                          BorderRadius.circular(AppSize.s8),
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: ColorManager.grey,
+                                                offset: const Offset(
+                                                    AppSize.s2, AppSize.s2),
+                                                blurRadius: AppSize.s8)
+                                          ]),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child:   Image.network(imageUrl,fit: BoxFit.cover),
+                                          ),
+                                          const SizedBox(height: AppSize.s5),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(incidence.name,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText2),
+                                          ),
+                                          const SizedBox(height: AppSize.s5),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: AppSize.s8),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(incidence.area,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1),
+                                                Text(incidence.priority,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(height: AppSize.s8),
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: (){showDialog(
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (_) => IncidenceDialog(incidence: incidence,
+                                            viewModel: _viewModel, username: _viewModel.username));},
+                                  );
                                 },
                                 itemCount: incidences.length,
                               );

@@ -82,7 +82,7 @@ class CustomSearch extends SearchDelegate {
                                     mainAxisSpacing: AppSize.s10),
                             itemBuilder: (_, index) {
                               final incidence = incidences[index];
-                              return Container(color: Colors.grey);
+                              return Center(child: Text(incidence.name),);
                             },
                             itemCount: incidences.length,
                           );
@@ -131,7 +131,7 @@ class CustomSearch extends SearchDelegate {
                                     mainAxisSpacing: AppSize.s10),
                             itemBuilder: (_, index) {
                               final area = areas[index];
-                              return Container(color: Colors.grey);
+                              return Center(child: Text(area.name),);
                             },
                             itemCount: areas.length,
                           );
@@ -180,7 +180,7 @@ class CustomSearch extends SearchDelegate {
                                     mainAxisSpacing: AppSize.s10),
                             itemBuilder: (_, index) {
                               final user = users[index];
-                              return Container(color: Colors.grey);
+                              return Center(child: Text(user.name),);
                             },
                             itemCount: users.length,
                           );
@@ -229,7 +229,7 @@ class CustomSearch extends SearchDelegate {
                                     mainAxisSpacing: AppSize.s10),
                             itemBuilder: (_, index) {
                               final user = users[index];
-                              return Container(color: Colors.grey);
+                              return Center(child: Text(user.name),);
                             },
                             itemCount: users.length,
                           );

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:appwrite/models.dart';
 import 'package:appwrite_incidence/data/network/app_api.dart';
 import 'package:appwrite_incidence/data/request/request.dart';
@@ -57,6 +59,10 @@ abstract class RemoteDataSource {
   Future<DocumentList> prioritys(int limit, int offset);
 
   Future<DocumentList> typeUsers(int limit, int offset);
+
+  Future<File> createFile(Uint8List uint8list);
+
+  Future<dynamic> deleteFile(String idFile);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -88,8 +94,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       _appServiceClient.areasSearch(search, limit, offset);
 
   @override
-  Future<Document> areaCreate(Area area) =>
-      _appServiceClient.areaCreate(area);
+  Future<Document> areaCreate(Area area) => _appServiceClient.areaCreate(area);
 
   @override
   Future<Document> areaUpdate(Area area) => _appServiceClient.areaUpdate(area);
@@ -161,4 +166,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<DocumentList> typeUsers(int limit, int offset) =>
       _appServiceClient.typeUsers(limit, offset);
+
+  @override
+  Future<File> createFile(Uint8List uint8list) =>
+      _appServiceClient.createFile(uint8list);
+
+  @override
+  Future deleteFile(String idFile) => _appServiceClient.deleteFile(idFile);
 }

@@ -1,9 +1,11 @@
+import 'package:appwrite_incidence/app/constants.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_sel.dart';
 import 'package:appwrite_incidence/domain/model/name_model.dart';
 import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/incidences/incidences_viewmodel.dart';
+import 'package:appwrite_incidence/presentation/resources/assets_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/color_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,11 @@ class IncidenceDialog extends StatefulWidget {
   final IncidencesViewModel viewModel;
   final String username;
 
-  const IncidenceDialog({this.incidence, required this.viewModel,required this.username, Key? key})
+  const IncidenceDialog(
+      {this.incidence,
+      required this.viewModel,
+      required this.username,
+      Key? key})
       : super(key: key);
 
   @override
@@ -169,9 +175,31 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
         stream: widget.viewModel.outputIncidenceSelIncidence,
         builder: (_, snapshot) {
           final incidenceSel = snapshot.data;
+          final imageUrl = '${Constant.baseUrl}/storage/buckets/'
+              '${Constant.buckedId}/files/${incidenceSel?.image ?? ''}/view?'
+              'project=${Constant.projectId}';
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              GestureDetector(
+                  child: Container(
+                    width: AppSize.s100,
+                    height: AppSize.s100,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: incidenceSel?.image != null
+                                ? NetworkImage(imageUrl)
+                                : const AssetImage(ImageAssets.jpg)
+                                    as ImageProvider,
+                            fit: BoxFit.cover)),
+                  ),
+                  onTap: () {
+                    widget.viewModel.pickImage(widget.incidence,IncidenceSel(
+                        area: incidenceSel?.area,
+                        priority: incidenceSel?.priority,
+                        active: incidenceSel?.active));
+                  }),
+              const SizedBox(height: AppSize.s10),
               StreamBuilder<List<Area>>(
                   stream: widget.viewModel.outputAreas,
                   builder: (_, snapshot) {
@@ -272,7 +300,7 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                           description: _descrTxtEditCtrl.text.trim(),
                           dateCreate:
                               DateTime.parse(_dateCreateTxtEditCtrl.text),
-                          image: 'image',
+                          image: incidenceSel?.image??'',
                           priority: incidenceSel?.priority ?? '',
                           area: incidenceSel?.area ?? '',
                           employe: _employeTxtEditCtrl.text.trim(),
@@ -284,7 +312,7 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                           active: incidenceSel?.active ?? false,
                           read: [],
                           write: [],
-                          id: widget.incidence?.id??'',
+                          id: widget.incidence?.id ?? '',
                           collection: '');
                       if (widget.incidence != null) {
                         //update

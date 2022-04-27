@@ -33,6 +33,7 @@ class UsersViewModel extends BaseViewModel
 
   @override
   void dispose() async {
+    _users.clear();
     await _usersStrCtrl.drain();
     _usersStrCtrl.close();
     await _areasStrCtrl.drain();
@@ -233,7 +234,7 @@ class UsersViewModel extends BaseViewModel
                 null,
                 null), (r) {
       inputUserSel.add(UserSel());
-      Navigator.of(context).pop();
+      Navigator.of(context).pop();  _users.clear();
       users(typeUser,false);
     });
   }
@@ -247,6 +248,7 @@ class UsersViewModel extends BaseViewModel
         (r) {
           inputUserSel.add(UserSel());
           Navigator.of(context).pop();
+          _users.clear();
           users(users1.typeUser,false);
         });
   }

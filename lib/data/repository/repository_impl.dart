@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:appwrite_incidence/domain/model/user_model.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
@@ -34,7 +36,7 @@ class RepositoryImpl extends Repository {
       if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
         try {
           final response = await _remoteDataSource.account();
-          await _localDataSource.saveUser(response);
+          _localDataSource.saveUser(response);
           return Right(response);
         } on AppwriteException catch (e) {
           return Left(Failure(e.code ?? 0,
@@ -439,15 +441,16 @@ class RepositoryImpl extends Repository {
   @override
   Future<Either<Failure, List<Name>>> prioritys(int limit, int offset) async {
     try {
-      final response = await _localDataSource.getPrioritys();
+      final response = _localDataSource.getPrioritys();
       return Right(response);
     } catch (cacheError) {
+      print('cacheError $cacheError');
       if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
         try {
           final response = await _remoteDataSource.prioritys(limit, offset);
           final a =
               response.documents.map((e) => nameFromJson(e.data)).toList();
-          await _localDataSource.savePrioritysToCache(a);
+          _localDataSource.savePrioritysToCache(a);
           return Right(a);
         } on AppwriteException catch (e) {
           return Left(Failure(e.code ?? 0,
@@ -464,15 +467,15 @@ class RepositoryImpl extends Repository {
   @override
   Future<Either<Failure, List<Name>>> typeUsers(int limit, int offset) async {
     try {
-      final response = await _localDataSource.getTypeUsers();
+      final response = _localDataSource.getTypeUsers();
       return Right(response);
-    } catch (cacheError) {
+    } catch (cacheError) {      print('cacheError $cacheError');
       if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
         try {
           final response = await _remoteDataSource.typeUsers(limit, offset);
           final a =
               response.documents.map((e) => nameFromJson(e.data)).toList();
-          await _localDataSource.saveTypeUsersToCache(a);
+          _localDataSource.saveTypeUsersToCache(a);
           return Right(a);
         } on AppwriteException catch (e) {
           return Left(Failure(e.code ?? 0,
@@ -483,6 +486,40 @@ class RepositoryImpl extends Repository {
       } else {
         return Left(Failure(-7, 'Please check your internet connection'));
       }
+    }
+  }
+
+  @override
+  Future<Either<Failure, File>> createFile(Uint8List uint8list) async {
+    if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
+      try {
+        final res = await _remoteDataSource.createFile(uint8list);
+        return Right(res);
+      } on AppwriteException catch (e) {
+        return Left(Failure(e.code ?? 0,
+            e.message ?? 'Some thing went wrong, try again later'));
+      } catch (error) {
+        return Left(Failure(0, error.toString()));
+      }
+    } else {
+      return Left(Failure(-7, 'Please check your internet connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, dynamic>> deleteFile(String idFile) async {
+    if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
+      try {
+        final res = await _remoteDataSource.deleteFile(idFile);
+        return Right(res);
+      } on AppwriteException catch (e) {
+        return Left(Failure(e.code ?? 0,
+            e.message ?? 'Some thing went wrong, try again later'));
+      } catch (error) {
+        return Left(Failure(0, error.toString()));
+      }
+    } else {
+      return Left(Failure(-7, 'Please check your internet connection'));
     }
   }
 }

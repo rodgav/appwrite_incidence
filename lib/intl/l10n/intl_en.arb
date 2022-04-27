@@ -51,5 +51,6 @@
   "typeUser": "Type user",
   "changeLanguage": "Change language",
   "nameArea": "Name area",
-  "descriptionArea": "Description area"
+  "descriptionArea": "Description area",
+  "selectImage": "Select image"
 }

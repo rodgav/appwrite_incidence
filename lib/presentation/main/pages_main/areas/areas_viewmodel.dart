@@ -25,6 +25,7 @@ class AreasViewModel extends BaseViewModel
 
   @override
   void dispose() async {
+    _areas.clear();
     await _areasStrCtrl.drain();
     _areasStrCtrl.close();
     await _isLoading.drain();
@@ -78,12 +79,21 @@ class AreasViewModel extends BaseViewModel
         (l) => _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
             (s.error).toUpperCase(), l.message, null, null, null), (r) {
       Navigator.of(context).pop();
+      _areas.clear();
       areas();
     });
   }
 
   @override
-  createArea(Area area, BuildContext context) async {}
+  createArea(Area area, BuildContext context) async {
+    final s = S.of(context);
+  (await _areasUseCase.areaCreate(area)).fold(
+          (l) => _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
+          (s.error).toUpperCase(), l.message, null, null, null), (r) {
+    Navigator.of(context).pop();
+    _areas.clear();
+    areas();
+  });}
 }
 
 abstract class AreasViewModelInputs {

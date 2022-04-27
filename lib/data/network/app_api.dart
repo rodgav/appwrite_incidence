@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:appwrite_incidence/app/app_preferences.dart';
@@ -13,10 +15,12 @@ import 'package:appwrite_incidence/domain/model/user_model.dart';
 class AppServiceClient {
   final Account _account;
   final Database _database;
+  final Storage _storage;
 
   AppServiceClient(Client _client, AppPreferences _appPreferences)
       : _account = Account(_client),
-        _database = Database(_client);
+        _database = Database(_client),
+        _storage = Storage(_client);
 
   Future<User> account() => _account.get();
 
@@ -183,4 +187,15 @@ class AppServiceClient {
   Future<DocumentList> typeUsers(int limit, int offset) =>
       _database.listDocuments(
           collectionId: Constant.typeUsersId, limit: limit, offset: offset);
+
+  Future<File> createFile(Uint8List uint8list) => _storage.createFile(
+      bucketId: Constant.buckedId,
+      fileId: 'unique()',
+      file: InputFile(file: MultipartFile.fromBytes('file', uint8list)),
+      read: ['role:member'],
+      write: ['role:member']);
+
+  Future deleteFile(String idFile) =>
+      _storage.deleteFile(bucketId: Constant.buckedId, fileId: idFile);
+
 }

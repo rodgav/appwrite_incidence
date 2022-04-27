@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:appwrite/models.dart';
 import 'package:appwrite_incidence/data/network/failure.dart';
 import 'package:appwrite_incidence/data/request/request.dart';
@@ -64,4 +66,9 @@ abstract class Repository {
   Future<Either<Failure, List<Name>>> prioritys(int limit, int offset);
 
   Future<Either<Failure, List<Name>>> typeUsers(int limit, int offset);
+
+  Future<Either<Failure,File>> createFile(Uint8List uint8list);
+
+  Future<Either<Failure,dynamic>> deleteFile(String idFile);
+
 }

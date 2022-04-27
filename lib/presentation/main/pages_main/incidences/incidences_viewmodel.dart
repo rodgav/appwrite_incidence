@@ -7,6 +7,7 @@ import 'package:appwrite_incidence/domain/usecase/incidences_usecase.dart';
 import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/base/base_viewmodel.dart';
 import 'package:appwrite_incidence/presentation/common/dialog_render/dialog_render.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -20,7 +21,7 @@ class IncidencesViewModel extends BaseViewModel
       AppPreferences _appPreferences)
       : username = _appPreferences.getName();
 
-  final _incidencesStrCtrl = BehaviorSubject<List<Incidence>>();
+  final _incidencesStrCtrl = PublishSubject<List<Incidence>>();
   final _areasStrCtrl = BehaviorSubject<List<Area>>();
   final _prioritysStrCtrl = BehaviorSubject<List<Name>>();
   final _activesStrCtrl = BehaviorSubject<List<bool>?>();
@@ -38,6 +39,7 @@ class IncidencesViewModel extends BaseViewModel
 
   @override
   void dispose() async {
+    _incidences.clear();
     await _incidencesStrCtrl.drain();
     _incidencesStrCtrl.close();
     await _areasStrCtrl.drain();
@@ -116,8 +118,11 @@ class IncidencesViewModel extends BaseViewModel
       });
     } else {
       (await _incidencesUseCase.execute(IncidencesUseCaseInput(
-              limit: 25, offset: _incidences.length > 1 ? _incidences.length - 1 : _incidences.length)))
-          .fold((l) {print('error ${l.code} ${l.message}');}, (incidences) {print('error $_incidences');
+              limit: 25,
+              offset: _incidences.length > 1
+                  ? _incidences.length - 1
+                  : _incidences.length)))
+          .fold((l) {}, (incidences) {
         _incidences.addAll(incidences);
         inputIncidences.add(_incidences);
       });
@@ -139,7 +144,11 @@ class IncidencesViewModel extends BaseViewModel
       });
     } else {
       (await _incidencesUseCase.incidencesArea(IncidencesUseCaseInput(
-              area: area, limit: 25, offset: _incidences.length > 1 ? _incidences.length - 1 : _incidences.length)))
+              area: area,
+              limit: 25,
+              offset: _incidences.length > 1
+                  ? _incidences.length - 1
+                  : _incidences.length)))
           .fold((l) {}, (incidences) {
         _incidences.addAll(incidences);
         inputIncidences.add(_incidences);
@@ -164,7 +173,9 @@ class IncidencesViewModel extends BaseViewModel
               priority: priority,
               area: area,
               limit: 25,
-              offset: _incidences.length > 1 ? _incidences.length - 1 : _incidences.length)))
+              offset: _incidences.length > 1
+                  ? _incidences.length - 1
+                  : _incidences.length)))
           .fold((l) {}, (incidences) {
         _incidences.addAll(incidences);
         inputIncidences.add(_incidences);
@@ -197,7 +208,9 @@ class IncidencesViewModel extends BaseViewModel
                   priority: priority,
                   area: area,
                   limit: 25,
-                  offset: _incidences.length > 1 ? _incidences.length - 1 : _incidences.length)))
+                  offset: _incidences.length > 1
+                      ? _incidences.length - 1
+                      : _incidences.length)))
           .fold((l) {}, (incidences) {
         _incidences.addAll(incidences);
         inputIncidences.add(_incidences);
@@ -215,8 +228,8 @@ class IncidencesViewModel extends BaseViewModel
   areas() async {
     (await _incidencesUseCase.areas(null)).fold((l) {}, (areas) {
       inputAreas.add(areas);
-
-    });incidences();
+    });
+    incidences();
   }
 
   @override
@@ -257,12 +270,11 @@ class IncidencesViewModel extends BaseViewModel
     final s = S.of(context);
     (await _incidencesUseCase.incidenceCreate(incidence)).fold(
         (l) => _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
-                (s.error).toUpperCase(), l.message, null, null,null),
-        (r) {
-          inputIncidenceSel.add(IncidenceSel());
-          Navigator.of(context).pop();
-          incidences();
-        });
+            (s.error).toUpperCase(), l.message, null, null, null), (r) {
+      inputIncidenceSel.add(IncidenceSel());
+      Navigator.of(context).pop();   _incidences.clear();
+      incidences();
+    });
   }
 
   @override
@@ -270,12 +282,50 @@ class IncidencesViewModel extends BaseViewModel
     final s = S.of(context);
     (await _incidencesUseCase.incidenceUpdate(incidence)).fold(
         (l) => _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
-            (s.error).toUpperCase(), l.message, null, null, null),
-        (r) {
-          inputIncidenceSel.add(IncidenceSel());
-              Navigator.of(context).pop();
-              incidences();
-        });
+            (s.error).toUpperCase(), l.message, null, null, null), (r) {
+      inputIncidenceSel.add(IncidenceSel());
+      Navigator.of(context).pop();
+      _incidences.clear();
+      incidences();
+    });
+  }
+
+  @override
+  pickImage(Incidence? incidence, IncidenceSel incidenceSel) async {
+    final image = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ['jpg']);
+    if (image != null) {
+      final uint8list = image.files.first.bytes!;
+      (await _incidencesUseCase.createFile(IncidenceUseCaseFile(uint8list)))
+          .fold((failure) {}, (file) async {
+        if (incidence != null) {
+          (await _incidencesUseCase.deleteFile(incidence.image))
+              .fold((failure) => null, (r) => null);
+          (await _incidencesUseCase.incidenceUpdate(Incidence(
+                  name: incidence.name,
+                  description: incidence.description,
+                  dateCreate: incidence.dateCreate,
+                  image: file.$id,
+                  priority: incidence.priority,
+                  area: incidence.area,
+                  employe: incidence.employe,
+                  supervisor: incidence.supervisor,
+                  solution: incidence.solution,
+                  dateSolution: incidence.dateSolution,
+                  active: incidence.active,
+                  read: [],
+                  write: [],
+                  id: incidence.id,
+                  collection: '')))
+              .fold((failure) => null, (stores) => null);
+        }
+        inputIncidenceSelIncidence.add(IncidenceSel(
+            area: incidenceSel.area,
+            priority: incidenceSel.priority,
+            active: incidenceSel.active,
+            image: file.$id));
+      });
+    }
   }
 
   _actives() {
@@ -319,6 +369,8 @@ abstract class IncidencesViewModelInputs {
   createIncidence(Incidence incidence, BuildContext context);
 
   updateIncidence(Incidence incidence, BuildContext context);
+
+  pickImage(Incidence? incidence, IncidenceSel incidenceSel);
 }
 
 abstract class IncidencesViewModelOutputs {
