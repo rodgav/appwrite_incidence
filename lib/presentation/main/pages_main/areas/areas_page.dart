@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:appwrite_incidence/app/dependency_injection.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/intl/generated/l10n.dart';
@@ -7,7 +5,6 @@ import 'package:appwrite_incidence/presentation/common/state_render/state_render
 import 'package:appwrite_incidence/presentation/global_widgets/area.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/areas/areas_viewmodel.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/areas/widgets_areas/area.dart';
-import 'package:appwrite_incidence/presentation/resources/color_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
 

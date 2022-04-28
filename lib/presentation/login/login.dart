@@ -29,7 +29,7 @@ class _LoginViewState extends State<LoginView> {
     _passwordController.addListener(
         () => _viewModel.setPassword(_passwordController.text.trim()));
     _emailController.text = 'prueba@gmail.com';
-    _passwordController.text = 'prueba123';
+    _passwordController.text = '12345678';
   }
 
   @override

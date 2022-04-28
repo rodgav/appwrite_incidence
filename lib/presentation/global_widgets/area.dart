@@ -16,8 +16,7 @@ class AreaItem extends StatelessWidget {
     return GestureDetector(
       child: Container(
         decoration: BoxDecoration(
-            color: Color.fromARGB(Random().nextInt(256), Random().nextInt(256),
-                Random().nextInt(256), Random().nextInt(256)),
+            color: Colors.primaries[Random().nextInt(Colors.primaries.length)],
             borderRadius: BorderRadius.circular(AppSize.s8),
             boxShadow: [
               BoxShadow(

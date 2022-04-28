@@ -48,16 +48,24 @@ class LoginViewModel extends BaseViewModel
       inputState
           .add(ErrorState(StateRendererType.fullScreenErrorState, f.message));
     }, (r) async {
-      (await _loginUsecase.account()).fold(
+      (await _loginUsecase.user(r.userId)).fold(
           (f) => inputState.add(
               ErrorState(StateRendererType.fullScreenErrorState, f.message)),
           (user) async {
-        if (user.prefs.data.isEmpty) {
+        if (user.active &&
+            (user.typeUser != AppStrings.supervisor &&
+                user.typeUser != AppStrings.employe)) {
           await _appPreferences.setSessionIds(r.$id, r.userId, user.name);
           GoRouter.of(context).go(Routes.mainRoute);
         } else {
-          _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
-              (s.error).toUpperCase(), s.notPermission, null, null, null);
+          _dialogRender.showPopUp(
+              context,
+              DialogRendererType.errorDialog,
+              (s.error).toUpperCase(),
+              '${s.notPermission} ${user.typeUser}',
+              null,
+              null,
+              null);
           inputState.add(ContentState());
         }
       });

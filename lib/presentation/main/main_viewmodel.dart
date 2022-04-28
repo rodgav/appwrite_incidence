@@ -144,9 +144,7 @@ class MainViewModel extends BaseViewModel
     if (_query != search) {
       _query = search;
       _usersSearch.clear();
-      (await _mainUseCase
-              .users(MainUseCaseInput(search, 25, 0)))
-          .fold((l) {
+      (await _mainUseCase.users(MainUseCaseInput(search, 25, 0))).fold((l) {
         _query = '';
       }, (users) {
         _usersSearch.addAll(users);
@@ -192,7 +190,8 @@ class MainViewModel extends BaseViewModel
 
   @override
   account() async {
-    (await _mainUseCase.account()).fold((f) => null, (user) async {
+    (await _mainUseCase.user(_appPreferences.getUserId())).fold((f) => null,
+        (user) async {
       inputUser.add(user);
     });
   }

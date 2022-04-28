@@ -1,6 +1,7 @@
 import 'package:appwrite_incidence/domain/model/user_model.dart';
 import 'package:appwrite_incidence/presentation/resources/assets_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/color_manager.dart';
+import 'package:appwrite_incidence/presentation/resources/strings_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,7 @@ class UserItem extends StatelessWidget {
             Expanded(
               child:  Center(
                 child: Image.asset(
-                   user.typeUser == 'supervisor'
+                   user.typeUser == AppStrings.supervisor
                         ? ImageAssets.supervisor
                         : ImageAssets.employe),
               ),

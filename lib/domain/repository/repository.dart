@@ -10,7 +10,6 @@ import 'package:appwrite_incidence/domain/model/user_model.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class Repository {
-  Future<Either<Failure, User>> account();
 
   Future<Either<Failure, Session>> login(LoginRequest loginRequest);
 
@@ -45,7 +44,7 @@ abstract class Repository {
       Incidence incidence);
 
   Future<Either<Failure, Incidence>> incidenceUpdate(Incidence incidence);
-
+  Future<Either<Failure,UsersModel>> user(String userId);
   Future<Either<Failure, List<UsersModel>>> users( int limit, int offset);
   Future<Either<Failure, List<UsersModel>>> usersTypeUser(
       String typeUser, int limit, int offset);

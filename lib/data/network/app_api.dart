@@ -23,8 +23,6 @@ class AppServiceClient {
         _database = Database(_client),
         _storage = Storage(_client);
 
-  Future<User> account() => _account.get();
-
   Future<Session> login(LoginRequest loginRequest) => _account.createSession(
       email: loginRequest.email, password: loginRequest.password);
 
@@ -111,8 +109,14 @@ class AppServiceClient {
           documentId: incidence.id,
           data: incidenceToJson(incidence));
 
+  Future<Document> user(String userId) =>
+      _database.getDocument(collectionId: Constant.usersId, documentId: userId);
+
   Future<DocumentList> users(int limit, int offset) => _database.listDocuments(
-      collectionId: Constant.usersId,queries:[], limit: limit, offset: offset);
+      collectionId: Constant.usersId,
+      queries: [],
+      limit: limit,
+      offset: offset);
 
   Future<DocumentList> usersTypeUser(String typeUser, int limit, int offset) =>
       _database.listDocuments(

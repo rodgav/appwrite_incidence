@@ -28,29 +28,6 @@ class RepositoryImpl extends Repository {
       this._remoteDataSource, this._localDataSource, this._networkInfo);
 
   @override
-  Future<Either<Failure, User>> account() async {
-    try {
-      final response = _localDataSource.getUser();
-      return Right(response);
-    } catch (cacheError) {
-      if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
-        try {
-          final response = await _remoteDataSource.account();
-          _localDataSource.saveUser(response);
-          return Right(response);
-        } on AppwriteException catch (e) {
-          return Left(Failure(e.code ?? 0,
-              e.message ?? 'Some thing went wrong, try again later'));
-        } catch (error) {
-          return Left(Failure(0, error.toString()));
-        }
-      } else {
-        return Left(Failure(-7, 'Please check your internet connection'));
-      }
-    }
-  }
-
-  @override
   Future<Either<Failure, Session>> login(LoginRequest loginRequest) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
@@ -318,6 +295,30 @@ class RepositoryImpl extends Repository {
       }
     } else {
       return Left(Failure(-7, 'Please check your internet connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UsersModel>> user(String userId) async {
+    try {
+      final response = _localDataSource.getUser();
+      return Right(response);
+    } catch (cacheError) {
+      if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
+        try {
+          final response = await _remoteDataSource.user(userId);
+          final a = usersFromJson(response.data);
+          _localDataSource.saveUser(a);
+          return Right(a);
+        } on AppwriteException catch (e) {
+          return Left(Failure(e.code ?? 0,
+              e.message ?? 'Some thing went wrong, try again later'));
+        } catch (error) {
+          return Left(Failure(0, error.toString()));
+        }
+      } else {
+        return Left(Failure(-7, 'Please check your internet connection'));
+      }
     }
   }
 

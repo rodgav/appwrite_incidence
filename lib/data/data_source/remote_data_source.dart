@@ -8,7 +8,6 @@ import 'package:appwrite_incidence/domain/model/incidence_model.dart';
 import 'package:appwrite_incidence/domain/model/user_model.dart';
 
 abstract class RemoteDataSource {
-  Future<User> account();
 
   Future<Session> login(LoginRequest loginRequest);
 
@@ -39,7 +38,7 @@ abstract class RemoteDataSource {
   Future<Document> incidenceCreate(Incidence incidence);
 
   Future<Document> incidenceUpdate(Incidence incidence);
-
+  Future<Document> user(String userId);
   Future<DocumentList> users(int limit, int offset);
   Future<DocumentList>  usersTypeUser(String typeUser, int limit, int offset);
 
@@ -69,9 +68,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   final AppServiceClient _appServiceClient;
 
   RemoteDataSourceImpl(this._appServiceClient);
-
-  @override
-  Future<User> account() => _appServiceClient.account();
 
   @override
   Future<Session> login(LoginRequest loginRequest) =>
@@ -129,6 +125,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<Document> incidenceUpdate(Incidence incidence) =>
       _appServiceClient.incidenceUpdate(incidence);
+
+  @override
+  Future<Document> user(String userId) => _appServiceClient.user(userId);
 
   @override
   Future<DocumentList> users( int limit, int offset) =>

@@ -1,5 +1,5 @@
-import 'package:appwrite/models.dart';
 import 'package:appwrite_incidence/domain/model/name_model.dart';
+import 'package:appwrite_incidence/domain/model/user_model.dart';
 
 const cachePrioritysKey = 'cachePrioritysKey';
 const cacheTypeUsersKey = 'cacheTypeUsersKey';
@@ -19,8 +19,8 @@ abstract class LocalDataSource {
 
   List<Name> getTypeUsers();
 
-  void saveUser(User user);
-  User getUser();
+  void saveUser(UsersModel user);
+  UsersModel getUser();
 }
 
 class LocalDataSourceImpl implements LocalDataSource {
@@ -67,12 +67,12 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  void saveUser(User user){
+  void saveUser(UsersModel user){
     cacheMap[cacheUserKey] = CachedItem(user);
   }
 
   @override
-  User getUser() {
+  UsersModel getUser() {
     CachedItem? cachedItem = cacheMap[cacheUserKey];
     if(cachedItem!=null){
       return cachedItem.data;

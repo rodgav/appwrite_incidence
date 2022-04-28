@@ -1,6 +1,7 @@
 import 'package:appwrite/models.dart';
 import 'package:appwrite_incidence/data/network/failure.dart';
 import 'package:appwrite_incidence/data/request/request.dart';
+import 'package:appwrite_incidence/domain/model/user_model.dart';
 import 'package:appwrite_incidence/domain/repository/repository.dart';
 import 'package:dartz/dartz.dart';
 
@@ -9,7 +10,7 @@ import 'base_usecase.dart';
 class LoginUseCase
     implements
         BaseUseCase<LoginUseCaseInput, Session>,
-        LoginUseCaseAccount<void, User> {
+        LoginUseCaseAccount<String, UsersModel> {
   final Repository _repository;
 
   LoginUseCase(this._repository);
@@ -19,7 +20,8 @@ class LoginUseCase
       _repository.login(LoginRequest(input.email, input.password));
 
   @override
-  Future<Either<Failure, User>> account() => _repository.account();
+  Future<Either<Failure, UsersModel>> user(String userId) =>
+      _repository.user(userId);
 }
 
 class LoginUseCaseInput {
@@ -29,5 +31,5 @@ class LoginUseCaseInput {
 }
 
 abstract class LoginUseCaseAccount<In, Out> {
-  Future<Either<Failure, Out>> account();
+  Future<Either<Failure, Out>> user(In input);
 }
