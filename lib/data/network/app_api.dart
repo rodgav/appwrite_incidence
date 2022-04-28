@@ -11,6 +11,7 @@ import 'package:appwrite_incidence/data/responses/user_response.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_model.dart';
 import 'package:appwrite_incidence/domain/model/user_model.dart';
+import 'package:http_parser/http_parser.dart';
 
 class AppServiceClient {
   final Account _account;
@@ -110,14 +111,17 @@ class AppServiceClient {
           documentId: incidence.id,
           data: incidenceToJson(incidence));
 
-  Future<DocumentList> users(String typeUser, int limit, int offset) =>
+  Future<DocumentList> users(int limit, int offset) => _database.listDocuments(
+      collectionId: Constant.usersId,queries:[], limit: limit, offset: offset);
+
+  Future<DocumentList> usersTypeUser(String typeUser, int limit, int offset) =>
       _database.listDocuments(
           collectionId: Constant.usersId,
           queries: [Query.equal('type_user', typeUser)],
           limit: limit,
           offset: offset);
 
-  Future<DocumentList> usersArea(
+  Future<DocumentList> usersTypeUserArea(
           String typeUser, String area, int limit, int offset) =>
       _database.listDocuments(
           collectionId: Constant.usersId,
@@ -128,7 +132,7 @@ class AppServiceClient {
           limit: limit,
           offset: offset);
 
-  Future<DocumentList> usersAreaActive(
+  Future<DocumentList> usersTypeUserAreaActive(
           String typeUser, String area, bool active, int limit, int offset) =>
       _database.listDocuments(
           collectionId: Constant.usersId,
@@ -140,14 +144,10 @@ class AppServiceClient {
           limit: limit,
           offset: offset);
 
-  Future<DocumentList> usersSearch(
-          String typeUser, String search, int limit, int offset) =>
+  Future<DocumentList> usersSearch(String search, int limit, int offset) =>
       _database.listDocuments(
           collectionId: Constant.usersId,
-          queries: [
-            Query.search('name', search),
-            Query.equal('type_user', typeUser)
-          ],
+          queries: [Query.search('name', search)],
           limit: limit,
           offset: offset);
 
@@ -188,14 +188,16 @@ class AppServiceClient {
       _database.listDocuments(
           collectionId: Constant.typeUsersId, limit: limit, offset: offset);
 
-  Future<File> createFile(Uint8List uint8list) => _storage.createFile(
-      bucketId: Constant.buckedId,
-      fileId: 'unique()',
-      file: InputFile(file: MultipartFile.fromBytes('file', uint8list)),
-      read: ['role:member'],
-      write: ['role:member']);
+  Future<File> createFile(Uint8List uint8list, String name) =>
+      _storage.createFile(
+          bucketId: Constant.buckedId,
+          fileId: 'unique()',
+          file: InputFile(
+              file: MultipartFile.fromBytes('file', uint8list,
+                  filename: name, contentType: MediaType('image', 'jpg'))),
+          read: ['role:all'],
+          write: ['role:all']);
 
   Future deleteFile(String idFile) =>
       _storage.deleteFile(bucketId: Constant.buckedId, fileId: idFile);
-
 }

@@ -11,8 +11,9 @@ import 'base_usecase.dart';
 class UsersUseCase
     implements
         BaseUseCase<UsersUseCaseInput, List<UsersModel>>,
-        UsersUseCaseArea<UsersUseCaseInput, List<UsersModel>>,
-        UsersUseCaseAreaActive<UsersUseCaseInput, List<UsersModel>>,
+        UsersUseCaseTypeUser<UsersUseCaseInput, List<UsersModel>>,
+        UsersUseCaseTypeUserArea<UsersUseCaseInput, List<UsersModel>>,
+        UsersUseCaseTypeUserAreaActive<UsersUseCaseInput, List<UsersModel>>,
         UsersUseCaseAreas<void, List<Area>>,
         UsersUseCaseTypeUsers<void, List<Name>>,
         UsersUseCaseUserCreate<UsersCreateUseCaseInput, UsersModel>,
@@ -22,21 +23,27 @@ class UsersUseCase
   UsersUseCase(this._repository);
 
   @override
-  Future<Either<Failure, List<UsersModel>>> execute(UsersUseCaseInput input) async {
-    return await _repository.users(input.typeUser, input.limit, input.offset);
+  Future<Either<Failure, List<UsersModel>>> execute(
+      UsersUseCaseInput input) async {
+    return await _repository.users(input.limit, input.offset);
   }
 
   @override
-  Future<Either<Failure, List<UsersModel>>> usersArea(
+  Future<Either<Failure, List<UsersModel>>> usersTypeUser(
+          UsersUseCaseInput input) =>
+      _repository.usersTypeUser(input.typeUser,  input.limit, input.offset);
+
+  @override
+  Future<Either<Failure, List<UsersModel>>> usersTypeUserArea(
       UsersUseCaseInput input) async {
-    return await _repository.usersArea(
+    return await _repository.usersTypeUserArea(
         input.typeUser, input.area, input.limit, input.offset);
   }
 
   @override
-  Future<Either<Failure, List<UsersModel>>> usersAreaActive(
+  Future<Either<Failure, List<UsersModel>>> usersTypeUserAreaActive(
       UsersUseCaseInput input) async {
-    return await _repository.usersAreaActive(
+    return await _repository.usersTypeUserAreaActive(
         input.typeUser, input.area, input.active, input.limit, input.offset);
   }
 
@@ -49,8 +56,10 @@ class UsersUseCase
       _repository.typeUsers(25, 0);
 
   @override
-  Future<Either<Failure, UsersModel>> userCreate(UsersCreateUseCaseInput input) =>
-      _repository.userCreate(input.loginRequest, input.area,input.active, input.typeUser);
+  Future<Either<Failure, UsersModel>> userCreate(
+          UsersCreateUseCaseInput input) =>
+      _repository.userCreate(
+          input.loginRequest, input.area, input.active, input.typeUser);
 
   @override
   Future<Either<Failure, UsersModel>> userUpdate(UsersModel users) =>
@@ -64,7 +73,7 @@ class UsersUseCaseInput {
 
   UsersUseCaseInput(
       {this.active = true,
-      required this.typeUser,
+      this.typeUser='',
       this.area = '',
       required this.limit,
       required this.offset});
@@ -79,12 +88,16 @@ class UsersCreateUseCaseInput {
       this.loginRequest, this.active, this.typeUser, this.area);
 }
 
-abstract class UsersUseCaseArea<In, Out> {
-  Future<Either<Failure, Out>> usersArea(In input);
+abstract class UsersUseCaseTypeUser<In, Out> {
+  Future<Either<Failure, Out>> usersTypeUser(In input);
 }
 
-abstract class UsersUseCaseAreaActive<In, Out> {
-  Future<Either<Failure, Out>> usersAreaActive(In input);
+abstract class UsersUseCaseTypeUserArea<In, Out> {
+  Future<Either<Failure, Out>> usersTypeUserArea(In input);
+}
+
+abstract class UsersUseCaseTypeUserAreaActive<In, Out> {
+  Future<Either<Failure, Out>> usersTypeUserAreaActive(In input);
 }
 
 abstract class UsersUseCaseAreas<In, Out> {

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:appwrite_incidence/app/app_preferences.dart';
 import 'package:appwrite_incidence/app/dependency_injection.dart';
+import 'package:appwrite_incidence/presentation/resources/assets_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/color_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/routes_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
@@ -49,9 +50,9 @@ class _SplashViewState extends State<SplashView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorManager.primary,
-      body: const Center(
+      body:  Center(
           child: SizedBox(
-              width: AppSize.s200, height: AppSize.s200, child: FlutterLogo())),
+              width: AppSize.s200, height: AppSize.s200, child: Image.asset(ImageAssets.logo))),
     );
   }
 }

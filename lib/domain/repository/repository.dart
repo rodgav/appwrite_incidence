@@ -46,17 +46,17 @@ abstract class Repository {
 
   Future<Either<Failure, Incidence>> incidenceUpdate(Incidence incidence);
 
-  Future<Either<Failure, List<UsersModel>>> users(
+  Future<Either<Failure, List<UsersModel>>> users( int limit, int offset);
+  Future<Either<Failure, List<UsersModel>>> usersTypeUser(
       String typeUser, int limit, int offset);
 
-  Future<Either<Failure, List<UsersModel>>> usersArea(
+  Future<Either<Failure, List<UsersModel>>> usersTypeUserArea(
       String typeUser, String areaId, int limit, int offset);
 
-  Future<Either<Failure, List<UsersModel>>> usersAreaActive(
+  Future<Either<Failure, List<UsersModel>>> usersTypeUserAreaActive(
       String typeUser, String areaId, bool active, int limit, int offset);
 
-  Future<Either<Failure, List<UsersModel>>> usersSearch(
-      String typeUser, String search, int limit, int offset);
+  Future<Either<Failure, List<UsersModel>>> usersSearch( String search, int limit, int offset);
 
   Future<Either<Failure, UsersModel>> userCreate(
       LoginRequest loginRequest, String area, bool active, String typeUser);
@@ -67,7 +67,7 @@ abstract class Repository {
 
   Future<Either<Failure, List<Name>>> typeUsers(int limit, int offset);
 
-  Future<Either<Failure,File>> createFile(Uint8List uint8list);
+  Future<Either<Failure,File>> createFile(Uint8List uint8list,String name);
 
   Future<Either<Failure,dynamic>> deleteFile(String idFile);
 

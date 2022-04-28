@@ -205,7 +205,7 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                   builder: (_, snapshot) {
                     final areas = snapshot.data;
                     return areas != null && areas.isNotEmpty
-                        ? DropdownButtonFormField<String?>(
+                        ? DropdownButtonFormField<String?>(isExpanded: true,
                             decoration: InputDecoration(label: Text(s.area)),
                             hint: Text(s.area),
                             items: areas
@@ -221,7 +221,7 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                               _changeIncidenceSel(IncidenceSel(
                                   area: value,
                                   priority: incidenceSel?.priority,
-                                  active: incidenceSel?.active));
+                                  active: incidenceSel?.active,image: incidenceSel?.image));
                             },
                             validator: (value) => (value?.isNotEmpty ?? false)
                                 ? null
@@ -235,7 +235,7 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                   builder: (_, snapshot) {
                     final prioritys = snapshot.data;
                     return prioritys != null && prioritys.isNotEmpty
-                        ? DropdownButtonFormField<String?>(
+                        ? DropdownButtonFormField<String?>(isExpanded: true,
                             decoration:
                                 InputDecoration(label: Text(s.priority)),
                             hint: Text(s.priority),
@@ -252,7 +252,7 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                               _changeIncidenceSel(IncidenceSel(
                                   area: incidenceSel?.area,
                                   priority: value,
-                                  active: incidenceSel?.active));
+                                  active: incidenceSel?.active,image: incidenceSel?.image));
                             },
                             validator: (value) => (value?.isNotEmpty ?? false)
                                 ? null
@@ -272,7 +272,7 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                         _changeIncidenceSel(IncidenceSel(
                             area: incidenceSel?.area,
                             priority: incidenceSel?.priority,
-                            active: value));
+                            active: value,image: incidenceSel?.image));
                       })
                 ],
               )

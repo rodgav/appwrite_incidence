@@ -107,7 +107,7 @@ class IncidencesViewModel extends BaseViewModel
       _incidenceSelIncidenceStrCtrl.stream.map((incidenceSel) => incidenceSel);
 
   @override
-  incidences() async {
+  incidences(bool firstQuery) async {
     if (_incidences.isEmpty) {
       _incidences.clear();
       (await _incidencesUseCase
@@ -229,7 +229,7 @@ class IncidencesViewModel extends BaseViewModel
     (await _incidencesUseCase.areas(null)).fold((l) {}, (areas) {
       inputAreas.add(areas);
     });
-    incidences();
+    incidences(true);
   }
 
   @override
@@ -242,6 +242,7 @@ class IncidencesViewModel extends BaseViewModel
   @override
   changeIncidenceSel(IncidenceSel incidenceSel) async {
     inputIncidenceSel.add(incidenceSel);
+    _incidences.clear();
     if (incidenceSel.area != '') {
       await prioritys();
       inputActives.add(null);
@@ -253,8 +254,8 @@ class IncidencesViewModel extends BaseViewModel
           await incidencesAreaPriority(
               incidenceSel.area, incidenceSel.priority);
         } else {
-          await incidencesAreaPriorityActive(
-              incidenceSel.area, incidenceSel.priority, incidenceSel.active!);
+          await incidencesAreaPriorityActive(incidenceSel.area,
+              incidenceSel.priority, incidenceSel.active ?? false);
         }
       }
     }
@@ -272,8 +273,9 @@ class IncidencesViewModel extends BaseViewModel
         (l) => _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
             (s.error).toUpperCase(), l.message, null, null, null), (r) {
       inputIncidenceSel.add(IncidenceSel());
-      Navigator.of(context).pop();   _incidences.clear();
-      incidences();
+      Navigator.of(context).pop();
+      _incidences.clear();
+      incidences(true);
     });
   }
 
@@ -286,7 +288,7 @@ class IncidencesViewModel extends BaseViewModel
       inputIncidenceSel.add(IncidenceSel());
       Navigator.of(context).pop();
       _incidences.clear();
-      incidences();
+      incidences(true);
     });
   }
 
@@ -296,7 +298,9 @@ class IncidencesViewModel extends BaseViewModel
         .pickFiles(type: FileType.custom, allowedExtensions: ['jpg']);
     if (image != null) {
       final uint8list = image.files.first.bytes!;
-      (await _incidencesUseCase.createFile(IncidenceUseCaseFile(uint8list)))
+      final name = image.files.first.name;
+      (await _incidencesUseCase
+              .createFile(IncidenceUseCaseFile(uint8list, name)))
           .fold((failure) {}, (file) async {
         if (incidence != null) {
           (await _incidencesUseCase.deleteFile(incidence.image))
@@ -348,7 +352,7 @@ abstract class IncidencesViewModelInputs {
 
   Sink get inputIncidenceSelIncidence;
 
-  incidences();
+  incidences(bool firstQuery);
 
   incidencesArea(String area);
 

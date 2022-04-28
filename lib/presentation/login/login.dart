@@ -2,6 +2,7 @@ import 'package:appwrite_incidence/app/dependency_injection.dart';
 import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/common/state_render/state_render_impl.dart';
 import 'package:appwrite_incidence/presentation/global_widgets/text_form_widget.dart';
+import 'package:appwrite_incidence/presentation/resources/assets_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/color_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
 import 'package:flutter/foundation.dart';
@@ -65,10 +66,10 @@ class _LoginViewState extends State<LoginView> {
             child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(
-                      width: AppSize.s140,
+                  SizedBox(
+                      width: AppSize.s250,
                       height: AppSize.s140,
-                      child: FlutterLogo()),
+                      child: Image.asset(ImageAssets.logo,fit: BoxFit.cover)),
                   const SizedBox(height: AppSize.s40),
                   StreamBuilder<String?>(
                     stream: _viewModel.outputErrorEmail,

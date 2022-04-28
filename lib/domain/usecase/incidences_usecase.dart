@@ -72,7 +72,7 @@ class IncidencesUseCase
 
   @override
   Future<Either<Failure, File>> createFile(IncidenceUseCaseFile input) =>
-      _repository.createFile(input.uint8list);
+      _repository.createFile(input.uint8list, input.name);
 
   @override
   Future<Either<Failure, dynamic>> deleteFile(String input) =>
@@ -94,8 +94,9 @@ class IncidencesUseCaseInput {
 
 class IncidenceUseCaseFile {
   Uint8List uint8list;
+  String name;
 
-  IncidenceUseCaseFile(this.uint8list);
+  IncidenceUseCaseFile(this.uint8list, this.name);
 }
 
 abstract class IncidencesUseCaseArea<In, Out> {

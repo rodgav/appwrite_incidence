@@ -7,8 +7,8 @@ import 'package:appwrite_incidence/presentation/main/pages_main/users/users_page
 import 'package:appwrite_incidence/presentation/global_widgets/responsive.dart';
 import 'package:appwrite_incidence/presentation/main/widgets_main/custom_search.dart';
 import 'package:appwrite_incidence/presentation/main/widgets_main/drawer_main.dart';
+import 'package:appwrite_incidence/presentation/resources/assets_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/language_manager.dart';
-import 'package:appwrite_incidence/presentation/resources/strings_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -31,8 +31,7 @@ class _MainViewState extends State<MainView> {
   List<Widget> pages = [
     const IncidencesPage(),
     const AreasPage(),
-    const UsersPage(AppStrings.supervisor),
-    const UsersPage(AppStrings.employe)
+    const UsersPage()
   ];
 
   _bind() {
@@ -62,9 +61,7 @@ class _MainViewState extends State<MainView> {
                 snapshot.data
                     ?.getScreenWidget(context, _getContentWidget(size, s), () {
                   _viewModel.inputState.add(ContentState());
-                }, () {
-                  //_viewModel.login(context);
-                }) ??
+                }, () {}) ??
                 _getContentWidget(size, s)));
   }
 
@@ -113,9 +110,10 @@ class _MainViewState extends State<MainView> {
             mainAxisSize: MainAxisSize.min,
             children: [
               large
-                  ? const SizedBox(
+                  ? SizedBox(
                       width: AppSize.s310,
-                      child: FlutterLogo(),
+                      height: AppSize.s40,
+                      child: Image.asset(ImageAssets.logo),
                     )
                   : IconButton(
                       icon: const Icon(Icons.menu),
@@ -141,8 +139,8 @@ class _MainViewState extends State<MainView> {
                     children: [
                       const Icon(Icons.search),
                       const SizedBox(width: AppSize.s10),
-                      Text(
-                          '${s.search} ${_currentIndex == 0 ? s.incidences : _currentIndex == 1 ? s.areas : _currentIndex == 2 ? s.supervisors : s.employees}'),
+                      Text('${s.search} '
+                          '${_currentIndex == 0 ? s.incidences.toLowerCase() : _currentIndex == 1 ? s.areas.toLowerCase() : s.users.toLowerCase()}'),
                     ],
                   ),
                 ),
@@ -164,7 +162,7 @@ class _MainViewState extends State<MainView> {
                       showDialog(
                           context: context,
                           builder: (_) => AlertDialog(
-                                title:Text(s.changeLanguage),
+                                title: Text(s.changeLanguage),
                                 content: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: LanguageType.values

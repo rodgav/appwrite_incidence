@@ -65,12 +65,12 @@ class StateRenderer extends StatelessWidget {
   }
 
   Widget _getAnimatedImage(String animationName) {
-    return const SizedBox(
+    return SizedBox(
         height: AppSize.s100,
         width: AppSize.s100,
         child:
             //LottieBuilder.asset(animationName)
-            FlutterLogo());
+        Image.asset(ImageAssets.logo));
   }
 
   Widget _getMessage(String message) {

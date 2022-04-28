@@ -1,4 +1,5 @@
 import 'package:appwrite_incidence/intl/generated/l10n.dart';
+import 'package:appwrite_incidence/presentation/resources/assets_manager.dart';
 import 'package:flutter/material.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -21,7 +22,7 @@ class DrawerWidget extends StatelessWidget {
               child: Column(
                 children: [
                   small
-                      ? const DrawerHeader(child: FlutterLogo())
+                      ? DrawerHeader(child: Image.asset(ImageAssets.logo))
                       : const SizedBox(),
                   ListTile(selected: index==0,
                     leading: const Icon(Icons.stream),
@@ -39,16 +40,9 @@ class DrawerWidget extends StatelessWidget {
                   ),
                   ListTile(selected: index==2,
                     leading: const Icon(Icons.stream),
-                    title:  Text(s.supervisors),
+                    title:  Text(s.users),
                     onTap: () {
                       changePage(2);
-                    },
-                  ),
-                  ListTile(selected: index==3,
-                    leading: const Icon(Icons.stream),
-                    title: Text(s.employees),
-                    onTap: () {
-                      changePage(3);
                     },
                   ),
                 ],

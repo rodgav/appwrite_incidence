@@ -49,7 +49,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Correo electrónico error"),
         "employe": MessageLookupByLibrary.simpleMessage("Empleado"),
         "employeError": MessageLookupByLibrary.simpleMessage("Empleado error"),
-        "employees": MessageLookupByLibrary.simpleMessage("Empleados"),
         "error": MessageLookupByLibrary.simpleMessage("Error"),
         "incidence": MessageLookupByLibrary.simpleMessage("Incidencia"),
         "incidences": MessageLookupByLibrary.simpleMessage("Incidencias"),
@@ -85,8 +84,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "supervisor": MessageLookupByLibrary.simpleMessage("Supervisor"),
         "supervisorError":
             MessageLookupByLibrary.simpleMessage("Supervisor error"),
-        "supervisors": MessageLookupByLibrary.simpleMessage("Supervisores"),
         "typeUser": MessageLookupByLibrary.simpleMessage("Tipo de usuario"),
-        "user": MessageLookupByLibrary.simpleMessage("Usuario")
+        "user": MessageLookupByLibrary.simpleMessage("Usuario"),
+        "users": MessageLookupByLibrary.simpleMessage("Usuarios")
       };
 }

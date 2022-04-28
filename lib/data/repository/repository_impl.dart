@@ -322,11 +322,30 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<UsersModel>>> users(
+  Future<Either<Failure, List<UsersModel>>> users(int limit, int offset) async {
+    if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
+      try {
+        final response = await _remoteDataSource.users(limit, offset);
+        final a = response.documents.map((e) => usersFromJson(e.data)).toList();
+        return Right(a);
+      } on AppwriteException catch (e) {
+        return Left(Failure(e.code ?? 0,
+            e.message ?? 'Some thing went wrong, try again later'));
+      } catch (error) {
+        return Left(Failure(0, error.toString()));
+      }
+    } else {
+      return Left(Failure(-7, 'Please check your internet connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<UsersModel>>> usersTypeUser(
       String typeUser, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
-        final response = await _remoteDataSource.users(typeUser, limit, offset);
+        final response =
+            await _remoteDataSource.usersTypeUser(typeUser, limit, offset);
         final a = response.documents.map((e) => usersFromJson(e.data)).toList();
         return Right(a);
       } on AppwriteException catch (e) {
@@ -341,12 +360,12 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<UsersModel>>> usersArea(
+  Future<Either<Failure, List<UsersModel>>> usersTypeUserArea(
       String typeUser, String areaId, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
-        final response =
-            await _remoteDataSource.usersArea(typeUser, areaId, limit, offset);
+        final response = await _remoteDataSource.usersTypeUserArea(
+            typeUser, areaId, limit, offset);
         final a = response.documents.map((e) => usersFromJson(e.data)).toList();
         return Right(a);
       } on AppwriteException catch (e) {
@@ -361,11 +380,15 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<UsersModel>>> usersAreaActive(String typeUser,
-      String areaId, bool active, int limit, int offset) async {
+  Future<Either<Failure, List<UsersModel>>> usersTypeUserAreaActive(
+      String typeUser,
+      String areaId,
+      bool active,
+      int limit,
+      int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
-        final response = await _remoteDataSource.usersAreaActive(
+        final response = await _remoteDataSource.usersTypeUserAreaActive(
             typeUser, areaId, active, limit, offset);
         final a = response.documents.map((e) => usersFromJson(e.data)).toList();
         return Right(a);
@@ -382,11 +405,11 @@ class RepositoryImpl extends Repository {
 
   @override
   Future<Either<Failure, List<UsersModel>>> usersSearch(
-      String typeUser, String search, int limit, int offset) async {
+      String search, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
-        final response = await _remoteDataSource.usersSearch(
-            typeUser, search, limit, offset);
+        final response =
+            await _remoteDataSource.usersSearch(search, limit, offset);
         final a = response.documents.map((e) => usersFromJson(e.data)).toList();
         return Right(a);
       } on AppwriteException catch (e) {
@@ -444,7 +467,6 @@ class RepositoryImpl extends Repository {
       final response = _localDataSource.getPrioritys();
       return Right(response);
     } catch (cacheError) {
-      print('cacheError $cacheError');
       if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
         try {
           final response = await _remoteDataSource.prioritys(limit, offset);
@@ -469,7 +491,7 @@ class RepositoryImpl extends Repository {
     try {
       final response = _localDataSource.getTypeUsers();
       return Right(response);
-    } catch (cacheError) {      print('cacheError $cacheError');
+    } catch (cacheError) {
       if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
         try {
           final response = await _remoteDataSource.typeUsers(limit, offset);
@@ -490,10 +512,11 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, File>> createFile(Uint8List uint8list) async {
+  Future<Either<Failure, File>> createFile(
+      Uint8List uint8list, String name) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
-        final res = await _remoteDataSource.createFile(uint8list);
+        final res = await _remoteDataSource.createFile(uint8list, name);
         return Right(res);
       } on AppwriteException catch (e) {
         return Left(Failure(e.code ?? 0,

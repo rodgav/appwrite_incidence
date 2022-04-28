@@ -29,8 +29,7 @@ class MainUseCase
 
   @override
   Future<Either<Failure, List<UsersModel>>> users(MainUseCaseInput input) =>
-      _repository.usersSearch(
-          input.typeUser, input.search, input.limit, input.offset);
+      _repository.usersSearch(input.search, input.limit, input.offset);
 
   @override
   Future<Either<Failure, dynamic>> deleteSession(
@@ -42,10 +41,10 @@ class MainUseCase
 }
 
 class MainUseCaseInput {
-  String typeUser, search;
+  String search;
   int limit, offset;
 
-  MainUseCaseInput(this.search, this.limit, this.offset, {this.typeUser = ''});
+  MainUseCaseInput(this.search, this.limit, this.offset);
 }
 
 class MainDeleteSessionUseCaseInput {

@@ -40,16 +40,16 @@ abstract class RemoteDataSource {
 
   Future<Document> incidenceUpdate(Incidence incidence);
 
-  Future<DocumentList> users(String typeUser, int limit, int offset);
+  Future<DocumentList> users(int limit, int offset);
+  Future<DocumentList>  usersTypeUser(String typeUser, int limit, int offset);
 
-  Future<DocumentList> usersArea(
+  Future<DocumentList> usersTypeUserArea(
       String typeUser, String areaId, int limit, int offset);
 
-  Future<DocumentList> usersAreaActive(
+  Future<DocumentList> usersTypeUserAreaActive(
       String typeUser, String areaId, bool active, int limit, int offset);
 
-  Future<DocumentList> usersSearch(
-      String typeUser, String search, int limit, int offset);
+  Future<DocumentList> usersSearch(String search, int limit, int offset);
 
   Future<Document> userCreate(
       LoginRequest loginRequest, String area, bool active, String typeUser);
@@ -60,7 +60,7 @@ abstract class RemoteDataSource {
 
   Future<DocumentList> typeUsers(int limit, int offset);
 
-  Future<File> createFile(Uint8List uint8list);
+  Future<File> createFile(Uint8List uint8list,String name);
 
   Future<dynamic> deleteFile(String idFile);
 }
@@ -131,24 +131,26 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       _appServiceClient.incidenceUpdate(incidence);
 
   @override
-  Future<DocumentList> users(String typeUser, int limit, int offset) =>
-      _appServiceClient.users(typeUser, limit, offset);
+  Future<DocumentList> users( int limit, int offset) =>
+      _appServiceClient.users( limit, offset);
+  @override
+  Future<DocumentList> usersTypeUser(String typeUser, int limit, int offset) =>
+      _appServiceClient.usersTypeUser(typeUser, limit, offset);
 
   @override
-  Future<DocumentList> usersArea(
+  Future<DocumentList> usersTypeUserArea(
           String typeUser, String areaId, int limit, int offset) =>
-      _appServiceClient.usersArea(typeUser, areaId, limit, offset);
+      _appServiceClient.usersTypeUserArea(typeUser, areaId, limit, offset);
 
   @override
-  Future<DocumentList> usersAreaActive(
+  Future<DocumentList> usersTypeUserAreaActive(
           String typeUser, String areaId, bool active, int limit, int offset) =>
-      _appServiceClient.usersAreaActive(
+      _appServiceClient.usersTypeUserAreaActive(
           typeUser, areaId, active, limit, offset);
 
   @override
-  Future<DocumentList> usersSearch(
-          String typeUser, String search, int limit, int offset) =>
-      _appServiceClient.usersSearch(typeUser, search, limit, offset);
+  Future<DocumentList> usersSearch(String search, int limit, int offset) =>
+      _appServiceClient.usersSearch(search, limit, offset);
 
   @override
   Future<Document> userCreate(LoginRequest loginRequest, String area,
@@ -168,8 +170,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       _appServiceClient.typeUsers(limit, offset);
 
   @override
-  Future<File> createFile(Uint8List uint8list) =>
-      _appServiceClient.createFile(uint8list);
+  Future<File> createFile(Uint8List uint8list,String name) =>
+      _appServiceClient.createFile(uint8list,name);
 
   @override
   Future deleteFile(String idFile) => _appServiceClient.deleteFile(idFile);

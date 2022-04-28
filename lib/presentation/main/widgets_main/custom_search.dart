@@ -1,7 +1,17 @@
+import 'package:appwrite_incidence/app/dependency_injection.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
 import 'package:appwrite_incidence/domain/model/incidence_model.dart';
 import 'package:appwrite_incidence/domain/model/user_model.dart';
+import 'package:appwrite_incidence/presentation/global_widgets/area.dart';
+import 'package:appwrite_incidence/presentation/global_widgets/incidence.dart';
+import 'package:appwrite_incidence/presentation/global_widgets/user.dart';
 import 'package:appwrite_incidence/presentation/main/main_viewmodel.dart';
+import 'package:appwrite_incidence/presentation/main/pages_main/areas/areas_viewmodel.dart';
+import 'package:appwrite_incidence/presentation/main/pages_main/areas/widgets_areas/area.dart';
+import 'package:appwrite_incidence/presentation/main/pages_main/incidences/incidences_viewmodel.dart';
+import 'package:appwrite_incidence/presentation/main/pages_main/incidences/widgets_incidence/incidence.dart';
+import 'package:appwrite_incidence/presentation/main/pages_main/users/users_viewmodel.dart';
+import 'package:appwrite_incidence/presentation/main/pages_main/users/widgets_users/user.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
 
@@ -82,7 +92,17 @@ class CustomSearch extends SearchDelegate {
                                     mainAxisSpacing: AppSize.s10),
                             itemBuilder: (_, index) {
                               final incidence = incidences[index];
-                              return Center(child: Text(incidence.name),);
+                              return IncidenceItem(incidence, () {
+                                final _viewModelInc =
+                                    instance<IncidencesViewModel>();
+                                showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (_) => IncidenceDialog(
+                                        incidence: incidence,
+                                        viewModel: _viewModelInc,
+                                        username: _viewModelInc.username));
+                              });
                             },
                             itemCount: incidences.length,
                           );
@@ -131,7 +151,15 @@ class CustomSearch extends SearchDelegate {
                                     mainAxisSpacing: AppSize.s10),
                             itemBuilder: (_, index) {
                               final area = areas[index];
-                              return Center(child: Text(area.name),);
+                              return AreaItem(area, () {
+                                final _viewModelAre =
+                                    instance<AreasViewModel>();
+                                showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (_) => AreaDialog(
+                                        area: area, viewModel: _viewModelAre));
+                              });
                             },
                             itemCount: areas.length,
                           );
@@ -147,111 +175,63 @@ class CustomSearch extends SearchDelegate {
                       : const SizedBox();
                 })
           ]));
-    } else if (index == 2) {
-      viewModel.usersSearch(query.trim(), 'supervisors');
-      return NotificationListener<ScrollNotification>(
-          onNotification: (ScrollNotification scrollInfo) {
-            if (scrollInfo.metrics.maxScrollExtent ==
-                scrollInfo.metrics.pixels) {
-              viewModel.usersSearch(query.trim(), 'supervisors');
-            }
-            return true;
-          },
-          child: Column(children: [
-            StreamBuilder<List<UsersModel>>(
-                stream: viewModel.outputUsersSearch,
-                builder: (_, snapshot) {
-                  final users = snapshot.data;
-                  return users != null
-                      ? Expanded(
-                          child: LayoutBuilder(builder: (context, constaints) {
-                          final count = constaints.maxWidth ~/ AppSize.s200;
-                          return GridView.builder(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: AppMargin.m6,
-                                horizontal: AppMargin.m12),
-                            physics: const BouncingScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: count,
-                                    childAspectRatio:
-                                        AppSize.s200 / AppSize.s200,
-                                    crossAxisSpacing: AppSize.s10,
-                                    mainAxisSpacing: AppSize.s10),
-                            itemBuilder: (_, index) {
-                              final user = users[index];
-                              return Center(child: Text(user.name),);
-                            },
-                            itemCount: users.length,
-                          );
-                        }))
-                      : const SizedBox();
-                }),
-            StreamBuilder<bool>(
-                stream: viewModel.outputIsLoading,
-                builder: (_, snapshot) {
-                  final loading = snapshot.data;
-                  return loading != null && loading
-                      ? const CircularProgressIndicator()
-                      : const SizedBox();
-                })
-          ]));
-    } else if (index == 3) {
-      viewModel.usersSearch(query.trim(), 'employees');
-      return NotificationListener<ScrollNotification>(
-          onNotification: (ScrollNotification scrollInfo) {
-            if (scrollInfo.metrics.maxScrollExtent ==
-                scrollInfo.metrics.pixels) {
-              viewModel.usersSearch(query.trim(), 'employees');
-            }
-            return true;
-          },
-          child: Column(children: [
-            StreamBuilder<List<UsersModel>>(
-                stream: viewModel.outputUsersSearch,
-                builder: (_, snapshot) {
-                  final users = snapshot.data;
-                  return users != null
-                      ? Expanded(
-                          child: LayoutBuilder(builder: (context, constaints) {
-                          final count = constaints.maxWidth ~/ AppSize.s200;
-                          return GridView.builder(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: AppMargin.m6,
-                                horizontal: AppMargin.m12),
-                            physics: const BouncingScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: count,
-                                    childAspectRatio:
-                                        AppSize.s200 / AppSize.s200,
-                                    crossAxisSpacing: AppSize.s10,
-                                    mainAxisSpacing: AppSize.s10),
-                            itemBuilder: (_, index) {
-                              final user = users[index];
-                              return Center(child: Text(user.name),);
-                            },
-                            itemCount: users.length,
-                          );
-                        }))
-                      : const SizedBox();
-                }),
-            StreamBuilder<bool>(
-                stream: viewModel.outputIsLoading,
-                builder: (_, snapshot) {
-                  final loading = snapshot.data;
-                  return loading != null && loading
-                      ? const CircularProgressIndicator()
-                      : const SizedBox();
-                })
-          ]));
     } else {
-      return const Center(
-        child: Padding(
-          padding: EdgeInsets.all(AppSize.s10),
-          child: Text('No data'),
-        ),
-      );
+      viewModel.usersSearch(query.trim());
+      return NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification scrollInfo) {
+            if (scrollInfo.metrics.maxScrollExtent ==
+                scrollInfo.metrics.pixels) {
+              viewModel.usersSearch(query.trim());
+            }
+            return true;
+          },
+          child: Column(children: [
+            StreamBuilder<List<UsersModel>>(
+                stream: viewModel.outputUsersSearch,
+                builder: (_, snapshot) {
+                  final users = snapshot.data;
+                  return users != null
+                      ? Expanded(
+                          child: LayoutBuilder(builder: (context, constaints) {
+                          final count = constaints.maxWidth ~/ AppSize.s200;
+                          return GridView.builder(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: AppMargin.m6,
+                                horizontal: AppMargin.m12),
+                            physics: const BouncingScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: count,
+                                    childAspectRatio:
+                                        AppSize.s200 / AppSize.s200,
+                                    crossAxisSpacing: AppSize.s10,
+                                    mainAxisSpacing: AppSize.s10),
+                            itemBuilder: (_, index) {
+                              final user = users[index];
+                              return UserItem(user, () {
+                                final _viewModelUse =
+                                    instance<UsersViewModel>();
+                                showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (_) => UserDialog(
+                                        users: user, viewModel: _viewModelUse));
+                              });
+                            },
+                            itemCount: users.length,
+                          );
+                        }))
+                      : const SizedBox();
+                }),
+            StreamBuilder<bool>(
+                stream: viewModel.outputIsLoading,
+                builder: (_, snapshot) {
+                  final loading = snapshot.data;
+                  return loading != null && loading
+                      ? const CircularProgressIndicator()
+                      : const SizedBox();
+                })
+          ]));
     }
   }
 

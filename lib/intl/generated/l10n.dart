@@ -210,31 +210,11 @@ class S {
     );
   }
 
-  /// `Supervisores`
-  String get supervisors {
+  /// `Usuarios`
+  String get users {
     return Intl.message(
-      'Supervisores',
-      name: 'supervisors',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Empleados`
-  String get employees {
-    return Intl.message(
-      'Empleados',
-      name: 'employees',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Supervisor`
-  String get supervisor {
-    return Intl.message(
-      'Supervisor',
-      name: 'supervisor',
+      'Usuarios',
+      name: 'users',
       desc: '',
       args: [],
     );
@@ -245,6 +225,16 @@ class S {
     return Intl.message(
       'Empleado',
       name: 'employe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supervisor`
+  String get supervisor {
+    return Intl.message(
+      'Supervisor',
+      name: 'supervisor',
       desc: '',
       args: [],
     );

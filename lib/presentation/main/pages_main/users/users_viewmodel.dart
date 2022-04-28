@@ -29,6 +29,7 @@ class UsersViewModel extends BaseViewModel
   @override
   void start() {
     inputUserSel.add(UserSel());
+    typeUsers();
   }
 
   @override
@@ -101,19 +102,16 @@ class UsersViewModel extends BaseViewModel
       _typeUsersStrCtrl.stream.map((typeUsers) => typeUsers);
 
   @override
-  users(String typeUser,bool firstQuery) async {
-    firstQuery?_users.clear():null;
+  users(bool firstQuery) async {
+    firstQuery ? _users.clear() : null;
     if (_users.isEmpty) {
-      _users.clear();
-      (await _usersUseCase.execute(
-              UsersUseCaseInput(typeUser: typeUser, limit: 25, offset: 0)))
+      (await _usersUseCase.execute(UsersUseCaseInput(limit: 25, offset: 0)))
           .fold((l) {}, (users) {
         _users.addAll(users);
         inputUsers.add(_users);
       });
     } else {
       (await _usersUseCase.execute(UsersUseCaseInput(
-              typeUser: typeUser,
               limit: 25,
               offset: _users.length > 1 ? _users.length - 1 : _users.length)))
           .fold((l) {}, (users) {
@@ -126,18 +124,41 @@ class UsersViewModel extends BaseViewModel
   }
 
   @override
-  usersArea(String typeUser, String area) async {
+  usersTypeUser(String typeUser) async {
+    if (_users.isEmpty) {
+      _users.clear();
+      (await _usersUseCase.usersTypeUser(
+              UsersUseCaseInput(typeUser: typeUser, limit: 25, offset: 0)))
+          .fold((l) {}, (users) {
+        _users.addAll(users);
+        inputUsers.add(_users);
+      });
+    } else {
+      (await _usersUseCase.usersTypeUser(UsersUseCaseInput(
+              typeUser: typeUser,
+              limit: 25,
+              offset: _users.length > 1 ? _users.length - 1 : _users.length)))
+          .fold((l) {}, (users) {
+        _users.addAll(users);
+        inputUsers.add(_users);
+      });
+      changeIsLoading(false);
+    }
+  }
+
+  @override
+  usersTypeUserArea(String typeUser, String area) async {
     _users.clear();
     if (_users.isEmpty) {
       _users.clear();
-      (await _usersUseCase.usersArea(UsersUseCaseInput(
+      (await _usersUseCase.usersTypeUserArea(UsersUseCaseInput(
               typeUser: typeUser, area: area, limit: 25, offset: 0)))
           .fold((l) {}, (users) {
         _users.addAll(users);
         inputUsers.add(_users);
       });
     } else {
-      (await _usersUseCase.usersArea(UsersUseCaseInput(
+      (await _usersUseCase.usersTypeUserArea(UsersUseCaseInput(
               typeUser: typeUser,
               area: area,
               limit: 25,
@@ -151,11 +172,11 @@ class UsersViewModel extends BaseViewModel
   }
 
   @override
-  usersAreaActive(String typeUser, String area, bool active) async {
+  usersTypeUserAreaActive(String typeUser, String area, bool active) async {
     _users.clear();
     if (_users.isEmpty) {
       _users.clear();
-      (await _usersUseCase.usersAreaActive(UsersUseCaseInput(
+      (await _usersUseCase.usersTypeUserAreaActive(UsersUseCaseInput(
               typeUser: typeUser,
               area: area,
               active: active,
@@ -166,7 +187,7 @@ class UsersViewModel extends BaseViewModel
         inputUsers.add(_users);
       });
     } else {
-      (await _usersUseCase.usersAreaActive(UsersUseCaseInput(
+      (await _usersUseCase.usersTypeUserAreaActive(UsersUseCaseInput(
               typeUser: typeUser,
               area: area,
               active: active,
@@ -190,18 +211,25 @@ class UsersViewModel extends BaseViewModel
     (await _usersUseCase.areas(null)).fold((l) {}, (areas) {
       inputAreas.add(areas);
     });
-    typeUsers();
   }
 
   @override
-  changeUserSel(UserSel userSel, String typeUser) async {
+  changeUserSel(UserSel userSel) async {
     inputUserSel.add(userSel);
-    if (userSel.area != '') {
-      _actives();
-      if (userSel.active == null) {
-        await usersArea(typeUser, userSel.area);
+    _users.clear();
+    if (userSel.typeUser != '') {
+      await areas();
+      inputActives.add(null);
+      if (userSel.area == '') {
+        await usersTypeUser(userSel.typeUser);
       } else {
-        await usersAreaActive(typeUser, userSel.area, userSel.active!);
+        _actives();
+        if (userSel.active == null) {
+          await usersTypeUserArea(userSel.typeUser, userSel.area);
+        } else {
+          await usersTypeUserAreaActive(
+              userSel.typeUser, userSel.area, userSel.active ?? false);
+        }
       }
     }
   }
@@ -216,6 +244,7 @@ class UsersViewModel extends BaseViewModel
     (await _usersUseCase.typeUsers(null)).fold((l) {}, (typeUsers) {
       inputTypeUsers.add(typeUsers);
     });
+    users(true);
   }
 
   @override
@@ -234,8 +263,9 @@ class UsersViewModel extends BaseViewModel
                 null,
                 null), (r) {
       inputUserSel.add(UserSel());
-      Navigator.of(context).pop();  _users.clear();
-      users(typeUser,false);
+      Navigator.of(context).pop();
+      _users.clear();
+      users(true);
     });
   }
 
@@ -244,13 +274,12 @@ class UsersViewModel extends BaseViewModel
     final s = S.of(context);
     (await _usersUseCase.userUpdate(users1)).fold(
         (l) => _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
-            (s.error).toUpperCase(), l.message, null, null, null),
-        (r) {
-          inputUserSel.add(UserSel());
-          Navigator.of(context).pop();
-          _users.clear();
-          users(users1.typeUser,false);
-        });
+            (s.error).toUpperCase(), l.message, null, null, null), (r) {
+      inputUserSel.add(UserSel());
+      Navigator.of(context).pop();
+      _users.clear();
+      users(true);
+    });
   }
 
   _actives() {
@@ -273,17 +302,19 @@ abstract class UsersViewModelInputs {
 
   Sink get inputTypeUsers;
 
-  users(String typeUser,bool firstQuery);
+  users(bool firstQuery);
 
-  usersArea(String typeUser, String area);
+  usersTypeUser(String typeUser);
 
-  usersAreaActive(String typeUser, String area, bool active);
+  usersTypeUserArea(String typeUser, String area);
+
+  usersTypeUserAreaActive(String typeUser, String area, bool active);
 
   changeIsLoading(bool isLoading);
 
   areas();
 
-  changeUserSel(UserSel userSel, String typeUser);
+  changeUserSel(UserSel userSel);
 
   changeUserSelUser(UserSel userSel);
 

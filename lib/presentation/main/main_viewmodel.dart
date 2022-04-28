@@ -20,7 +20,7 @@ class MainViewModel extends BaseViewModel
   final AppPreferences _appPreferences;
   final LocalDataSource _localDataSource;
 
-  MainViewModel(this._mainUseCase, this._appPreferences,this._localDataSource);
+  MainViewModel(this._mainUseCase, this._appPreferences, this._localDataSource);
 
   final _incidencesSearchStrCtrl = BehaviorSubject<List<Incidence>>();
   final _areasSearchStrCtrl = BehaviorSubject<List<Area>>();
@@ -99,8 +99,12 @@ class MainViewModel extends BaseViewModel
         inputIncidencesSearch.add(_incidencesSearch);
       });
     } else {
-      (await _mainUseCase.execute(
-              MainUseCaseInput(search, 25, _incidencesSearch.length - 1)))
+      (await _mainUseCase.execute(MainUseCaseInput(
+              search,
+              25,
+              _incidencesSearch.length > 1
+                  ? _incidencesSearch.length - 1
+                  : _incidencesSearch.length)))
           .fold((l) {}, (incidences) {
         _incidencesSearch.addAll(incidences);
         inputIncidencesSearch.add(_incidencesSearch);
@@ -121,8 +125,12 @@ class MainViewModel extends BaseViewModel
         inputAreasSearch.add(_areasSearch);
       });
     } else {
-      (await _mainUseCase
-              .areas(MainUseCaseInput(search, 25, _areasSearch.length - 1)))
+      (await _mainUseCase.areas(MainUseCaseInput(
+              search,
+              25,
+              _areasSearch.length > 1
+                  ? _areasSearch.length - 1
+                  : _areasSearch.length)))
           .fold((l) {}, (areas) {
         _areasSearch.addAll(areas);
         inputAreasSearch.add(_areasSearch);
@@ -132,12 +140,12 @@ class MainViewModel extends BaseViewModel
   }
 
   @override
-  usersSearch(String search, String typeUser) async {
+  usersSearch(String search) async {
     if (_query != search) {
       _query = search;
       _usersSearch.clear();
       (await _mainUseCase
-              .users(MainUseCaseInput(search, 25, 0, typeUser: typeUser)))
+              .users(MainUseCaseInput(search, 25, 0)))
           .fold((l) {
         _query = '';
       }, (users) {
@@ -145,8 +153,12 @@ class MainViewModel extends BaseViewModel
         inputUsersSearch.add(_usersSearch);
       });
     } else {
-      (await _mainUseCase
-              .users(MainUseCaseInput(search, 25, _usersSearch.length - 1)))
+      (await _mainUseCase.users(MainUseCaseInput(
+              search,
+              25,
+              _usersSearch.length > 1
+                  ? _usersSearch.length - 1
+                  : _usersSearch.length)))
           .fold((l) {}, (users) {
         _usersSearch.addAll(users);
         inputUsersSearch.add(_usersSearch);
@@ -201,7 +213,7 @@ abstract class MainViewModelInputs {
 
   areasSearch(String search);
 
-  usersSearch(String search, String typeUser);
+  usersSearch(String search);
 
   changeIsLoading(bool isLoading);
 

@@ -130,7 +130,7 @@ class _UserDialogState extends State<UserDialog> {
                   builder: (_, snapshot) {
                     final areas = snapshot.data;
                     return areas != null && areas.isNotEmpty
-                        ? DropdownButtonFormField<String?>(
+                        ? DropdownButtonFormField<String?>(isExpanded: true,
                             decoration: InputDecoration(label: Text(s.area)),
                             hint: Text(s.area),
                             items: areas
@@ -158,7 +158,7 @@ class _UserDialogState extends State<UserDialog> {
                   builder: (_, snapshot) {
                     final prioritys = snapshot.data;
                     return prioritys != null && prioritys.isNotEmpty
-                        ? DropdownButtonFormField<String?>(
+                        ? DropdownButtonFormField<String?>(isExpanded: true,
                             decoration:
                                 InputDecoration(label: Text(s.typeUser)),
                             hint: Text(s.typeUser),
