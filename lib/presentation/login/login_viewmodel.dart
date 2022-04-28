@@ -62,7 +62,7 @@ class LoginViewModel extends BaseViewModel
               context,
               DialogRendererType.errorDialog,
               (s.error).toUpperCase(),
-              '${s.notPermission} ${user.typeUser}',
+              '${s.notPermission}\n${user.typeUser}\nstatus:${user.active}',
               null,
               null,
               null);

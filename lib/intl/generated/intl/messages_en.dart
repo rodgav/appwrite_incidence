@@ -47,6 +47,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "employe": MessageLookupByLibrary.simpleMessage("Employe"),
         "employeError": MessageLookupByLibrary.simpleMessage("Employe error"),
         "error": MessageLookupByLibrary.simpleMessage("Error"),
+        "forgotPassword":
+            MessageLookupByLibrary.simpleMessage("Forgot password"),
         "incidence": MessageLookupByLibrary.simpleMessage("Incidence"),
         "incidences": MessageLookupByLibrary.simpleMessage("Incidences"),
         "inputEmail": MessageLookupByLibrary.simpleMessage("Email"),
@@ -65,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "passwordError": MessageLookupByLibrary.simpleMessage("Password error"),
         "priority": MessageLookupByLibrary.simpleMessage("Priority"),
         "priorityError": MessageLookupByLibrary.simpleMessage("Priority error"),
+        "recover": MessageLookupByLibrary.simpleMessage("Recover"),
         "retryAgain": MessageLookupByLibrary.simpleMessage("Retry again"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),

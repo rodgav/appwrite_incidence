@@ -80,6 +80,26 @@ class S {
     );
   }
 
+  /// `Recuperar`
+  String get recover {
+    return Intl.message(
+      'Recuperar',
+      name: 'recover',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Has olvidado tu cotraseña`
+  String get forgotPassword {
+    return Intl.message(
+      'Has olvidado tu cotraseña',
+      name: 'forgotPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Ruta no encontrada`
   String get noRouteFound {
     return Intl.message(

@@ -3,6 +3,8 @@
   "inputPassword": "Password",
   "inputEmail": "Email",
   "login": "Login",
+  "recover": "Recover",
+  "forgotPassword": "Forgot password",
   "noRouteFound": "Route not found",
   "success": "Success",
   "sendEmail": "Send email",

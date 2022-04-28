@@ -1,5 +1,6 @@
 import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/resources/routes_manager.dart';
+import 'package:appwrite_incidence/presentation/resources/strings_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp.router(title: AppStrings.appName,
         debugShowCheckedModeBanner: false,
         routeInformationParser: RouteGenerator.router.routeInformationParser,
         routerDelegate: RouteGenerator.router.routerDelegate,

@@ -53,7 +53,8 @@ class RouteGenerator {
       redirect: (state) {
         final loggedIn = _appPreferences.getSessionId() != '';
         final loggingIn = state.subloc == Routes.splashRoute ||
-            state.subloc == Routes.loginRoute;
+            state.subloc == Routes.loginRoute ||
+            state.subloc == Routes.forgotPasswordRoute;
         if (!loggedIn) return loggingIn ? null : Routes.splashRoute;
         if (loggingIn) return Routes.mainRoute;
         return null;

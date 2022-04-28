@@ -50,6 +50,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "employe": MessageLookupByLibrary.simpleMessage("Empleado"),
         "employeError": MessageLookupByLibrary.simpleMessage("Empleado error"),
         "error": MessageLookupByLibrary.simpleMessage("Error"),
+        "forgotPassword":
+            MessageLookupByLibrary.simpleMessage("Has olvidado tu cotraseña"),
         "incidence": MessageLookupByLibrary.simpleMessage("Incidencia"),
         "incidences": MessageLookupByLibrary.simpleMessage("Incidencias"),
         "inputEmail": MessageLookupByLibrary.simpleMessage("Correo"),
@@ -72,6 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "priority": MessageLookupByLibrary.simpleMessage("Prioridad"),
         "priorityError":
             MessageLookupByLibrary.simpleMessage("Prioridad error"),
+        "recover": MessageLookupByLibrary.simpleMessage("Recuperar"),
         "retryAgain": MessageLookupByLibrary.simpleMessage("Reintentar"),
         "save": MessageLookupByLibrary.simpleMessage("Guardar"),
         "search": MessageLookupByLibrary.simpleMessage("Buscar"),
