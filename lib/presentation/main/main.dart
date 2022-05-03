@@ -1,6 +1,6 @@
-import 'package:appwrite/models.dart';
 import 'package:appwrite_incidence/app/app_preferences.dart';
 import 'package:appwrite_incidence/app/dependency_injection.dart';
+import 'package:appwrite_incidence/domain/model/user_model.dart';
 import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/common/state_render/state_render_impl.dart';
 import 'package:appwrite_incidence/presentation/main/pages_main/users/users_page.dart';
@@ -8,6 +8,7 @@ import 'package:appwrite_incidence/presentation/global_widgets/responsive.dart';
 import 'package:appwrite_incidence/presentation/main/widgets_main/custom_search.dart';
 import 'package:appwrite_incidence/presentation/main/widgets_main/drawer_main.dart';
 import 'package:appwrite_incidence/presentation/resources/assets_manager.dart';
+import 'package:appwrite_incidence/presentation/resources/color_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/language_manager.dart';
 import 'package:appwrite_incidence/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
@@ -152,32 +153,56 @@ class _MainViewState extends State<MainView> {
               ),
             ],
           ),
-          StreamBuilder<User>(
+          SizedBox(
+            width: AppSize.s60,
+            child: PopupMenuButton<String>(
+              tooltip: s.changeLanguage,
+              itemBuilder: (_) => LanguageType.values
+                  .map((e) =>
+                  PopupMenuItem(child: Text(e.name), value: e.getValue()))
+                  .toList(),
+              child: Center(
+                  child: Text(
+                    _appPreferences.getAppLanguage(),
+                    style: Theme.of(context).textTheme.bodyText2,
+                  )),
+              onSelected: (value) {
+                _appPreferences.setAppLanguage(value);
+                Phoenix.rebirth(context);
+              },
+            ),
+          ),
+          const SizedBox(width: AppSize.s10),
+          StreamBuilder<UsersModel>(
               stream: _viewModel.outputUser,
               builder: (_, snapshot) {
-                return IconButton(
-                    tooltip: snapshot.data?.name ?? s.user,
-                    icon: const Icon(Icons.person),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (_) => AlertDialog(
-                                title: Text(s.changeLanguage),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: LanguageType.values
-                                      .map((e) => TextButton(
-                                          onPressed: () {
-                                            _appPreferences
-                                                .setAppLanguage(e.getValue());
-                                            Phoenix.rebirth(context);
-                                          },
-                                          child: Text(e.name)))
-                                      .toList(),
-                                ),
-                              ));
-                    });
+                final user = snapshot.data;
+                return SizedBox(
+                  width: AppSize.s60,
+                  child: PopupMenuButton<String>(
+                      tooltip: user?.name ?? s.user,
+                      itemBuilder: (_) => [
+                        PopupMenuItem(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: AppPadding.p10, horizontal: 40),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('${s.user}: ${user?.name ?? s.user}'),
+                              Text(
+                                  '${s.typeUser}: ${user?.typeUser ?? s.typeUser}'),
+                              Text(
+                                  '${s.active}: ${user?.active ?? s.active}'),
+                              Text('${s.area}: ${user?.area ?? s.area}'),
+                            ],
+                          ),
+                        )
+                      ],
+                      icon: Icon(Icons.person, color: ColorManager.black)),
+                );
               }),
+          const SizedBox(width: AppSize.s10)
         ],
       ),
     );

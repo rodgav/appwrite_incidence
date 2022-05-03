@@ -1,4 +1,3 @@
-import 'package:appwrite/models.dart';
 import 'package:appwrite_incidence/app/app_preferences.dart';
 import 'package:appwrite_incidence/data/data_source/local_data_source.dart';
 import 'package:appwrite_incidence/domain/model/area_model.dart';
@@ -26,7 +25,7 @@ class MainViewModel extends BaseViewModel
   final _areasSearchStrCtrl = BehaviorSubject<List<Area>>();
   final _usersSearchStrCtrl = BehaviorSubject<List<UsersModel>>();
   final _isLoading = BehaviorSubject<bool>();
-  final _userStrCtrl = BehaviorSubject<User>();
+  final _userStrCtrl = BehaviorSubject<UsersModel>();
   final List<Incidence> _incidencesSearch = [];
   final List<Area> _areasSearch = [];
   final List<UsersModel> _usersSearch = [];
@@ -85,7 +84,7 @@ class MainViewModel extends BaseViewModel
       _isLoading.stream.map((isLoading) => isLoading);
 
   @override
-  Stream<User> get outputUser => _userStrCtrl.stream.map((user) => user);
+  Stream<UsersModel> get outputUser => _userStrCtrl.stream.map((user) => user);
 
   @override
   incidencesSearch(String search) async {
@@ -230,5 +229,5 @@ abstract class MainViewModelOutputs {
 
   Stream<bool> get outputIsLoading;
 
-  Stream<User> get outputUser;
+  Stream<UsersModel> get outputUser;
 }
