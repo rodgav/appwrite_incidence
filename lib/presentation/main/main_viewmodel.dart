@@ -30,6 +30,7 @@ class MainViewModel extends BaseViewModel
   final List<Area> _areasSearch = [];
   final List<UsersModel> _usersSearch = [];
   String _query = '';
+  int total = 0;
 
   @override
   void start() {
@@ -39,6 +40,9 @@ class MainViewModel extends BaseViewModel
 
   @override
   void dispose() async {
+    _incidencesSearch.clear();
+    _areasSearch.clear();
+    _usersSearch.clear();
     await _incidencesSearchStrCtrl.drain();
     _incidencesSearchStrCtrl.close();
     await _areasSearchStrCtrl.drain();
@@ -94,18 +98,20 @@ class MainViewModel extends BaseViewModel
       (await _mainUseCase.execute(MainUseCaseInput(search, 25, 0))).fold((l) {
         _query = '';
       }, (incidences) {
-        _incidencesSearch.addAll(incidences);
+        total = incidences.total;
+        _incidencesSearch.addAll(incidences.incidences);
         inputIncidencesSearch.add(_incidencesSearch);
       });
     } else {
       (await _mainUseCase.execute(MainUseCaseInput(
               search,
               25,
-              _incidencesSearch.length > 1
+              _incidencesSearch.length < total
                   ? _incidencesSearch.length - 1
                   : _incidencesSearch.length)))
           .fold((l) {}, (incidences) {
-        _incidencesSearch.addAll(incidences);
+        total = incidences.total;
+        _incidencesSearch.addAll(incidences.incidences);
         inputIncidencesSearch.add(_incidencesSearch);
       });
       changeIsLoading(false);
@@ -120,18 +126,20 @@ class MainViewModel extends BaseViewModel
       (await _mainUseCase.areas(MainUseCaseInput(search, 25, 0))).fold((l) {
         _query = '';
       }, (areas) {
-        _areasSearch.addAll(areas);
+        total = areas.total;
+        _areasSearch.addAll(areas.areas);
         inputAreasSearch.add(_areasSearch);
       });
     } else {
       (await _mainUseCase.areas(MainUseCaseInput(
               search,
               25,
-              _areasSearch.length > 1
+              _areasSearch.length < total
                   ? _areasSearch.length - 1
                   : _areasSearch.length)))
           .fold((l) {}, (areas) {
-        _areasSearch.addAll(areas);
+        total = areas.total;
+        _areasSearch.addAll(areas.areas);
         inputAreasSearch.add(_areasSearch);
       });
       changeIsLoading(false);
@@ -146,18 +154,20 @@ class MainViewModel extends BaseViewModel
       (await _mainUseCase.users(MainUseCaseInput(search, 25, 0))).fold((l) {
         _query = '';
       }, (users) {
-        _usersSearch.addAll(users);
+        total = users.total;
+        _usersSearch.addAll(users.usersModels);
         inputUsersSearch.add(_usersSearch);
       });
     } else {
       (await _mainUseCase.users(MainUseCaseInput(
               search,
               25,
-              _usersSearch.length > 1
+              _usersSearch.length < total
                   ? _usersSearch.length - 1
                   : _usersSearch.length)))
           .fold((l) {}, (users) {
-        _usersSearch.addAll(users);
+        total = users.total;
+        _usersSearch.addAll(users.usersModels);
         inputUsersSearch.add(_usersSearch);
       });
       changeIsLoading(false);

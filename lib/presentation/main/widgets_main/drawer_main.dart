@@ -6,8 +6,14 @@ class DrawerWidget extends StatelessWidget {
   final int index;
   final bool small;
   final Function(int index) changePage;
+  final VoidCallback? closeDrawer;
 
-  const DrawerWidget(this.index,{required this.changePage,this.small=false, Key? key}) : super(key: key);
+  const DrawerWidget(this.index,
+      {required this.changePage,
+      this.small = false,
+      this.closeDrawer,
+      Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,25 +30,29 @@ class DrawerWidget extends StatelessWidget {
                   small
                       ? DrawerHeader(child: Image.asset(ImageAssets.logo))
                       : const SizedBox(),
-                  ListTile(selected: index==0,
+                  ListTile(
+                    selected: index == 0,
                     leading: const Icon(Icons.stream),
-                    title:  Text(s.incidences),
+                    title: Text(s.incidences),
                     onTap: () {
                       changePage(0);
+                      closeDrawer?.call();
                     },
                   ),
-                  ListTile(selected: index==1,
+                  ListTile(
+                    selected: index == 1,
                     leading: const Icon(Icons.stream),
-                    title:  Text(s.areas),
+                    title: Text(s.areas),
                     onTap: () {
-                      changePage(1);
+                      changePage(1);closeDrawer?.call();
                     },
                   ),
-                  ListTile(selected: index==2,
+                  ListTile(
+                    selected: index == 2,
                     leading: const Icon(Icons.stream),
-                    title:  Text(s.users),
+                    title: Text(s.users),
                     onTap: () {
-                      changePage(2);
+                      changePage(2);closeDrawer?.call();
                     },
                   ),
                 ],

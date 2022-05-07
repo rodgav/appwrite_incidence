@@ -12,15 +12,15 @@ import 'base_usecase.dart';
 
 class IncidencesUseCase
     implements
-        BaseUseCase<IncidencesUseCaseInput, List<Incidence>>,
-        IncidencesUseCaseArea<IncidencesUseCaseInput, List<Incidence>>,
-        IncidencesUseCaseAreaActive<IncidencesUseCaseInput, List<Incidence>>,
+        BaseUseCase<IncidencesUseCaseInput, Incidences>,
+        IncidencesUseCaseArea<IncidencesUseCaseInput, Incidences>,
+        IncidencesUseCaseAreaActive<IncidencesUseCaseInput, Incidences>,
         IncidencesUseCaseAreaActiveTypeReport<IncidencesUseCaseInput,
-            List<Incidence>>,
+            Incidences>,
         IncidencesUseCaseCreate<Incidence, Incidence>,
         IncidencesUseCaseUpdate<Incidence, Incidence>,
         IncidencesUseCasePrioritys<void, List<Name>>,
-        IncidencesUseCaseAreas<void, List<Area>>,
+        IncidencesUseCaseAreas<void, Areas>,
         IncidencesUseCaseCreateFile<IncidenceUseCaseFile, File>,
         IncidencesUseCaseDeleteFile<String, dynamic> {
   final Repository _repository;
@@ -28,27 +28,27 @@ class IncidencesUseCase
   IncidencesUseCase(this._repository);
 
   @override
-  Future<Either<Failure, List<Incidence>>> execute(
+  Future<Either<Failure, Incidences>> execute(
       IncidencesUseCaseInput input) async {
     return await _repository.incidences(input.limit, input.offset);
   }
 
   @override
-  Future<Either<Failure, List<Incidence>>> incidencesArea(
+  Future<Either<Failure, Incidences>> incidencesArea(
       IncidencesUseCaseInput input) async {
     return await _repository.incidencesArea(
         input.area, input.limit, input.offset);
   }
 
   @override
-  Future<Either<Failure, List<Incidence>>> incidencesAreaPriority(
+  Future<Either<Failure, Incidences>> incidencesAreaPriority(
       IncidencesUseCaseInput input) async {
     return await _repository.incidencesAreaPriority(
         input.area, input.priority, input.limit, input.offset);
   }
 
   @override
-  Future<Either<Failure, List<Incidence>>> incidencesAreaPriorityActive(
+  Future<Either<Failure, Incidences>> incidencesAreaPriorityActive(
       IncidencesUseCaseInput input) async {
     return await _repository.incidencesAreaPriorityActive(
         input.area, input.active, input.priority, input.limit, input.offset);
@@ -67,8 +67,7 @@ class IncidencesUseCase
       _repository.prioritys(25, 0);
 
   @override
-  Future<Either<Failure, List<Area>>> areas(void input) =>
-      _repository.areas(25, 0);
+  Future<Either<Failure, Areas>> areas(void input) => _repository.areas(25, 0);
 
   @override
   Future<Either<Failure, File>> createFile(IncidenceUseCaseFile input) =>

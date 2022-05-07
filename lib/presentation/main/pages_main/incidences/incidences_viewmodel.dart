@@ -29,6 +29,7 @@ class IncidencesViewModel extends BaseViewModel
   final _incidenceSelStrCtrl = BehaviorSubject<IncidenceSel>();
   final _incidenceSelIncidenceStrCtrl = BehaviorSubject<IncidenceSel>();
   final List<Incidence> _incidences = [];
+  int total = 0;
 
   @override
   void start() {
@@ -113,17 +114,19 @@ class IncidencesViewModel extends BaseViewModel
       (await _incidencesUseCase
               .execute(IncidencesUseCaseInput(limit: 25, offset: 0)))
           .fold((l) {}, (incidences) {
-        _incidences.addAll(incidences);
+        total = incidences.total;
+        _incidences.addAll(incidences.incidences);
         inputIncidences.add(_incidences);
       });
     } else {
       (await _incidencesUseCase.execute(IncidencesUseCaseInput(
               limit: 25,
-              offset: _incidences.length > 1
+              offset: _incidences.length < total
                   ? _incidences.length - 1
                   : _incidences.length)))
           .fold((l) {}, (incidences) {
-        _incidences.addAll(incidences);
+        total = incidences.total;
+        _incidences.addAll(incidences.incidences);
         inputIncidences.add(_incidences);
       });
       changeIsLoading(false);
@@ -139,18 +142,20 @@ class IncidencesViewModel extends BaseViewModel
       (await _incidencesUseCase.incidencesArea(
               IncidencesUseCaseInput(area: area, limit: 25, offset: 0)))
           .fold((l) {}, (incidences) {
-        _incidences.addAll(incidences);
+        total = incidences.total;
+        _incidences.addAll(incidences.incidences);
         inputIncidences.add(_incidences);
       });
     } else {
       (await _incidencesUseCase.incidencesArea(IncidencesUseCaseInput(
               area: area,
               limit: 25,
-              offset: _incidences.length > 1
+              offset: _incidences.length < total
                   ? _incidences.length - 1
                   : _incidences.length)))
           .fold((l) {}, (incidences) {
-        _incidences.addAll(incidences);
+        total = incidences.total;
+        _incidences.addAll(incidences.incidences);
         inputIncidences.add(_incidences);
       });
       changeIsLoading(false);
@@ -165,7 +170,8 @@ class IncidencesViewModel extends BaseViewModel
       (await _incidencesUseCase.incidencesAreaPriority(IncidencesUseCaseInput(
               priority: priority, area: area, limit: 25, offset: 0)))
           .fold((l) {}, (incidences) {
-        _incidences.addAll(incidences);
+        total = incidences.total;
+        _incidences.addAll(incidences.incidences);
         inputIncidences.add(_incidences);
       });
     } else {
@@ -173,11 +179,12 @@ class IncidencesViewModel extends BaseViewModel
               priority: priority,
               area: area,
               limit: 25,
-              offset: _incidences.length > 1
+              offset: _incidences.length < total
                   ? _incidences.length - 1
                   : _incidences.length)))
           .fold((l) {}, (incidences) {
-        _incidences.addAll(incidences);
+        total = incidences.total;
+        _incidences.addAll(incidences.incidences);
         inputIncidences.add(_incidences);
       });
       changeIsLoading(false);
@@ -198,7 +205,8 @@ class IncidencesViewModel extends BaseViewModel
                   limit: 25,
                   offset: 0)))
           .fold((l) {}, (incidences) {
-        _incidences.addAll(incidences);
+        total = incidences.total;
+        _incidences.addAll(incidences.incidences);
         inputIncidences.add(_incidences);
       });
     } else {
@@ -208,11 +216,12 @@ class IncidencesViewModel extends BaseViewModel
                   priority: priority,
                   area: area,
                   limit: 25,
-                  offset: _incidences.length > 1
+                  offset: _incidences.length < total
                       ? _incidences.length - 1
                       : _incidences.length)))
           .fold((l) {}, (incidences) {
-        _incidences.addAll(incidences);
+        total = incidences.total;
+        _incidences.addAll(incidences.incidences);
         inputIncidences.add(_incidences);
       });
       changeIsLoading(false);
@@ -227,7 +236,7 @@ class IncidencesViewModel extends BaseViewModel
   @override
   areas() async {
     (await _incidencesUseCase.areas(null)).fold((l) {}, (areas) {
-      inputAreas.add(areas);
+      inputAreas.add(areas.areas);
     });
     incidences(true);
   }

@@ -75,6 +75,7 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final s = S.of(context);
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -82,16 +83,18 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
       elevation: 1,
       backgroundColor: Colors.white,
       child: SizedBox(
-        width: AppSize.s250,
+        width: size.width > 800 ? AppSize.s600 : AppSize.s250,
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(AppPadding.p14),
+              padding: EdgeInsets.symmetric(
+                  horizontal:
+                      size.width > 800 ? AppPadding.p50 : AppPadding.p14),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(height: AppSize.s10),
+                  const SizedBox(height: AppSize.s20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -161,6 +164,7 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                   _incidenceSelWid(s),
                   const SizedBox(height: AppSize.s10),
                   _button(s),
+                  const SizedBox(height: AppSize.s20),
                 ],
               ),
             ),
@@ -194,10 +198,12 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                             fit: BoxFit.cover)),
                   ),
                   onTap: () {
-                    widget.viewModel.pickImage(widget.incidence,IncidenceSel(
-                        area: incidenceSel?.area,
-                        priority: incidenceSel?.priority,
-                        active: incidenceSel?.active));
+                    widget.viewModel.pickImage(
+                        widget.incidence,
+                        IncidenceSel(
+                            area: incidenceSel?.area,
+                            priority: incidenceSel?.priority,
+                            active: incidenceSel?.active));
                   }),
               const SizedBox(height: AppSize.s10),
               StreamBuilder<List<Area>>(
@@ -205,7 +211,8 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                   builder: (_, snapshot) {
                     final areas = snapshot.data;
                     return areas != null && areas.isNotEmpty
-                        ? DropdownButtonFormField<String?>(isExpanded: true,
+                        ? DropdownButtonFormField<String?>(
+                            isExpanded: true,
                             decoration: InputDecoration(label: Text(s.area)),
                             hint: Text(s.area),
                             items: areas
@@ -221,7 +228,8 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                               _changeIncidenceSel(IncidenceSel(
                                   area: value,
                                   priority: incidenceSel?.priority,
-                                  active: incidenceSel?.active,image: incidenceSel?.image));
+                                  active: incidenceSel?.active,
+                                  image: incidenceSel?.image));
                             },
                             validator: (value) => (value?.isNotEmpty ?? false)
                                 ? null
@@ -235,7 +243,8 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                   builder: (_, snapshot) {
                     final prioritys = snapshot.data;
                     return prioritys != null && prioritys.isNotEmpty
-                        ? DropdownButtonFormField<String?>(isExpanded: true,
+                        ? DropdownButtonFormField<String?>(
+                            isExpanded: true,
                             decoration:
                                 InputDecoration(label: Text(s.priority)),
                             hint: Text(s.priority),
@@ -252,7 +261,8 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                               _changeIncidenceSel(IncidenceSel(
                                   area: incidenceSel?.area,
                                   priority: value,
-                                  active: incidenceSel?.active,image: incidenceSel?.image));
+                                  active: incidenceSel?.active,
+                                  image: incidenceSel?.image));
                             },
                             validator: (value) => (value?.isNotEmpty ?? false)
                                 ? null
@@ -272,7 +282,8 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                         _changeIncidenceSel(IncidenceSel(
                             area: incidenceSel?.area,
                             priority: incidenceSel?.priority,
-                            active: value,image: incidenceSel?.image));
+                            active: value,
+                            image: incidenceSel?.image));
                       })
                 ],
               )
@@ -300,7 +311,7 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
                           description: _descrTxtEditCtrl.text.trim(),
                           dateCreate:
                               DateTime.parse(_dateCreateTxtEditCtrl.text),
-                          image: incidenceSel?.image??'',
+                          image: incidenceSel?.image ?? '',
                           priority: incidenceSel?.priority ?? '',
                           area: incidenceSel?.area ?? '',
                           employe: _employeTxtEditCtrl.text.trim(),

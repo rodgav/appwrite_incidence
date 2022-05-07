@@ -16,6 +16,7 @@ class AreasViewModel extends BaseViewModel
   final _areasStrCtrl = BehaviorSubject<List<Area>>();
   final _isLoading = BehaviorSubject<bool>();
   final List<Area> _areas = [];
+  int total = 0;
 
   @override
   void start() {
@@ -53,14 +54,16 @@ class AreasViewModel extends BaseViewModel
       _areas.clear();
       (await _areasUseCase.execute(AreasUseCaseInput(25, 0))).fold((l) {},
           (areas) {
-        _areas.addAll(areas);
+        total = areas.total;
+        _areas.addAll(areas.areas);
         inputAreas.add(_areas);
       });
     } else {
       (await _areasUseCase.execute(AreasUseCaseInput(
-              25, _areas.length > 1 ? _areas.length - 1 : _areas.length)))
+              25, _areas.length < total ? _areas.length - 1 : _areas.length)))
           .fold((l) {}, (areas) {
-        _areas.addAll(areas);
+        total = areas.total;
+        _areas.addAll(areas.areas);
         inputAreas.add(_areas);
       });
       changeIsLoading(false);
@@ -87,13 +90,14 @@ class AreasViewModel extends BaseViewModel
   @override
   createArea(Area area, BuildContext context) async {
     final s = S.of(context);
-  (await _areasUseCase.areaCreate(area)).fold(
-          (l) => _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
-          (s.error).toUpperCase(), l.message, null, null, null), (r) {
-    Navigator.of(context).pop();
-    _areas.clear();
-    areas();
-  });}
+    (await _areasUseCase.areaCreate(area)).fold(
+        (l) => _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
+            (s.error).toUpperCase(), l.message, null, null, null), (r) {
+      Navigator.of(context).pop();
+      _areas.clear();
+      areas();
+    });
+  }
 }
 
 abstract class AreasViewModelInputs {

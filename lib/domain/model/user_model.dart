@@ -19,3 +19,10 @@ class UsersModel {
   String id;
   String collection;
 }
+
+class UsersModels {
+  List<UsersModel> usersModels;
+  int total;
+
+  UsersModels({required this.usersModels, required this.total});
+}

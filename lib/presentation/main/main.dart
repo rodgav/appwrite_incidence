@@ -28,6 +28,7 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   final _viewModel = instance<MainViewModel>();
   final _appPreferences = instance<AppPreferences>();
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   int _currentIndex = 0;
   List<Widget> pages = [
     const IncidencesPage(),
@@ -86,8 +87,15 @@ class _MainViewState extends State<MainView> {
             ],
           ),
           smallScreen: Scaffold(
-            drawer: DrawerWidget(_currentIndex,
-                changePage: _changePage, small: true),
+            key: _key,
+            drawer: DrawerWidget(
+              _currentIndex,
+              changePage: _changePage,
+              small: true,
+              closeDrawer: () {
+                Navigator.of(context).pop();
+              },
+            ),
             body: Column(
               children: [
                 const SizedBox(height: AppSize.s10),
@@ -118,12 +126,12 @@ class _MainViewState extends State<MainView> {
                     )
                   : IconButton(
                       icon: const Icon(Icons.menu),
-                      onPressed: () {},
+                      onPressed: () => _key.currentState?.openDrawer(),
                     ),
               const SizedBox(width: AppSize.s5),
               GestureDetector(
                 child: Container(
-                  width: large ? size.width * 0.4 : size.width * 0.7,
+                  width: large ? size.width * 0.4 : size.width * 0.45,
                   height: AppSize.s40,
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -140,8 +148,14 @@ class _MainViewState extends State<MainView> {
                     children: [
                       const Icon(Icons.search),
                       const SizedBox(width: AppSize.s10),
-                      Text('${s.search} '
-                          '${_currentIndex == 0 ? s.incidences.toLowerCase() : _currentIndex == 1 ? s.areas.toLowerCase() : s.users.toLowerCase()}'),
+                      Expanded(
+                        child: Text(
+                          '${s.search} '
+                          '${_currentIndex == 0 ? s.incidences.toLowerCase() : _currentIndex == 1 ? s.areas.toLowerCase() : s.users.toLowerCase()}',
+                          style:
+                              const TextStyle(overflow: TextOverflow.ellipsis),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -153,56 +167,64 @@ class _MainViewState extends State<MainView> {
               ),
             ],
           ),
-          SizedBox(
-            width: AppSize.s60,
-            child: PopupMenuButton<String>(
-              tooltip: s.changeLanguage,
-              itemBuilder: (_) => LanguageType.values
-                  .map((e) =>
-                  PopupMenuItem(child: Text(e.name), value: e.getValue()))
-                  .toList(),
-              child: Center(
-                  child: Text(
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: AppSize.s60,
+                child: PopupMenuButton<String>(
+                  tooltip: s.changeLanguage,
+                  itemBuilder: (_) => LanguageType.values
+                      .map((e) => PopupMenuItem(
+                          child: Text(e.name), value: e.getValue()))
+                      .toList(),
+                  child: Center(
+                      child: Text(
                     _appPreferences.getAppLanguage(),
                     style: Theme.of(context).textTheme.bodyText2,
                   )),
-              onSelected: (value) {
-                _appPreferences.setAppLanguage(value);
-                Phoenix.rebirth(context);
-              },
-            ),
-          ),
-          const SizedBox(width: AppSize.s10),
-          StreamBuilder<UsersModel>(
-              stream: _viewModel.outputUser,
-              builder: (_, snapshot) {
-                final user = snapshot.data;
-                return SizedBox(
-                  width: AppSize.s60,
-                  child: PopupMenuButton<String>(
-                      tooltip: user?.name ?? s.user,
-                      itemBuilder: (_) => [
-                        PopupMenuItem(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: AppPadding.p10, horizontal: 40),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('${s.user}: ${user?.name ?? s.user}'),
-                              Text(
-                                  '${s.typeUser}: ${user?.typeUser ?? s.typeUser}'),
-                              Text(
-                                  '${s.active}: ${user?.active ?? s.active}'),
-                              Text('${s.area}: ${user?.area ?? s.area}'),
-                            ],
-                          ),
-                        )
-                      ],
-                      icon: Icon(Icons.person, color: ColorManager.black)),
-                );
-              }),
-          const SizedBox(width: AppSize.s10)
+                  onSelected: (value) {
+                    _appPreferences.setAppLanguage(value);
+                    Phoenix.rebirth(context);
+                  },
+                ),
+              ),
+              const SizedBox(width: AppSize.s5),
+              StreamBuilder<UsersModel>(
+                  stream: _viewModel.outputUser,
+                  builder: (_, snapshot) {
+                    final user = snapshot.data;
+                    return SizedBox(
+                      width: AppSize.s60,
+                      child: PopupMenuButton<String>(
+                          tooltip: user?.name ?? s.user,
+                          itemBuilder: (_) => [
+                                PopupMenuItem(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: AppPadding.p10, horizontal: 40),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          '${s.user}: ${user?.name ?? s.user}'),
+                                      Text(
+                                          '${s.typeUser}: ${user?.typeUser ?? s.typeUser}'),
+                                      Text(
+                                          '${s.active}: ${user?.active ?? s.active}'),
+                                      Text(
+                                          '${s.area}: ${user?.area ?? s.area}'),
+                                    ],
+                                  ),
+                                )
+                              ],
+                          icon: Icon(Icons.person, color: ColorManager.black)),
+                    );
+                  }),
+              const SizedBox(width: AppSize.s5),
+            ],
+          )
         ],
       ),
     );

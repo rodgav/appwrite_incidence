@@ -25,6 +25,7 @@ class UsersViewModel extends BaseViewModel
   final _userSelUserStrCtrl = BehaviorSubject<UserSel>();
   final _typeUsersStrCtrl = BehaviorSubject<List<Name>>();
   final List<UsersModel> _users = [];
+  int total = 0;
 
   @override
   void start() {
@@ -107,15 +108,18 @@ class UsersViewModel extends BaseViewModel
     if (_users.isEmpty) {
       (await _usersUseCase.execute(UsersUseCaseInput(limit: 25, offset: 0)))
           .fold((l) {}, (users) {
-        _users.addAll(users);
+        total = users.total;
+        _users.addAll(users.usersModels);
         inputUsers.add(_users);
       });
     } else {
       (await _usersUseCase.execute(UsersUseCaseInput(
               limit: 25,
-              offset: _users.length > 1 ? _users.length - 1 : _users.length)))
+              offset:
+                  _users.length < total ? _users.length - 1 : _users.length)))
           .fold((l) {}, (users) {
-        _users.addAll(users);
+        total = users.total;
+        _users.addAll(users.usersModels);
         inputUsers.add(_users);
       });
       changeIsLoading(false);
@@ -130,16 +134,19 @@ class UsersViewModel extends BaseViewModel
       (await _usersUseCase.usersTypeUser(
               UsersUseCaseInput(typeUser: typeUser, limit: 25, offset: 0)))
           .fold((l) {}, (users) {
-        _users.addAll(users);
+        total = users.total;
+        _users.addAll(users.usersModels);
         inputUsers.add(_users);
       });
     } else {
       (await _usersUseCase.usersTypeUser(UsersUseCaseInput(
               typeUser: typeUser,
               limit: 25,
-              offset: _users.length > 1 ? _users.length - 1 : _users.length)))
+              offset:
+                  _users.length < total ? _users.length - 1 : _users.length)))
           .fold((l) {}, (users) {
-        _users.addAll(users);
+        total = users.total;
+        _users.addAll(users.usersModels);
         inputUsers.add(_users);
       });
       changeIsLoading(false);
@@ -154,7 +161,8 @@ class UsersViewModel extends BaseViewModel
       (await _usersUseCase.usersTypeUserArea(UsersUseCaseInput(
               typeUser: typeUser, area: area, limit: 25, offset: 0)))
           .fold((l) {}, (users) {
-        _users.addAll(users);
+        total = users.total;
+        _users.addAll(users.usersModels);
         inputUsers.add(_users);
       });
     } else {
@@ -162,9 +170,11 @@ class UsersViewModel extends BaseViewModel
               typeUser: typeUser,
               area: area,
               limit: 25,
-              offset: _users.length > 1 ? _users.length - 1 : _users.length)))
+              offset:
+                  _users.length < total ? _users.length - 1 : _users.length)))
           .fold((l) {}, (users) {
-        _users.addAll(users);
+        total = users.total;
+        _users.addAll(users.usersModels);
         inputUsers.add(_users);
       });
       changeIsLoading(false);
@@ -183,7 +193,8 @@ class UsersViewModel extends BaseViewModel
               limit: 25,
               offset: 0)))
           .fold((l) {}, (users) {
-        _users.addAll(users);
+        total = users.total;
+        _users.addAll(users.usersModels);
         inputUsers.add(_users);
       });
     } else {
@@ -192,9 +203,11 @@ class UsersViewModel extends BaseViewModel
               area: area,
               active: active,
               limit: 25,
-              offset: _users.length > 1 ? _users.length - 1 : _users.length)))
+              offset:
+                  _users.length < total ? _users.length - 1 : _users.length)))
           .fold((l) {}, (users) {
-        _users.addAll(users);
+        total = users.total;
+        _users.addAll(users.usersModels);
         inputUsers.add(_users);
       });
       changeIsLoading(false);

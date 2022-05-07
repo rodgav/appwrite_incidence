@@ -15,3 +15,10 @@ class Area {
   String id;
   String collection;
 }
+
+class Areas {
+  List<Area> areas;
+  int total;
+
+  Areas({required this.areas, required this.total});
+}

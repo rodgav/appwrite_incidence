@@ -79,12 +79,12 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Area>>> areas(int limit, int offset) async {
+  Future<Either<Failure, Areas>> areas(int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
         final response = await _remoteDataSource.areas(limit, offset);
         final a = response.documents.map((e) => areaFromJson(e.data)).toList();
-        return Right(a);
+        return Right(Areas(areas: a, total: response.total));
       } on AppwriteException catch (e) {
         return Left(Failure(e.code ?? 0,
             e.message ?? 'Some thing went wrong, try again later'));
@@ -97,14 +97,14 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Area>>> areasSearch(
+  Future<Either<Failure, Areas>> areasSearch(
       String search, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
         final response =
             await _remoteDataSource.areasSearch(search, limit, offset);
         final a = response.documents.map((e) => areaFromJson(e.data)).toList();
-        return Right(a);
+        return Right(Areas(areas: a, total: response.total));
       } on AppwriteException catch (e) {
         return Left(Failure(e.code ?? 0,
             e.message ?? 'Some thing went wrong, try again later'));
@@ -153,14 +153,13 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Incidence>>> incidences(
-      int limit, int offset) async {
+  Future<Either<Failure, Incidences>> incidences(int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
         final response = await _remoteDataSource.incidences(limit, offset);
         final a =
             response.documents.map((e) => incidenceFromJson(e.data)).toList();
-        return Right(a);
+        return Right(Incidences(incidences: a, total: response.total));
       } on AppwriteException catch (e) {
         return Left(Failure(e.code ?? 0,
             e.message ?? 'Some thing went wrong, try again later'));
@@ -173,7 +172,7 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Incidence>>> incidencesArea(
+  Future<Either<Failure, Incidences>> incidencesArea(
       String areaId, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
@@ -181,7 +180,7 @@ class RepositoryImpl extends Repository {
             await _remoteDataSource.incidencesArea(areaId, limit, offset);
         final a =
             response.documents.map((e) => incidenceFromJson(e.data)).toList();
-        return Right(a);
+        return Right(Incidences(incidences: a, total: response.total));
       } on AppwriteException catch (e) {
         return Left(Failure(e.code ?? 0,
             e.message ?? 'Some thing went wrong, try again later'));
@@ -194,7 +193,7 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Incidence>>> incidencesAreaPriority(
+  Future<Either<Failure, Incidences>> incidencesAreaPriority(
       String areaId, String priority, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
@@ -202,7 +201,7 @@ class RepositoryImpl extends Repository {
             areaId, priority, limit, offset);
         final a =
             response.documents.map((e) => incidenceFromJson(e.data)).toList();
-        return Right(a);
+        return Right(Incidences(incidences: a, total: response.total));
       } on AppwriteException catch (e) {
         return Left(Failure(e.code ?? 0,
             e.message ?? 'Some thing went wrong, try again later'));
@@ -215,7 +214,7 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Incidence>>> incidencesAreaPriorityActive(
+  Future<Either<Failure, Incidences>> incidencesAreaPriorityActive(
       String areaId,
       bool active,
       String priority,
@@ -227,7 +226,7 @@ class RepositoryImpl extends Repository {
             areaId, active, priority, limit, offset);
         final a =
             response.documents.map((e) => incidenceFromJson(e.data)).toList();
-        return Right(a);
+        return Right(Incidences(incidences: a, total: response.total));
       } on AppwriteException catch (e) {
         return Left(Failure(e.code ?? 0,
             e.message ?? 'Some thing went wrong, try again later'));
@@ -240,7 +239,7 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Incidence>>> incidencesSearch(
+  Future<Either<Failure, Incidences>> incidencesSearch(
       String search, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
@@ -248,7 +247,7 @@ class RepositoryImpl extends Repository {
             await _remoteDataSource.incidencesSearch(search, limit, offset);
         final a =
             response.documents.map((e) => incidenceFromJson(e.data)).toList();
-        return Right(a);
+        return Right(Incidences(incidences: a, total: response.total));
       } on AppwriteException catch (e) {
         return Left(Failure(e.code ?? 0,
             e.message ?? 'Some thing went wrong, try again later'));
@@ -323,12 +322,12 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<UsersModel>>> users(int limit, int offset) async {
+  Future<Either<Failure, UsersModels>> users(int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
         final response = await _remoteDataSource.users(limit, offset);
         final a = response.documents.map((e) => usersFromJson(e.data)).toList();
-        return Right(a);
+        return Right(UsersModels(usersModels: a, total: response.total));
       } on AppwriteException catch (e) {
         return Left(Failure(e.code ?? 0,
             e.message ?? 'Some thing went wrong, try again later'));
@@ -341,14 +340,14 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<UsersModel>>> usersTypeUser(
+  Future<Either<Failure, UsersModels>> usersTypeUser(
       String typeUser, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
         final response =
             await _remoteDataSource.usersTypeUser(typeUser, limit, offset);
         final a = response.documents.map((e) => usersFromJson(e.data)).toList();
-        return Right(a);
+        return Right(UsersModels(usersModels: a, total: response.total));
       } on AppwriteException catch (e) {
         return Left(Failure(e.code ?? 0,
             e.message ?? 'Some thing went wrong, try again later'));
@@ -361,14 +360,14 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<UsersModel>>> usersTypeUserArea(
+  Future<Either<Failure, UsersModels>> usersTypeUserArea(
       String typeUser, String areaId, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
         final response = await _remoteDataSource.usersTypeUserArea(
             typeUser, areaId, limit, offset);
         final a = response.documents.map((e) => usersFromJson(e.data)).toList();
-        return Right(a);
+        return Right(UsersModels(usersModels: a, total: response.total));
       } on AppwriteException catch (e) {
         return Left(Failure(e.code ?? 0,
             e.message ?? 'Some thing went wrong, try again later'));
@@ -381,18 +380,14 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<UsersModel>>> usersTypeUserAreaActive(
-      String typeUser,
-      String areaId,
-      bool active,
-      int limit,
-      int offset) async {
+  Future<Either<Failure, UsersModels>> usersTypeUserAreaActive(String typeUser,
+      String areaId, bool active, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
         final response = await _remoteDataSource.usersTypeUserAreaActive(
             typeUser, areaId, active, limit, offset);
         final a = response.documents.map((e) => usersFromJson(e.data)).toList();
-        return Right(a);
+        return Right(UsersModels(usersModels: a, total: response.total));
       } on AppwriteException catch (e) {
         return Left(Failure(e.code ?? 0,
             e.message ?? 'Some thing went wrong, try again later'));
@@ -405,14 +400,14 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<UsersModel>>> usersSearch(
+  Future<Either<Failure, UsersModels>> usersSearch(
       String search, int limit, int offset) async {
     if (kIsWeb ? true : (await _networkInfo?.isConnected ?? false)) {
       try {
         final response =
             await _remoteDataSource.usersSearch(search, limit, offset);
         final a = response.documents.map((e) => usersFromJson(e.data)).toList();
-        return Right(a);
+        return Right(UsersModels(usersModels: a, total: response.total));
       } on AppwriteException catch (e) {
         return Left(Failure(e.code ?? 0,
             e.message ?? 'Some thing went wrong, try again later'));

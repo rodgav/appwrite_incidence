@@ -7,7 +7,7 @@ import 'base_usecase.dart';
 
 class AreasUseCase
     implements
-        BaseUseCase<AreasUseCaseInput, List<Area>>,
+        BaseUseCase<AreasUseCaseInput, Areas>,
         AreasUseCaseInputCreate<Area, Area>,
         AreasUseCaseInputUpdate<Area, Area> {
   final Repository _repository;
@@ -15,7 +15,7 @@ class AreasUseCase
   AreasUseCase(this._repository);
 
   @override
-  Future<Either<Failure, List<Area>>> execute(AreasUseCaseInput input) =>
+  Future<Either<Failure, Areas>> execute(AreasUseCaseInput input) =>
       _repository.areas(input.limit, input.offset);
 
   @override

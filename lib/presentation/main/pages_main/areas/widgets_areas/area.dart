@@ -8,7 +8,8 @@ class AreaDialog extends StatefulWidget {
   final Area? area;
   final AreasViewModel viewModel;
 
-  const AreaDialog({required this.viewModel,this.area, Key? key}) : super(key: key);
+  const AreaDialog({required this.viewModel, this.area, Key? key})
+      : super(key: key);
 
   @override
   State<AreaDialog> createState() => _AreaDialogState();
@@ -38,6 +39,7 @@ class _AreaDialogState extends State<AreaDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final s = S.of(context);
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -45,16 +47,18 @@ class _AreaDialogState extends State<AreaDialog> {
       elevation: 1,
       backgroundColor: Colors.white,
       child: SizedBox(
-        width: AppSize.s250,
+        width: size.width > 800 ? AppSize.s600 : AppSize.s250,
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(AppPadding.p14),
+              padding: EdgeInsets.symmetric(
+                  horizontal:
+                      size.width > 800 ? AppPadding.p50 : AppPadding.p14),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(height: AppSize.s10),
+                  const SizedBox(height: AppSize.s20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -83,6 +87,7 @@ class _AreaDialogState extends State<AreaDialog> {
                   ),
                   const SizedBox(height: AppSize.s10),
                   _button(s),
+                  const SizedBox(height: AppSize.s20),
                 ],
               ),
             ),

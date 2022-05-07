@@ -49,6 +49,7 @@ class _UserDialogState extends State<UserDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final s = S.of(context);
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -56,16 +57,18 @@ class _UserDialogState extends State<UserDialog> {
       elevation: 1,
       backgroundColor: Colors.white,
       child: SizedBox(
-        width: AppSize.s250,
+        width: size.width > 800 ? AppSize.s600 : AppSize.s250,
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(AppPadding.p14),
+              padding: EdgeInsets.symmetric(
+                  horizontal:
+                      size.width > 800 ? AppPadding.p50 : AppPadding.p14),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(height: AppSize.s10),
+                  const SizedBox(height: AppSize.s20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -108,6 +111,7 @@ class _UserDialogState extends State<UserDialog> {
                   _userSelWid(s),
                   const SizedBox(height: AppSize.s10),
                   _button(s),
+                  const SizedBox(height: AppSize.s20),
                 ],
               ),
             ),
@@ -130,7 +134,8 @@ class _UserDialogState extends State<UserDialog> {
                   builder: (_, snapshot) {
                     final areas = snapshot.data;
                     return areas != null && areas.isNotEmpty
-                        ? DropdownButtonFormField<String?>(isExpanded: true,
+                        ? DropdownButtonFormField<String?>(
+                            isExpanded: true,
                             decoration: InputDecoration(label: Text(s.area)),
                             hint: Text(s.area),
                             items: areas
@@ -158,7 +163,8 @@ class _UserDialogState extends State<UserDialog> {
                   builder: (_, snapshot) {
                     final prioritys = snapshot.data;
                     return prioritys != null && prioritys.isNotEmpty
-                        ? DropdownButtonFormField<String?>(isExpanded: true,
+                        ? DropdownButtonFormField<String?>(
+                            isExpanded: true,
                             decoration:
                                 InputDecoration(label: Text(s.typeUser)),
                             hint: Text(s.typeUser),

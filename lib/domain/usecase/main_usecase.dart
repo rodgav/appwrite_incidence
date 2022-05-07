@@ -8,9 +8,9 @@ import 'package:dartz/dartz.dart';
 
 class MainUseCase
     implements
-        BaseUseCase<MainUseCaseInput, List<Incidence>>,
-        MainUseCaseAreas<MainUseCaseInput, List<Area>>,
-        MainUseCaseUsers<MainUseCaseInput, List<UsersModel>>,
+        BaseUseCase<MainUseCaseInput, Incidences>,
+        MainUseCaseAreas<MainUseCaseInput, Areas>,
+        MainUseCaseUsers<MainUseCaseInput, UsersModels>,
         MainUseCaseDeleteSession<MainDeleteSessionUseCaseInput, dynamic>,
         MainUseCaseAccount<String, UsersModel> {
   final Repository _repository;
@@ -18,15 +18,15 @@ class MainUseCase
   MainUseCase(this._repository);
 
   @override
-  Future<Either<Failure, List<Incidence>>> execute(MainUseCaseInput input) =>
+  Future<Either<Failure, Incidences>> execute(MainUseCaseInput input) =>
       _repository.incidencesSearch(input.search, input.limit, input.offset);
 
   @override
-  Future<Either<Failure, List<Area>>> areas(MainUseCaseInput input) =>
+  Future<Either<Failure, Areas>> areas(MainUseCaseInput input) =>
       _repository.areasSearch(input.search, input.limit, input.offset);
 
   @override
-  Future<Either<Failure, List<UsersModel>>> users(MainUseCaseInput input) =>
+  Future<Either<Failure, UsersModels>> users(MainUseCaseInput input) =>
       _repository.usersSearch(input.search, input.limit, input.offset);
 
   @override
