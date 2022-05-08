@@ -45,6 +45,7 @@ class _LoginViewState extends State<LoginView> {
     final size = MediaQuery.of(context).size;
     final s = S.of(context);
     return Scaffold(
+        backgroundColor: ColorManager.primary.withOpacity(0.7),
         body: StreamBuilder<FlowState>(
             stream: _viewModel.outputState,
             builder: (_, snapshot) =>
@@ -65,7 +66,10 @@ class _LoginViewState extends State<LoginView> {
 
   Widget _form(double width, S s) {
     return Center(
-      child: SizedBox(
+      child: Container(
+        decoration: BoxDecoration(
+            color: ColorManager.white,
+            borderRadius: BorderRadius.circular(AppSize.s10)),
         width: width,
         child: SingleChildScrollView(
           child: Padding(
@@ -122,7 +126,8 @@ class _LoginViewState extends State<LoginView> {
                                   : null,
                               child: Text(s.login)),
                         )),
-                const SizedBox(height: AppSize.s10),TextButton(
+                const SizedBox(height: AppSize.s10),
+                TextButton(
                     onPressed: () =>
                         GoRouter.of(context).push(Routes.forgotPasswordRoute),
                     child: Text(s.forgotPassword))

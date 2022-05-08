@@ -1,24 +1,147 @@
-# appwrite_incidence
+# Incidence app - Admin
+project for the appwrite hackathon (flutter and appwrite).
 
-A new Flutter project.
+## Get starting
+* appwrite v.0.13.4
+* flutter v.2.10.3
 
-## Getting Started
+1. clone project.
+2. create collections and attributes
+    * collections permissions **Document level**
+    
+    ## incidences
 
-This project is a starting point for a Flutter application.
+    | attributeId   | type      |              |
+    |---------------|-----------|--------------|
+    |name           | string    |required      |
+    |description    | string    |required      |
+    |date_create    | string    |required      |
+    |image          | string    |required      |
+    |priority       | string    |required      |
+    |area           | string    |required      |
+    |name           | string    |required      |
+    |employe        | string    |required      |
+    |supervisor     | string    |required      |
+    |solution       | string    |required      |
+    |date_solution  | string    |required      |
+    |active         | boolean   |required      |
+    
+    ## areas
 
-A few resources to get you started if this is your first Flutter project:
+    | attributeId   | type      |              |
+    |---------------|-----------|--------------|
+    |name           | string    |required      |
+    |description    | string    |required      |
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+    ## users
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+    | attributeId   | type      |              |
+    |---------------|-----------|--------------|
+    |name           | string    |required      |
+    |area           | string    |required      |
+    |active         | boolean   |required      |
+    |type_user      | string    |required      |
 
-atributs of resources graphics
-<a href="https://www.flaticon.com/free-icons/jpg" title="jpg icons">Jpg icons created by smalllikeart - Flaticon</a>
-<a href="https://www.freepik.es/vectores/nino-adulto">Vector de niño y adulto creado por freepik - www.freepik.es</a>
+    ## prioritys
 
+    | attributeId   | type      |              |
+    |---------------|-----------|--------------|
+    |name           | string    |required      |
+    
+    ## type_users
+
+    | attributeId   | type      |              |
+    |---------------|-----------|--------------|
+    |name           | string    |required      |
+
+3. create indexes
+    ## incidences
+
+    | attributeId   | type      | attributes   |
+    |---------------|-----------|--------------|
+    |area           | key       | area(asc)    |
+    |area_priority  | key       | area(asc), priority(asc)    |
+    |area_priority_active  | key       | area(asc), priority(asc), active(asc)    |
+    |employe        | key       | employe(asc)    |
+    |employe_active | key       | employe(asc), active(asc)    |
+    |search         | fulltext  | name(asc)    |
+
+    ## areas
+
+    | attributeId   | type      | attributes   |
+    |---------------|-----------|--------------|
+    |search         | fulltext  | name(asc)    |
+
+    ## users
+    
+    | attributeId   | type      | attributes   |
+    |---------------|-----------|--------------|
+    |typeUser       | key       | type_user(asc)|
+    |typeUser_area  | key       | type_user(asc),area(asc)|
+    |typeUser_area_active  | key       | type_user(asc),area(asc),active(asc)|
+    |search         | fulltext  | name(asc)    |
+
+4.  create documents
+    
+    ## prioritys
+
+    - Baja, Media, Alta
+
+    ## type_users
+
+    - Employe, Supervisor
+
+4. create bucket **images** 
+    * bucket permissions **File level**
+
+5. edit the filename constants.example.dart to constants.dart, fill in your details. the file is located in project/lib/app/constants.example.
+
+## Description
+The objective of this project is to facilitate the creation and solution of incidents or incidents that occur within a company or business.
+
+### This project is a part of a complete project.
+
+- [admin](https://github.com/rodgav/appwrite_incidence)
+- [supervisor](https://github.com/rodgav/appwrite_incidence_supervisor)
+- [employe](https://github.com/rodgav/appwrite_incidence_employe)
+
+### Contains:
+- login and forgot password
+
+### Functions:
+- create and edit incidences.
+- create and edit areas.
+- create and edit users.
+
+### Screenshots
+![login](screenshots/1.-login.png "login")
+![forgotPassword](screenshots/2.-forgotPassword.png "forgotPassword")
+![mainIncidences](screenshots/3.-mainIncidences.png "mainIncidences")
+![mainAreas](screenshots/4.-mainAreas.png "mainAreas")
+![mainUsers](screenshots/5.-mainUsers.png "mainUsers")
+![mainIncidences-newIncidence1](screenshots/6.-mainIncidences-newIncidence1.png "mainIncidences-newIncidence1")
+![mainIncidences-newIncidence2](screenshots/7.-mainIncidences-newIncidence2.png "mainIncidences-newIncidence2")
+![mainIncidences-editIncidence1](screenshots/8.-mainIncidences-editIncidence1.png "mainIncidences-editIncidence1")
+![mainIncidences-editIncidence2](screenshots/9.-mainIncidences-editIncidence2.png "mainIncidences-editIncidence2")
+![mainAreas-editArea](screenshots/10.-mainAreas-editArea.png "mainAreas-editArea")
+![mainAreas-newArea](screenshots/11.-mainAreas-newArea.png "mainAreas-newArea")
+![mainUsers-updateUser](screenshots/12-mainUsers-updateUser.png "mainUsers-updateUser")
+![mainUsers-newUser](screenshots/13.-mainUsers-newUser.png "mainUsers-newUser")
+![changeLanguage](screenshots/14.-changeLanguage.png "changeLanguage")
+![detailsUser](screenshots/15.-detailsUser.png "detailsUser")
+![mainIncidences-search](screenshots/16.-mainIncidences-search.png "mainIncidences-search")
+![mainAreas-search](screenshots/17.-mainAreas-search.png "mainAreas-search")
+![mainUsers-search](screenshots/18.-mainUsers-search.png "mainUsers-search")
+
+### Attribution of graphic elements used in the project:
+- [Jpg icons created by smalllikeart - Flaticon](https://www.flaticon.com/free-icons/jpg)
+- [Vector de niño y adulto creado por freepik - www.freepik.es](https://www.freepik.es/vectores/nino-adulto)
+
+## Docs
+- [flutter documentation](https://flutter.dev/docs).
+- [appwrite documentation](https://appwrite.io/docs).
+
+# License
 
 MIT License
 

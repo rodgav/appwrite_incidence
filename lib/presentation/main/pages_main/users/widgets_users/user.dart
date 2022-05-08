@@ -161,20 +161,20 @@ class _UserDialogState extends State<UserDialog> {
               StreamBuilder<List<Name>>(
                   stream: widget.viewModel.outputTypeUsers,
                   builder: (_, snapshot) {
-                    final prioritys = snapshot.data;
-                    return prioritys != null && prioritys.isNotEmpty
+                    final typeUsers = snapshot.data;
+                    return typeUsers != null && typeUsers.isNotEmpty
                         ? DropdownButtonFormField<String?>(
                             isExpanded: true,
                             decoration:
                                 InputDecoration(label: Text(s.typeUser)),
                             hint: Text(s.typeUser),
-                            items: prioritys
+                            items: typeUsers
                                 .map((e) => DropdownMenuItem(
                                       child: Text(e.name),
                                       value: e.name,
                                     ))
                                 .toList(),
-                            value: userSel?.typeUser != ''
+                            value: userSel?.typeUser != '' && userSel?.typeUser!='admin'
                                 ? userSel?.typeUser
                                 : null,
                             onChanged: widget.users != null

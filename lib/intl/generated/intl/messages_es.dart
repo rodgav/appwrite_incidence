@@ -52,6 +52,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "error": MessageLookupByLibrary.simpleMessage("Error"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Has olvidado tu cotraseña"),
+        "haveAccount": MessageLookupByLibrary.simpleMessage("Tengo una cuenta"),
         "incidence": MessageLookupByLibrary.simpleMessage("Incidencia"),
         "incidences": MessageLookupByLibrary.simpleMessage("Incidencias"),
         "inputEmail": MessageLookupByLibrary.simpleMessage("Correo"),

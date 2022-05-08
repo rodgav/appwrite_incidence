@@ -2,7 +2,8 @@
   "@@locale": "es",
   "inputPassword": "Contraseña",
   "inputEmail": "Correo",
-  "login": "Ingresar", "recover": "Recuperar",
+  "login": "Ingresar",
+  "recover": "Recuperar",
   "forgotPassword": "Has olvidado tu cotraseña",
   "noRouteFound": "Ruta no encontrada",
   "success": "Éxito",
@@ -52,5 +53,6 @@
   "changeLanguage": "Cambiar el lenguaje",
   "nameArea": "Nombre área",
   "descriptionArea": "Descrición área",
-  "selectImage": "Seleccionar imagen"
+  "selectImage": "Seleccionar imagen",
+  "haveAccount": "Tengo una cuenta"
 }

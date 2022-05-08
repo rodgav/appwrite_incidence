@@ -53,5 +53,6 @@
   "changeLanguage": "Change language",
   "nameArea": "Name area",
   "descriptionArea": "Description area",
-  "selectImage": "Select image"
+  "selectImage": "Select image",
+  "haveAccount": "Have account"
 }

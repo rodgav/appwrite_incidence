@@ -222,7 +222,7 @@ class UsersViewModel extends BaseViewModel
   @override
   areas() async {
     (await _usersUseCase.areas(null)).fold((l) {}, (areas) {
-      inputAreas.add(areas);
+      inputAreas.add(areas.areas);
     });
   }
 
