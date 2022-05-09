@@ -1,12 +1,17 @@
 # Incidence app - Admin
-project for the appwrite hackathon (flutter and appwrite).
+project presented by Rodolfo Samuel Gavilan Muñoz for the appwrite hackathon.
+* clean architecture
+* MVVM
+* Responsive (mobile and web)
+* internationalization (es-en)
 
 ## Get starting
 * appwrite v.0.13.4
 * flutter v.2.10.3
 
-1. clone project.
-2. create collections and attributes
+1. clone projects.
+2. add the bundle ID to your appwrite project
+3. create collections and attributes
     * collections permissions **Document level**
     
     ## incidences
@@ -54,7 +59,7 @@ project for the appwrite hackathon (flutter and appwrite).
     |---------------|-----------|--------------|
     |name           | string    |required      |
 
-3. create indexes
+4. create indexes
     ## incidences
 
     | attributeId   | type      | attributes   |
@@ -81,7 +86,7 @@ project for the appwrite hackathon (flutter and appwrite).
     |typeUser_area_active  | key       | type_user(asc),area(asc),active(asc)|
     |search         | fulltext  | name(asc)    |
 
-4.  create documents
+5.  create documents
     
     ## prioritys
 
@@ -91,10 +96,10 @@ project for the appwrite hackathon (flutter and appwrite).
 
     - Employe, Supervisor
 
-4. create bucket **images** 
+6. create bucket **images** 
     * bucket permissions **File level**
 
-5. edit the filename constants.example.dart to constants.dart, fill in your details. the file is located in project/lib/app/constants.example.
+7. edit the filename constants.example.dart to constants.dart, fill in your details. the file is located in project/lib/app/constants.example.
 
 ## Description
 The objective of this project is to facilitate the creation and solution of incidents or incidents that occur within a company or business.
@@ -114,6 +119,9 @@ The objective of this project is to facilitate the creation and solution of inci
 - create and edit users.
 
 ### Screenshots
+![admin1](screenshots/incidence-admin1.png "admin1")
+![admin2](screenshots/incidence-admin2.png "admin2")
+![admin3](screenshots/incidence-admin3.png "admin3")
 ![login](screenshots/1.-login.png "login")
 ![forgotPassword](screenshots/2.-forgotPassword.png "forgotPassword")
 ![mainIncidences](screenshots/3.-mainIncidences.png "mainIncidences")
