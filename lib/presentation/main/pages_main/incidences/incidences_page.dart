@@ -90,7 +90,7 @@ class _IncidencesPageState extends State<IncidencesPage> {
                           incidenceSel?.active ?? false);
                     }
                   }
-                }else{
+                } else {
                   _viewModel.incidences(false);
                 }
               }
@@ -122,14 +122,18 @@ class _IncidencesPageState extends State<IncidencesPage> {
                                         mainAxisSpacing: AppSize.s10),
                                 itemBuilder: (_, index) {
                                   final incidence = incidences[index];
-                                  return IncidenceItem(incidence, (){
+                                  return IncidenceItem(incidence, () {
                                     showDialog(
                                         barrierDismissible: false,
                                         context: context,
                                         builder: (_) => IncidenceDialog(
                                             incidence: incidence,
                                             viewModel: _viewModel,
-                                            username: _viewModel.username));
+                                            username:
+                                                _viewModel.username))/*.then((value) {
+                                                  _viewModel.inputIncidenceSel.add(IncidenceSel());
+                                                  _viewModel.incidences(true);
+                                    })*/;
                                   });
                                 },
                                 itemCount: incidences.length,
@@ -176,7 +180,7 @@ class _IncidencesPageState extends State<IncidencesPage> {
                             final areas = snapshot.data;
                             return areas != null && areas.isNotEmpty
                                 ? DropdownButtonFormField<String?>(
-                              isExpanded: true,
+                                    isExpanded: true,
                                     decoration:
                                         InputDecoration(label: Text(s.area)),
                                     hint: Text(s.area),
@@ -209,7 +213,8 @@ class _IncidencesPageState extends State<IncidencesPage> {
                                   final prioritys = snapshot.data;
                                   return prioritys != null &&
                                           prioritys.isNotEmpty
-                                      ? DropdownButtonFormField<String?>(isExpanded: true,
+                                      ? DropdownButtonFormField<String?>(
+                                          isExpanded: true,
                                           decoration: InputDecoration(
                                               label: Text(s.priority)),
                                           hint: Text(s.priority),
@@ -234,14 +239,15 @@ class _IncidencesPageState extends State<IncidencesPage> {
                           )
                         : const SizedBox(),
                     const SizedBox(width: AppSize.s10),
-                    SizedBox(
+                   incidenceSel?.priority!=null&& incidenceSel?.priority != ''? SizedBox(
                       width: AppSize.s140,
                       child: StreamBuilder<List<bool>?>(
                           stream: _viewModel.outputActives,
                           builder: (_, snapshot) {
                             final actives = snapshot.data;
                             return actives != null && actives.isNotEmpty
-                                ? DropdownButtonFormField<bool?>(isExpanded: true,
+                                ? DropdownButtonFormField<bool?>(
+                                    isExpanded: true,
                                     decoration:
                                         InputDecoration(label: Text(s.active)),
                                     hint: Text(s.active),
@@ -261,7 +267,7 @@ class _IncidencesPageState extends State<IncidencesPage> {
                                     })
                                 : const SizedBox();
                           }),
-                    ),
+                    ):const SizedBox(),
                     const SizedBox(width: AppSize.s20),
                   ],
                 ),

@@ -7,8 +7,8 @@ import 'package:appwrite_incidence/domain/usecase/incidences_usecase.dart';
 import 'package:appwrite_incidence/intl/generated/l10n.dart';
 import 'package:appwrite_incidence/presentation/base/base_viewmodel.dart';
 import 'package:appwrite_incidence/presentation/common/dialog_render/dialog_render.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
 
 class IncidencesViewModel extends BaseViewModel
@@ -21,7 +21,7 @@ class IncidencesViewModel extends BaseViewModel
       AppPreferences _appPreferences)
       : username = _appPreferences.getName();
 
-  final _incidencesStrCtrl = PublishSubject<List<Incidence>>();
+  final _incidencesStrCtrl = BehaviorSubject<List<Incidence>>();
   final _areasStrCtrl = BehaviorSubject<List<Area>>();
   final _prioritysStrCtrl = BehaviorSubject<List<Name>>();
   final _activesStrCtrl = BehaviorSubject<List<bool>?>();
@@ -30,6 +30,7 @@ class IncidencesViewModel extends BaseViewModel
   final _incidenceSelIncidenceStrCtrl = BehaviorSubject<IncidenceSel>();
   final List<Incidence> _incidences = [];
   int total = 0;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void start() {
@@ -109,7 +110,7 @@ class IncidencesViewModel extends BaseViewModel
 
   @override
   incidences(bool firstQuery) async {
-    if (_incidences.isEmpty) {
+    if (firstQuery) {
       _incidences.clear();
       (await _incidencesUseCase
               .execute(IncidencesUseCaseInput(limit: 25, offset: 0)))
@@ -131,7 +132,6 @@ class IncidencesViewModel extends BaseViewModel
       });
       changeIsLoading(false);
     }
-    prioritys();
   }
 
   @override
@@ -303,11 +303,11 @@ class IncidencesViewModel extends BaseViewModel
 
   @override
   pickImage(Incidence? incidence, IncidenceSel incidenceSel) async {
-    final image = await FilePicker.platform
-        .pickFiles(type: FileType.custom, allowedExtensions: ['jpg']);
-    if (image != null) {
-      final uint8list = image.files.first.bytes!;
-      final name = image.files.first.name;
+    XFile? xFile;
+    xFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (xFile != null) {
+      final uint8list = await xFile.readAsBytes();
+      final name = xFile.name;
       (await _incidencesUseCase
               .createFile(IncidenceUseCaseFile(uint8list, name)))
           .fold((failure) {}, (file) async {
@@ -330,7 +330,10 @@ class IncidencesViewModel extends BaseViewModel
                   write: [],
                   id: incidence.id,
                   collection: '')))
-              .fold((failure) => null, (stores) => null);
+              .fold((failure) => null, (incidence) {
+            inputIncidenceSel.add(IncidenceSel());
+            incidences(true);
+          });
         }
         inputIncidenceSelIncidence.add(IncidenceSel(
             area: incidenceSel.area,

@@ -60,7 +60,7 @@ class IncidencesUseCase
 
   @override
   Future<Either<Failure, Incidence>> incidenceUpdate(Incidence input) =>
-      incidenceUpdate(input);
+      _repository.incidenceUpdate(input);
 
   @override
   Future<Either<Failure, List<Name>>> prioritys(void input) =>

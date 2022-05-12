@@ -174,7 +174,7 @@ class _UserDialogState extends State<UserDialog> {
                                       value: e.name,
                                     ))
                                 .toList(),
-                            value: userSel?.typeUser != '' && userSel?.typeUser!='admin'
+                            value: userSel?.typeUser != '' && userSel?.typeUser!='Admin'
                                 ? userSel?.typeUser
                                 : null,
                             onChanged: widget.users != null

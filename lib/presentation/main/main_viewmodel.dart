@@ -92,7 +92,6 @@ class MainViewModel extends BaseViewModel
 
   @override
   incidencesSearch(String search) async {
-    print('search $search');
     if (_query != search) {
       _query = search;
       _incidencesSearch.clear();

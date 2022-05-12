@@ -49,6 +49,7 @@ class _IncidenceDialogState extends State<IncidenceDialog> {
       _solutionTxtEditCtrl.text = incidence.solution;
       _dateSolutionTxtEditCtrl.text = (incidence.dateSolution).toString();
       widget.viewModel.changeIncidenceSelIncidence(IncidenceSel(
+        image: incidence.image,
           area: incidence.area,
           priority: incidence.priority,
           active: incidence.active));
